@@ -6,6 +6,7 @@ echo $@ #取所有参数
 echo $# #参数个数
 echo $? #上次执行结果
 echo $0 #文件名
+echo $$ #当前进程号
 
 #字符串
 str="abcdefg.jpg"
