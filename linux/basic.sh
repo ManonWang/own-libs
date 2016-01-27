@@ -8,6 +8,10 @@ echo $? #上次执行结果
 echo $0 #文件名
 echo $$ #当前进程号
 
+#输出
+echo
+printf
+
 #字符串
 str="abcdefg.jpg"
 echo ${#str}          #长度
