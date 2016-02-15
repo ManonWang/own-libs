@@ -216,3 +216,15 @@ Cpu(s)行展示了当前CPU的状态，us表示用户进程占用CPU比例，sy�
 Mem行展示了当前内存的状态，total是总的内存大小，userd是已使用的，free是剩余的，buffers是目录缓存。
 Swap行同Mem行，cached表示缓存，用户已打开的文件。如果Swap的used很高，则表示系统内存不足。
 在top命令下，按shift + "p"，则将进程按照CPU使用率从大到小排序，按shift+"m"，则将进程按照内存使用率从大到小排序，很容易能够定位出哪些服务占用了较高的CPU和内存。
+
+
+#分析程序中问题 
+strace -cfp pid 统计耗时 哪个函数方法 占用系统资源大，可能出现不可预期的问题
+oprofile软件    统计耗时 哪个函数方法 推荐使用
+http://www.lenky.info/archives/2012/03/1371
+
+
+#进程程序夯死
+gdb跟进看卡到什么地方
+http://www.akaedu.org/study/gdb.html
+http://www.cnblogs.com/ggjucheng/archive/2011/12/14/2288004.html

@@ -1,0 +1,24 @@
+#参数含义
+http://blog.csdn.net/e421083458/article/details/38342051
+
+#查看当前进程以及状态
+SHOW FULL PROCESSLIST 
+
+#查看sql在mysql执行的各个阶段耗时
+SET profiling = 1     
+...
+SHOW PROFILES
+SHOW PROFILES FOR QUERY 1
+
+#查看配置
+SHOW GLOBAL VARIABLES 
+SHOW VARIABLES       
+
+#查看计数
+SHOW GLOBAL STATUS
+SHOW STATUS       
+mysqladmin ext -i1
+
+#正常指标
+thread_connected <= 150
+thread_running <= 15

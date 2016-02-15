@@ -33,4 +33,4 @@ netstat  -a 所有的 -t tcp -u udp -n 按ip显示 #-p tcp mac os
 
 #网络抓包
 nc -l 80
-tcpdump http://www.cnblogs.com/yc_sunniwell/archive/2010/07/05/1771563.html
+tcpdump http://www.cnblogs.com/ggjucheng/archive/2012/01/14/2322659.html
