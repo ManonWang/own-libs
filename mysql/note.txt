@@ -22,3 +22,25 @@ mysqladmin ext -i1
 #正常指标
 thread_connected <= 150
 thread_running <= 15
+
+#MYSQL索引原理
+http://blog.codinglabs.org/articles/theory-of-mysql-index.html
+区分度: SELECT COUNT(DISTINCT(field)) / COUNT(field) FROM table -> 1 越有价值建立索引
+
+#小技巧
+
+#计数器
+#在大型网站中，如果只使用一条记录去计数，由于排它锁的原因，会导致锁等待排队，可以加入槽位的概念 table(num int, slot int, type int), 总数SELCT SUM(num) FROM table WHERE type = :type
+
+#HASH索引
+#需要hash索引时，在表中建立一个辅助字段，记录字段的hash值，记住尽量使hash值为int，可以使用crc32计算，如果区分度不大，可以用MD5或者其他加密算法，然后截取后xx位, 然后将截取的数据转换成int
+
+#分页优化 index(group_id, is_delete) innodb
+#SELECT firstp2p_user.* FROM firstp2p_user INNER JOIN (SELECT id FROM firstp2p_user WHERE group_id = 13 ORDER BY is_delete LIMIT 10000,10) as t_alias USING(id)
+
+#SELECT COUNT(*) 不带条件时候，MYISAM快，直接有值存储，带条件时，所有引擎是一样的
+
+#innodb 主键索引是聚簇索引
+
+#关联查询优化 关联顺序a,b，关联列c，那么在b表的c列上建立索引
+#子查询，尽量避免,无可避免时候, 如果是IN条件，那么最好采用(NOT) EXIST替换
