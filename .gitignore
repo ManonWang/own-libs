@@ -1,0 +1,16 @@
+data/
+log/
+cache/
+runtime/
+nbproject/
+
+*.py[oc]
+*.project
+*.settings
+*.pydevproject
+*.log
+*.buildpath
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
