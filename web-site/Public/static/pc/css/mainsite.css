@@ -1,0 +1,111 @@
+* {
+    margin:0px; 
+    padding:0px; 
+    font-family:'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif
+}
+
+.container-fluid, .navbar, .navbar-brand {
+    margin:0px;
+    padding:0px;
+}
+
+.navbar-header, .navbar-right {
+    margin:15px 0px;
+}
+
+.navbar-text {
+    font-size:16px;
+    font-weight:blod;
+    color:rgb(71, 70, 70);
+}
+
+.navbar-text:hover {
+    color: #da3715; 
+    text-decoration: none;
+}
+
+.navbar-text.active {
+    color: #da3715; 
+    border-bottom: 3px solid #f8694c;
+}
+
+.footer {
+    padding:30px 0px;
+    text-align: center;
+    background-color:#2E2E2E;
+}
+
+.footer .menu-link, .footer .weichat {
+    font-size:16px;
+    color:#FFFFFF;
+}
+
+.footer .page-link {
+    font-size:14px;
+    color: #949494;
+}           
+
+.footer .page-link:hover {
+    color:#FFFFFF;
+}
+
+.service-line {
+    background-color:#242424;
+}
+
+.good-case, .coop-partner {
+    background-color:#E03B37;
+}
+
+.service-project, .recom-teacher, .service-line, .good-case, .coop-partner {
+    text-align:center;
+    padding:20px 0px;
+}
+
+.perfect-circle {
+    width: 40px;
+    height: 40px;
+    margin:auto;
+    line-height:40px;
+    font-size:26px;
+    border-radius: 50%;
+   /*-webkit-border-radius: 50%;*/
+   -moz-border-radius: 50%;
+}
+
+.red-white {
+    color: #FFFFFF;
+    background-color: #E03B37;
+}
+
+.white-red {
+    color: #E03B37;
+    background-color: #FFFFFF;
+}
+
+.black-white {
+    color:rgb(71, 70, 70);
+    background-color: #FFFFFF;
+}
+
+.color-red {
+    color: #E03B37;
+}
+
+.color-gray {
+    color: #C7C7C7;
+}
+
+.color-white {
+    color: #FFFFFF;
+}
+
+.content .title-zh {
+    font-size:16px;
+    font-weight:bold;
+    margin:5px 0px 0px;
+}
+
+.content .title-en {
+    font-size:14px;
+}
