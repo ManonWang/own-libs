@@ -2,6 +2,7 @@
 
 return array(
     
+    'DEFAULT_TIMEZONE' => 'Asia/Shanghai',
     'DEFAULT_THEME' => 'pc',
     'TMPL_L_DELIM'=>'<{',
     'TMPL_R_DELIM'=>'}>',
@@ -20,5 +21,14 @@ return array(
        'img_logo'      => '/Public/static/:platform:/img/logo.png',
        'img_bar'       => '/Public/static/:platform:/img/bar.jpg',   
      ),
+
+	'DB_PREFIX' => '',
+	'DB_TYPE' => 'mysql',
+	'DB_NAME' => 'website',
+	'DB_HOST' => '127.0.0.1',
+	'DB_PORT' => '3306',
+	'DB_USER' => 'root',
+	'DB_PWD'  => 'MhxzKhl',
+    'DB_RW_SEPARATE'=>true,
 
 );
