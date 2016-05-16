@@ -1,0 +1,53 @@
+<extend name="Base:master" />
+
+<block name="title"><title>安全预警响应列表 -- 预警信息管理 -- 研判预警</title></block>
+
+<block name="content">
+<div id="breadcrumb">
+ <ol class="breadcrumb">
+  <li><a href="/analyse/supervise.html">研判预警</a></li>
+  <li><a href="/analyse/audit.html">预警信息管理</a></li>
+  <li class="active">预警信息响应</li>
+ </ol>
+</div>
+
+<p class="page-title">安全预警响应列表</p>
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+        <th>序号</th>
+        <th>预警类型</th>
+        <th>预警时间</th>
+        <th>预警主题</th>
+        <th>落实部门</th>
+        <th>响应</th>
+    </tr>
+  </thead>
+  <tbody>
+    <foreach name="pagedList['data_list']" item="item" key="key">
+    <tr>
+        <td><{$item['id']}></td>
+        <td><{$item['type_cn']}></td>
+        <td><{$item['fix_time']}></td>
+        <td><{$item['alarm_title']}></td>
+        <td><{$item['fix_dept_cn']}></td>
+        <td>
+            <a href="/handle/dealShow.html?id=<{$item['id']}>">添加响应</a> 
+        </td>
+    </tr>
+    </foreach>
+  </tbody>
+</table>
+
+<include file="Base/pager" />
+</block>
+
+<block name="footer">
+<script type="text/javascript">
+   $(function() {
+        $('a.fix_status').click(function(){
+           requestObject.simpleRequest($(this));
+        });        
+   });
+</script>
+</block>

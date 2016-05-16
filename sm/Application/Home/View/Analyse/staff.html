@@ -1,0 +1,84 @@
+<extend name="Base:master" />
+
+<block name="title"><title>职工行为预警 -- 数据分析预警 -- 研判预警</title></block>
+<block name="header">
+    <link href="/Public/static/vendor/timepicker/css/timepicker.css" rel="stylesheet">
+</block>
+
+<block name="content">
+    <div id="breadcrumb">
+        <ol class="breadcrumb">
+            <li><a href="/analyse/supervise.html">研判预警</a></li>
+            <li class="active">职工行为预警</li>
+        </ol>    
+    </div>
+
+    <div class="inline-form">
+        <form id="query-form" class="form-inline">
+            <div class="form-group"> 
+                <label for="event_time_year">年度</label>
+                <select name="event_time_year" class="form-control" id="event_time_year">
+                    <for start="date('Y')" end="date('Y') - 20" name="year" step="-1" comparison="gt">
+                        <option value="<{$year}>" <if condition="$event_time_year eq $year">selected="selected"</if>><{$year}></option>
+                    </for>
+                </select>
+            </div> 
+            &nbsp;&nbsp;
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-md form-control" value="查询" />
+            </div>
+        </form>
+        <hr/>
+    </div>
+
+    <p class="page-title"><{$event_time_year}> 年度职工行为预警</p>
+    <div class="analyse_div"> 
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <foreach name="data" key="deptId" item="riskData">
+                    <th><{$deptData[$deptId]['name']}></th>
+                   </foreach>
+                   <th>全段</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>黄色300分</td>
+                <foreach name="data" key="deptId" item="riskData">
+                <td><{$riskData[$levelData['level_4']['id']]}></td>
+                <assign name="rowStat['level_4']" value="$rowStat['level_4'] + $riskData[$levelData['level_4']['id']]" />
+                </foreach>
+                <td><{$rowStat['level_4']}></td>
+            </tr>
+            <tr>
+                <td>橙色400分</td>
+                <foreach name="data" key="deptId" item="riskData">
+                <td><{$riskData[$levelData['level_3']['id']]}></td>
+                <assign name="rowStat['level_3']" value="$rowStat['level_3'] + $riskData[$levelData['level_3']['id']]" />
+                </foreach>
+                <td><{$rowStat['level_3']}></td>
+            </tr>
+            <tr>
+                <td>红色500分</td>
+                <foreach name="data" key="deptId" item="riskData">
+                <td><{$riskData[$levelData['level_2']['id']]}></td>
+                <assign name="rowStat['level_2']" value="$rowStat['level_2'] + $riskData[$levelData['level_2']['id']]" />
+                </foreach>
+                <td><{$rowStat['level_2']}></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</block>
+
+<block name="footer">
+    <script src="/Public/static/vendor/timepicker/js/timepicker.js"></script>
+    <script>
+        $(function() {
+            $('#start_time').datepicker({format: 'yyyy-mm-dd', changeMonth: true, changeYear: true});
+            $('#end_time').datepicker({format: 'yyyy-mm-dd', changeMonth: true, changeYear: true});
+        })
+    </script>
+</block>

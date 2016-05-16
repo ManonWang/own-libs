@@ -1,0 +1,100 @@
+<extend name="Base:master" />
+
+<block name="title"><title>时间段分析 -- 数据分析预警 -- 研判预警</title></block>
+<block name="header">
+    <link href="/Public/static/vendor/timepicker/css/timepicker.css" rel="stylesheet">
+</block>
+
+<block name="content">
+    <div id="breadcrumb">
+        <ol class="breadcrumb">
+            <li><a href="/analyse/supervise.html">研判预警</a></li>
+            <li><a href="/analyse/source.html">数据分析预警</a></li>
+            <li class="active">时间段分析</li>
+        </ol>    
+    </div>
+
+    <div class="inline-form">
+        <form id="query-form" class="form-inline">
+            <div class="form-group">
+                <label for="type">呈现形式</label>
+                <select name="type" class="form-control" id="type">
+                    <foreach item="text" key="value" name="types">
+                        <option value="<{$value}>" <if condition="$value eq $type">selected="selected"</if>><{$text}></option>
+                    </foreach>
+                </select>
+            </div> 
+            &nbsp;&nbsp;
+            <div class="form-group">
+                <label for="start_time">时间</label>
+                <input type="text" class="form-control" id="start_time" name="start_time" value="<{:date("Y-m-d", $startTime)}>">
+                       <label for="end_time">至</label>
+                <input type="text" class="form-control" id="end_time" name="end_time" value="<{:date("Y-m-d", $endTime)}>">
+            </div>
+            &nbsp;&nbsp;
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-md form-control" value="查询" />
+            </div>
+        </form>
+        <hr/>
+    </div>
+
+    <p class="page-title"><{:date("Y年m月d日", $startTime)}>至<{:date("Y年m月d日", $endTime)}>安全风险问题<{$source}></p>
+    <div class="analyse_div" id="analyse_div" style="height:500px;width: 100%"></div>
+</block>
+
+<block name="footer">
+    <php>unset($levelData['level_1']);</php>
+    <script src="/Public/static/vendor/timepicker/js/timepicker.js"></script>
+    <script src="/Public/static/vendor/echarts/dist/echarts.min.js"></script>
+    <script>
+    $(function(){
+        $('#start_time').datepicker({format: 'yyyy-mm-dd', changeMonth: true, changeYear: true});
+        $('#end_time').datepicker({format: 'yyyy-mm-dd', changeMonth: true, changeYear: true});
+        var myChart = echarts.init(document.getElementById('analyse_div'));
+        var option = {
+             tooltip : {
+                trigger: 'axis',
+                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            legend: {
+                data: [<foreach name="levelData" item="item">'<{$item['name']}>',</foreach>]
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis:  {
+                type: 'value'
+            },
+            yAxis: {
+                type: 'category',
+                data: [<for start="0" end="24" name="time">'<{$time}>时 ',</for>]
+            },
+            series: [
+                <foreach name="levelData" item="item">
+                {
+                    name: '<{$item['name']}>',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [
+                        <for start="0" end="24" name="time"><{:intval($data[$time][$item['id']])}>, </for>
+                    ]
+                },
+                </foreach>
+            ]
+        };
+        myChart.setOption(option);
+    })
+    </script>
+</block>

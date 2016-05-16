@@ -1,0 +1,791 @@
+"基本配置 {{{
+"2011.6.3 基本设置
+"2011.6.7 颜色
+"2011.6.8 tab宽度3个选项
+"2011.7.6 搜索高亮
+"2011.8.5 支持两种编码
+"2011.8.9 可删除
+"2011.9.2 插件自动载入，保证matchit能用
+"2011.9.5 显示状态, ruler
+"2012.2.28 忽略大小写
+"2012.6.28 实时搜索
+"2013.4.30 显示正在输入的命令showcmd
+"2014.6.15 根据系统匹配
+"2014.7.16 不备份
+set number
+set autoindent
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set ignorecase
+set hlsearch
+set incsearch
+set nobackup
+set fencs=utf-8,gbk
+set showcmd
+set ruler
+set backspace=2
+filetype plugin on
+set tags=~/git/tags
+syntax on
+color torte
+"}}}
+
+"分环境配置
+try
+    if (match(system('uname -a'), 'Ubuntu') > -1) | color default | endif
+catch
+endtry
+
+"2014.8.5 切换主目录
+"try | cd ~/git/firstp2p | catch | endtry
+
+command! -nargs=0 UpdateVimrc !wget http://bakq.sinaapp.com/vimrc.quanhengzhuang -O ~/vimrc.quanhengzhuang
+
+"自定义高亮颜色 {{{
+"tab标签
+"弹出菜单, 选中项, 滚动条, 滚动条的拇指
+"选中行
+"2013.1.8 行号高亮
+highlight TabLine term=underline cterm=bold ctermfg=9 ctermbg=4
+highlight TabLineSel term=bold cterm=bold ctermbg=Red ctermfg=yellow
+
+highlight Pmenu guibg=#EE0000 ctermbg=darkred
+highlight PmenuSel guibg=#660000 ctermbg=red guifg=yellow ctermfg=yellow
+highlight PmenuSbar guibg=#990000 ctermbg=red
+highlight PmenuThumb guifg=yellow ctermfg=darkred
+
+highlight CursorLine guibg=#2B0000 ctermbg=darkgreen
+"highlight LineNr ctermbg=4 ctermfg=6
+"}}}
+
+"状态栏 {{{
+"2012.6.22 状态栏显示优化
+highlight User1 ctermbg=1 ctermfg=3
+highlight User2 ctermbg=4 ctermfg=2
+
+set laststatus=2
+set statusline=%F
+set statusline+=\ %1*%m%*
+set statusline+=\ %2*%r%*
+set statusline+=\ %2*%h%*
+set statusline+=%=\ (%c,\ %l,\ %p%%)
+set statusline+=\ %1*\ %L\ %*
+set statusline+=\ [%{toupper(&fenc!=''?&fenc:&enc)}]
+set statusline+=\ [0x%B]
+"set statusline+=\ %2*\ %L\ %*
+"set statusline+=\ [%{strftime('%Y-%m-%d\ %H:%M',getftime(expand('%')))}]
+"set statusline+=\ [%{&paste?'PASTE':''}]
+"}}}
+
+"常用快捷键定义 {{{
+"2012.11.16 快速编辑vimrc
+"2013.5.6 el标签切换
+"2013.5.7 ep粘贴0寄存器
+"2013.5.8 eN清除搜索高亮
+"2013.5.17 et插入带时间的分割线
+"2013.5.17 es分屏
+"2014.7.2 ew切换是否自动换行
+"2014.8.7 eg显示git日志
+"2014.8.9 en显示NERDTree
+"2014.8.10 em显示Tlist ei切换窗口 Q
+"let mapleader = 'e'
+map <silent> eq :q<CR>
+map <silent> eh :tabprevious<CR>
+map <silent> eL :TabmoveNext<CR>
+map <silent> ep "0p
+map <silent> eN :nohlsearch<CR>
+map <silent> et o-------------------- <C-R>=strftime('%Y-%m-%d %H:%M:%S')<CR> --------------------<CR>
+map <silent> es :split<CR>
+map <silent> eS :vsplit<CR>
+map <silent> ew :set nowrap!<CR>
+map <silent> eg :!/usr/bin/git log --stat %<CR>
+map <silent> eG :echo system('/usr/bin/git blame '.expand('%').' -p -L '.line('.').','.line('.'))<CR>
+map <silent> ev :tabnew ~/vimrc.quanhengzhuang<CR>
+map <silent> en :NERDTreeToggle<CR>
+map <silent> em :TlistToggle<CR>
+map <silent> ei <c-w>w
+map <silent> eI :set list!<CR>
+map <silent> el :tabnext<CR>
+map <silent> eH :TabmovePrevious<CR>
+
+"2013.7.28 0替代^
+map 0 ^
+
+"2012.4.23粘贴模式
+set pastetoggle=<Insert>
+
+"2011.6.4 tab相关
+"2013.4.25 使用PageDown为移动到下一个
+map <silent> <PageDown> :TabmoveNext<CR>
+map <silent> <PageUp> :TabmovePrevious<CR>
+
+"2013.5.1 空格滚屏
+map <space> <c-e>j
+
+"2013.9.8 快速切换窗口
+map <c-l> <c-w>l
+map <c-j> <c-w>j
+map <c-k> <c-w>k
+map <c-h> <c-w>h
+
+"2014.8.10 PHP调试
+map edr Oini_set('display_errors', 'On'); error_reporting(E_ALL);<ESC>
+map edv Ovar_dump(__LINE__);<ESC>
+map edx Oexit('end');<ESC>
+map edd Ofile_put_contents('/tmp/a.log', date('[Y-m-d H:i:s] ').__LINE__." "."\n", FILE_APPEND);<ESC>
+
+"2012.6.26 注释快捷键
+map ecc O/**<CR> *<CR>*/<ESC>ka 
+map ecp o* @param 
+map ecr o* @return 
+map ec  o*<ESC>
+"}}}
+
+"快速保存并备份 Sz.vim {{{
+"2012.5.31 快速保存/备份/下载当前文件
+"@author quanhengzhuang
+"map <C-X> :call Sz()<CR>
+
+function! Sz()
+    write
+    echohl Title
+    echo '--------------------------------------------------'
+    echo bufname('%')
+    echo '--------------------------------------------------'
+    let dir = '~/.bak/'.strftime('%Y%m')
+    call system('mkdir -p '.dir)
+
+    let bakfilename = dir.'/'.strftime('%Y%m%d-%H-%M-%S.').fnamemodify(bufname('%'), ':t')
+    mksession! ~/.bak/session.vim
+    wviminfo! ~/.bak/viminfo.vim
+    call system('cp '.bufname("%").' '.bakfilename)
+    !sz '%'
+    echo '------------------- done -------------------------'
+    echohl None
+endfunction
+
+autocmd BufWritePost * call BackupCurrentFile()
+command! ShowBackup :call BackupShow()
+
+function! BackupCurrentFile()
+    let dir = '~/.bak/'.strftime('%Y%m')
+    let bakfilename = dir.'/'.strftime('%Y%m%d-%H-%M-%S.').fnamemodify(bufname('%'), ':t')
+
+    call system('mkdir -p '.dir)
+    call system('cp '.bufname("%").' '.bakfilename)
+endfunction
+
+function! BackupShow()
+    write
+    let dir = '~/.bak/'.strftime('%Y%m')
+
+    execute '!ls -l '.dir
+endfunction
+"}}}
+
+"搜索光标下的单词 SearchHere.vim {{{
+"2013.1.8 搜索当前单词
+"2014.8.7 增加命令:Ef
+"2014.8.8 判断当前文件是否在搜索目录
+"@author quanhengzhuang
+map ef :call Search_Here()<CR>
+"map ed :call Search_Defined()<CR>
+
+command! -nargs=1 -range Ef :call Search_Word(<f-args>)
+
+function! Search_Here()
+    call Search_Word(expand('<cword>'))
+endfunction
+
+function! Search_Defined()
+    let word = expand('<cword>')
+    call Search_Word('/class '.word.'\|function '.word.'/')
+endfunction
+
+function! Search_Word(word)
+    if (strpart(expand('%:.'), 0, 1) == '/')
+        echohl WarningMsg | echo '当前文件不在搜索目录('.getcwd().')，pwd查看目录，cd切换目录' | echohl None
+        return
+    endif
+
+    let word = a:word
+    let type = &filetype
+    tabnew
+
+    if type == 'c' || type == 'cpp' || type == 'h' || type == 'hpp'
+        execute 'vimgrep '.word.' **/*.c **/*.cpp **/*.hpp **/*.h **/*.conf'
+    elseif type == 'php'
+        execute 'vimgrep '.word.' **/*.php'
+    else
+        execute 'vimgrep '.word.' **'
+    endif
+
+    copen
+endfunction
+"}}}
+
+"编译C/C++ MakeHere.vim {{{
+"2013.4.28 编译当前目录并打开copen
+"2014.8.10 增加命令
+map <F10> :Makehere<CR>
+
+command! Makehere :call Make_Here()
+
+function! Make_Here()
+    if (empty(expand('%')))
+        echohl WarningMsg | echo 'No file.' | echohl None
+        return
+    endif
+
+    write
+    tabnew %
+    make -C %:h
+    copen
+endfunction
+"}}}
+
+"高亮当前单词 HiWord.vim {{{
+"2013.5.7 多种颜色, 严格匹配单词
+"2014.8.7 使用自己的颜色模式
+"@author quanhengzhuang
+if exists('g:loaded_hiword')
+    "finish
+endif
+let g:loaded_hiword = 1
+
+map <silent> ej :call Highlight_Word()<CR>
+map <silent> eJ :call Highlight_Word_Clear()<CR>
+
+highlight HI_WORD_0 ctermbg=1 ctermfg=7   "红
+highlight HI_WORD_1 ctermbg=2 ctermfg=7   "绿
+highlight HI_WORD_2 ctermbg=3 ctermfg=1   "黄
+highlight HI_WORD_3 ctermbg=5 ctermfg=7   "紫
+highlight HI_WORD_4 ctermbg=4 ctermfg=7   "蓝
+highlight HI_WORD_5 ctermbg=6 ctermfg=7   "青
+
+let g:HI_WORD_Index = 0
+let g:HI_WORD_Count = 6
+let g:HI_WORD_Map = {}
+
+function! Highlight_Word()
+    let word = expand('<cword>')
+    let g:HI_WORD_Map[word] = g:HI_WORD_Index
+    let g:HI_WORD_Map[word] = matchadd('HI_WORD_'.(g:HI_WORD_Index), '\<'.word.'\>')
+    let g:HI_WORD_Index = (g:HI_WORD_Index + 1) % g:HI_WORD_Count
+endfunction
+
+function! Highlight_Word_Clear_One()
+    let word = expand('<cword>')
+    if has_key(g:HI_WORD_Map, word)
+        call matchdelete(g:HI_WORD_Map[word])
+        call remove(g:HI_WORD_Map, word)
+    endif
+endfunction
+
+function! Highlight_Word_Clear()
+    call clearmatches()
+    let g:HI_WORD_Map = {}
+endfunction
+"}}}
+
+"Tab增强功能 Tabplus.vim {{{
+"2014.7.9 打开关闭的窗口
+"2014.8.9 优化代码，增加命令
+"2014.8.20 增加Tabclose
+"@author quanhengzhuang
+if exists('g:loaded_tabplus')
+    "finish
+endif
+let g:loaded_tabplus = 1
+
+map <silent> eu :Tabreopen<CR>
+map <silent> eU :Tabview<CR>
+map <silent> Q :Tabclose<CR>
+
+command! Tabview :call ClosedTabView()
+command! Tabreopen :call ClosedTabReopen()
+command! Tabclose :call Tabplus_Tabclose()
+command! TabmoveNext :exe 'tabmove '.tabpagenr()
+command! TabmovePrevious :exe 'tabmove '.(tabpagenr() - 2)
+
+autocmd bufwinleave * call ClosedTabAdd()
+
+let g:ClosedTabList = []
+
+function! ClosedTabAdd()
+    let g:ClosedTabList = add(g:ClosedTabList, expand('<afile>'))
+endfunction
+
+function! ClosedTabReopen()
+    if len(g:ClosedTabList) != 0
+        exec "tabnew ".remove(g:ClosedTabList, -1)
+    else
+        echohl WarningMsg | echo "没有已关闭的标签" | echohl None
+    endif
+endfunction
+
+function! ClosedTabView()
+    if len(g:ClosedTabList) == 0
+        echohl WarningMsg | echo "没有已关闭的标签" | echohl None
+        return
+    endif
+    let i = 1
+    for file in g:ClosedTabList
+        echohl Title | echo '['.i.'] '.file | echohl None
+        let i = i + 1
+    endfor
+endfunction
+
+function! ClosedTabDelete()
+    if len(g:ClosedTabList) != 0
+        call remove(g:ClosedTabList, -1)
+    endif
+endfunction
+
+"可关闭最后一个窗口
+function! Tabplus_Tabclose()
+    if tabpagenr('$') > 1
+        tabclose
+    else
+        qall
+    endif
+endfunction
+"}}}
+
+"PHP语法检查插件 PHPCheck.vim {{{
+"2014.7.9 PHP保存时自动检查
+"2014.8.8 加-n, *.php, 去掉判断, 快捷键
+"@author quanhengzhuang
+if exists('g:loaded_phpcheck')
+    "finish
+endif
+let g:loaded_phpcheck = 1
+
+autocmd BufWritePost *.php call PHPSyntaxCheck()
+
+if !exists('g:PHP_SYNTAX_CHECK_BIN')
+    let g:PHP_SYNTAX_CHECK_BIN = 'php'
+endif
+
+function! PHPSyntaxCheck()
+    let result = system(g:PHP_SYNTAX_CHECK_BIN.' -l -n '.expand('%'))
+    if (stridx(result, 'No syntax errors detected') == -1)
+        echohl WarningMsg | echo result | echohl None
+    endif
+endfunction
+"}}}
+
+"命令书签 CommandMark.vim {{{
+"2014.8.14
+"@author quanhengzhuang
+map eo :CommandMarkShow<CR>
+
+command! -nargs=0 CommandMarkShow call s:CommandMark_Show(<f-args>)
+
+function! s:CommandMark_Show()
+    tabnew
+    silent! execute 'file Command_Mark'
+    0,$ delete
+
+    put = 'UpdateVimrc'
+    put = 'ConqueTerm mysql -htest03.firstp2plocal.com -utester -ptester123 firstp2p_test'
+    put = 'ConqueTerm mysql -hyutao.firstp2plocal.com -utester -ptester123 firstp2p_test'
+    put = 'ConqueTerm mysql -uroot firstp2p_test'
+    put = 'ConqueTerm bash'
+    put = 'FileFinderShow php'
+
+    1,1 delete
+    setlocal nobuflisted
+    setlocal buftype=nofile
+    setlocal noswapfile
+    setlocal nomodifiable
+    setlocal cursorline
+    setlocal statusline=\ <%L>\ Commands
+
+    map <buffer> <CR> :execute getline('.')<CR>
+    map <buffer> R :execute getline('.')<CR>
+    map <buffer> q :quit<CR>
+endfunction
+"}}}
+
+"搜索Tags SearchTags.vim {{{
+"2014.8.10 搜索，新窗口打开
+"参考:
+"http://andrewradev.com/2011/06/08/vim-and-ctags/
+"http://www.vim.org/scripts/script.php?script_id=3771
+"差异点：同时搜索函数、类、常量等, pattern优化, 生成tags命令
+"差异点：判断是行号还是pattern, 新tab打开
+"2014.8.11 增加单词高亮, 智能识别cmd
+"2014.8.12 增加zz，将搜索结果置中
+"@author quanhengzhuang
+if exists('g:loaded_search_tags')
+    "finish
+endif
+let g:loaded_search_tags = 1
+
+"快捷键ee搜索当前单词
+map ee :call FindInTaglistHere()<CR>
+map E :call FindInTaglistInsightHere()<CR>
+
+"搜索命令、生成tags命令
+command! -nargs=1 F call s:FindInTaglist(<f-args>)
+command! -nargs=? Fmake call s:TaglistMake(<f-args>)
+
+"匹配关键词的高亮设置
+highlight SEARCH_TAGS_NAME ctermbg=5 ctermfg=0
+
+let g:TagInsight_PreviewWindow = 0
+
+function! FindInTaglistHere()
+    call s:FindInTaglist(expand('<cword>'))
+endfunction
+
+function! FindInTaglistInsightHere()
+    call s:FindInTaglistInsight(expand('<cword>'))
+endfunction
+
+function! s:TaglistMake(...)
+    let cmd = 'ctags -R'
+    if (a:0 == 1)
+        let cmd = cmd.' --languages='.a:1
+    endif
+    echohl WarningMsg | echo '正在生成tags... ('.cmd.')' | echohl None
+    call system(cmd)
+    echohl WarningMsg | echo '生成完成. ('.cmd.')' | echohl None
+endfunction
+
+function! s:FindInTaglist(name)
+    if (empty(tagfiles()))
+        echohl WarningMsg | echo '没有找到tags文件, 请确认pwd下有tags文件' | echohl None
+        return
+    endif
+
+    let tags = taglist('^'.a:name.'$')
+    let tags = filter(tags, 'v:val["kind"] != "v"')
+
+    if (empty(tags))
+        echohl WarningMsg | echo '没有找到相关的定义' | echohl None
+        return
+    endif
+
+    "设置quickfix
+    let quickfix = []
+    for i in tags
+        if (str2nr(i.cmd) > 0 && strlen(i.cmd) == strlen(str2nr(i.cmd)))
+            call add(quickfix, {'lnum' : i.cmd, 'filename' : i.filename, 'text' : i.kind})
+        else
+            let pattern = strpart(i.cmd, 2, strlen(i.cmd) - 4)
+            let pattern = escape(pattern, '*[]')
+            call add(quickfix, {'pattern' : pattern, 'filename' : i.filename, 'text' : i.kind})
+        endif
+    endfor
+    call setqflist(quickfix)
+
+    tabnew
+    "tabdo cclose
+    if len(quickfix) > 1
+        copen
+        if len(quickfix) < 5
+            :resize 5
+        endif
+    endif
+
+    set nowrap
+    cfirst
+    execute 'normal zz'
+    call matchadd('SEARCH_TAGS_NAME', '\<'.a:name.'\>')
+endfunction
+
+function! s:FindInTaglistInsight(name)
+    if (empty(tagfiles()))
+        echohl WarningMsg | echo '没有找到tags文件, 请确认pwd下有tags文件' | echohl None
+        return
+    endif
+
+    let tags = taglist('^'.a:name.'$')
+    let tags = filter(tags, 'v:val["kind"] != "v"')
+
+    if (empty(tags))
+        echohl WarningMsg | echo '没有找到相关的定义' | echohl None
+        return
+    endif
+
+    call matchadd('SEARCH_TAGS_NAME', '\<'.a:name.'\>')
+
+    "设置quickfix
+    let quickfix = []
+    for i in tags
+        if (str2nr(i.cmd) > 0 && strlen(i.cmd) == strlen(str2nr(i.cmd)))
+            call add(quickfix, {'lnum' : i.cmd, 'filename' : i.filename, 'text' : i.kind})
+        else
+            let pattern = strpart(i.cmd, 2, strlen(i.cmd) - 4)
+            let pattern = escape(pattern, '*[]')
+            call add(quickfix, {'pattern' : pattern, 'filename' : i.filename, 'text' : i.kind})
+        endif
+    endfor
+    call setqflist(quickfix)
+
+    only
+    copen
+    set nowrap
+
+    vsplit
+    cfirst
+    let g:TagInsight_PreviewWindow = bufnr('%')
+    call matchadd('SEARCH_TAGS_NAME', '\<'.a:name.'\>')
+    execute 'normal zt'
+endfunction
+"}}}
+
+"搜索所有文件名 FileFinder.vim {{{
+"2014.8.13
+"命令
+" :FileFinderShow   显示目录下所有文件
+" :map ea :FileFinderShow<CR> 绑定一个快捷键
+"快捷键
+" Enter             当前窗口打开文件
+" t                 新窗口打开文件
+" d                 删除文件
+" q                 退出FileFinder
+" r                 刷新
+" R                 运行命令
+"配置
+" g:FileFinder_Name = 'File_Finder' 标签名称
+" g:FileFinder_RunWithLess = 1 运行命令后是否加less
+"@author quanhengzhuang
+if exists('g:loaded_filefinder')
+    "finish
+endif
+let g:loaded_filefinder = 1
+
+command! -nargs=? FileFinderShow call s:FileFinder_Show(<f-args>)
+
+autocmd BufEnter *.filefinder call FileFinder_Refresh()
+
+let g:FileFinder_Name = 'File_Finder'
+
+let g:FileFinder_RunWithLess = 1
+
+let g:FileFinder_Count = 0
+
+let b:FileFinder_Cwd = ''
+
+function! s:FileFinder_Show(...)
+    if bufname('%') != '' || byte2line(1) != -1
+        tabnew
+    endif
+
+    let g:FileFinder_Count += 1
+    silent! execute 'file '.g:FileFinder_Name.'_'.g:FileFinder_Count
+
+    let cmd = 'find ./ -type f | grep -i -v "/\." | sort'
+    if a:0 == 1
+        let cmd = cmd.' | grep '.a:1
+    endif
+
+    call s:FileFinder_Execute(cmd)
+
+    call s:FileFinder_SetLocal()
+    call s:FileFinder_SetMaps()
+endfunction
+
+function! s:FileFinder_Execute(cmd)
+    let b:FileFinder_Cwd = getcwd()
+    let current = getpos('.')
+    0,$ delete
+    execute '0 read !'.a:cmd
+    $,$ delete
+    call setpos('.', current)
+endfunction
+
+let s:FileFinder_Count = [[], 0]
+function! FileFinder_ShowSearchCount()
+    let key = [@/, b:changedtick]
+    if s:FileFinder_Count[0] !=# key
+        let s:FileFinder_Count = [key, 0]
+        let pos = getpos('.')
+        let subscount = "0"
+        try
+            redir => subscount | silent %s///gne | redir END
+        catch
+        endtry
+        call setpos('.', pos)
+        let s:FileFinder_Count[1] = str2nr(matchstr(subscount, '\d\+'))
+    endif
+    return '<'.s:FileFinder_Count[1].'> '.@/
+endfunction
+
+function! s:FileFinder_SetLocal()
+    setfiletype filefinder
+    setlocal nobuflisted
+    setlocal buftype=nofile
+    setlocal noswapfile
+    setlocal nomodifiable
+    setlocal cursorline
+
+    setlocal statusline=%{b:FileFinder_Cwd}
+    setlocal statusline+=\ <%L>\ Files
+    setlocal statusline+=\ %{FileFinder_ShowSearchCount()}
+endfunction
+
+function! s:FileFinder_SetMaps()
+    map <buffer> <CR> :execute 'edit '.simplify(b:FileFinder_Cwd.'/'.getline('.'))<CR>
+    map <buffer> t :execute 'tabnew '.simplify(b:FileFinder_Cwd.'/'.getline('.'))<CR>
+    map <buffer> q :quit<CR>
+    map <buffer> d :call FileFinder_DeleteHere()<CR>
+    map <buffer> c :call FileFinder_CopyHere()<CR>
+    map <buffer> m :call FileFinder_MoveHere()<CR>
+    map <buffer> r :call FileFinder_Refresh()<CR>
+    map <buffer> R :call FileFinder_RunHere()<CR>
+endfunction
+
+function! FileFinder_Refresh()
+    let cmd = 'find ./ -type f | grep -v "/\." | sort'
+    setlocal modifiable
+    call s:FileFinder_Execute(cmd)
+    setlocal nomodifiable
+endfunction
+
+function! FileFinder_DeleteHere()
+    let filename = simplify(b:FileFinder_Cwd.'/'.getline('.'))
+    if confirm('Delete file "'.filename.'"?', "yes\nno", 2) != 1
+        return
+    endif
+
+    if delete(filename) != 0
+        echo '删除失败'
+        return
+    endif
+
+    echo '删除成功'
+    setlocal modifiable | delete | setlocal nomodifiable
+    return
+endfunction
+
+function! FileFinder_CopyHere()
+    let filename = simplify(b:FileFinder_Cwd.'/'.getline('.'))
+    echohl Title
+    let target = input('Copy to: ', filename)
+    echohl None
+
+    let cmd = 'cp -f '.filename.' '.target
+    call system(cmd)
+    call FileFinder_Refresh()
+endfunction
+
+function! FileFinder_MoveHere()
+    let filename = simplify(b:FileFinder_Cwd.'/'.getline('.'))
+    echohl Title
+    let target = input('Move to: ', filename)
+    echohl None
+
+    let cmd = 'mv -f '.filename.' '.target
+    call system(cmd)
+    call FileFinder_Refresh()
+endfunction
+
+function! FileFinder_RunHere()
+    let filename = simplify(b:FileFinder_Cwd.'/'.getline('.'))
+    execute '!'.filename.(g:FileFinder_RunWithLess ? ' | less' : '')
+endfunction
+"}}}
+
+map ea :FileFinderShow<CR>
+
+"2014.8.19 marker折叠
+autocmd BufEnter *.vimrc,*.quanhengzhuang setlocal fdm=marker
+
+"2014.8.21 高亮显示tab和空格
+hi SpecialKey ctermbg=1 ctermfg=4
+set list
+set listchars=tab:>-,trail:.
+
+"2014.8.23 PHPFolding
+let g:DisableAutoPHPFolding = 1
+
+map eb <Esc>:EnablePHPFolds<Cr>
+map eB <Esc>:DisablePHPFolds<Cr>
+
+"高亮当前行 Sign {{{
+"2014.8.23
+highlight MARK1 ctermbg=2 ctermfg=7   "绿
+highlight MARK2 ctermbg=3 ctermfg=1   "黄
+
+sign define mark1 text=>> texthl=MARK1 linehl=MARK1
+sign define mark2 text=*  texthl=mark2 linehl=MARK2
+
+map MM :execute 'sign place 100 line='.line('.').' name=mark1 buffer='.bufnr('%')<CR>
+map Ma :execute 'sign place 100 line='.line('.').' name=mark1 buffer='.bufnr('%')<CR>
+map Mb :execute 'sign place 100 line='.line('.').' name=mark2 buffer='.bufnr('%')<CR>
+map Mc :sign unplace *<CR>
+map MC :sign unplace<CR>
+"}}}
+
+"Sudo保存 SudoWrite{{{
+"2014.9.18
+command! -nargs=0 SudoWrite call SudoWrite()
+
+function! SudoWrite()
+    let current = getpos('.')
+    execute '%!sudo tee %'
+    edit!
+    call setpos('.', current)
+endfunction
+"}}}
+
+"2014.12.18 显示匹配数
+command! -nargs=0 Count execute ':%s///gne'
+
+"2015.04.16 Json高亮
+au! BufRead,BufNewFile *.json set filetype=json
+
+"快速安装常用插件 {{{
+"2015.6.24
+command! InstallPlugins :call InstallPlugins()
+
+function! InstallPlugins()
+    !mkdir -p ~/.vim
+
+    echohl Title
+    echo 'Install AutoComplPop'
+    !wget 'http://www.vim.org/scripts/download_script.php?src_id=11894' -nv -O ~/.vim/acp.zip
+    !unzip -od ~/.vim ~/.vim/acp.zip
+
+    echo 'Install NERDTree'
+    !wget 'http://www.vim.org/scripts/download_script.php?src_id=11834' -nv -O ~/.vim/nerdtree.zip
+    !unzip -od ~/.vim ~/.vim/nerdtree.zip
+
+    echo 'Install TagList'
+    !wget 'http://www.vim.org/scripts/download_script.php?src_id=19574' -nv -O ~/.vim/taglist.zip
+    !unzip -od ~/.vim ~/.vim/taglist.zip
+
+    echo 'Install Matchit'
+    !wget 'http://www.vim.org/scripts/download_script.php?src_id=8196' -nv -O ~/.vim/matchit.zip
+    !unzip -od ~/.vim ~/.vim/matchit.zip
+    echo 'Done.'
+    echohl None
+
+    if confirm('Restart Vim now?', "yes\nno", 2) == 1
+        qall
+    endif
+endfunction
+"}}}
+
+"插件相关配置 {{{
+"NERDTree
+"2014.8.5 默认显示书签
+let NERDTreeShowBookmarks=1
+
+"Taglist
+"不同时显示多个文件的tag，只显示当前文件的
+let Tlist_Show_One_File = 1
+"在右侧窗口中显示taglist窗口
+let Tlist_Use_Right_Window = 1
+"2015.6.25 PHP的tags不显示变量
+let g:tlist_php_settings = 'php;c:class;i:interface;d:constant;f:function'
+
+"2014.8.19 vimdiff相关
+map <F2> [c
+map <F3> ]c
+"}}}

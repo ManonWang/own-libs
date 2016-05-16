@@ -1,0 +1,49 @@
+"set nocompatible
+set backspace=indent,eol,start
+
+if &term=="xterm"
+    set t_Co=8
+    set t_Sb=^[[4%dm
+    set t_Sf=^[[3%dm
+endif
+
+syntax on
+
+"set smartindent
+set autoindent
+set cindent
+set shiftwidth=4
+set tabstop=4
+set ts=4
+set expandtab
+""""""""""set expandtab
+""""""""set expandtab
+
+" set paste will disable indent
+"set paste
+
+"set showmatch
+set hlsearch
+set incsearch
+
+set showcmd
+"set list
+"set listchars=tab:>-
+
+set nu
+"set fencs=utf-8,ucs-bom,gbk,cp936,ucs-2,latin1
+"set enc=utf-8
+"set tenc=utf-8
+"map <^i> :TlistToggle<CR>
+
+colorscheme evening
+
+"autocmd FileType * set tabstop=4|set shiftwidth=4|set expandtab
+"autocmd FileType make set tabstop=4|set shiftwidth=4|set noexpandtab
+"set fileencodings=utf-8,gb2312,gbk,gb18030
+set termencoding=utf-8
+"set fileformats=unix
+"set encoding=prc
+
+set mouse-=a
+set nobackup

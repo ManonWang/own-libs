@@ -1,0 +1,88 @@
+<extend name="Base:master" />
+
+<block name="title"><title>时间段分析 -- 数据分析预警 -- 研判预警</title></block>
+<block name="header">
+    <link href="/Public/static/vendor/timepicker/css/timepicker.css" rel="stylesheet">
+</block>
+
+<block name="content">
+    <div id="breadcrumb">
+        <ol class="breadcrumb">
+            <li><a href="/analyse/supervise.html">研判预警</a></li>
+            <li><a href="/analyse/source.html">数据分析预警</a></li>
+            <li class="active">时间段分析</li>
+        </ol>    
+    </div>
+
+    <div class="inline-form">
+        <form id="query-form" class="form-inline">
+            <div class="form-group">
+                <label for="type">呈现形式</label>
+                <select name="type" class="form-control" id="type">
+                    <foreach item="text" key="value" name="types">
+                        <option value="<{$value}>" <if condition="$value eq $type">selected="selected"</if>><{$text}></option>
+                    </foreach>
+                </select>
+            </div> 
+            &nbsp;&nbsp;
+            <div class="form-group">
+                <label for="start_time">时间</label>
+                <input type="text" class="form-control" id="start_time" name="start_time" value="<{:date("Y-m-d", $startTime)}>">
+                       <label for="end_time">至</label>
+                <input type="text" class="form-control" id="end_time" name="end_time" value="<{:date("Y-m-d", $endTime)}>">
+            </div>
+            &nbsp;&nbsp;
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-md form-control" value="查询" />
+            </div>
+        </form>
+        <hr/>
+    </div>
+
+    <php>unset($levelData['level_1']);</php>
+    <p class="page-title"><{:date("Y年m月d日", $startTime)}>至<{:date("Y年m月d日", $endTime)}>安全风险问题<{$source}></p>
+    <div class="analyse_div"> 
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <foreach name="levelData" key="levelKey" item="levelItem">
+                        <th><{$levelItem['name']}></th>
+                    </foreach>
+                    <th>合计</th>
+                </tr>
+            </thead>
+            <tbody>
+            <for start="0" end="24" name="time">
+                <tr>
+                    <td><{$time}>时</td>
+                    <foreach name="levelData" key="levelKey" item="levelItem">
+                        <td>
+                            <{$data[$time][$levelItem['id']]}>
+                            <assign name="colStat[$levelKey]" value="$colStat[$levelKey] + $data[$time][$levelItem['id']]" />
+                        </td>
+                    </foreach>
+                    <td><{:array_sum($data[$time])}></td>
+                </tr>
+            </for>
+            <tr>
+                <td>合计</td>
+                <foreach name="levelData" key="levelKey" item="levelItem">
+                <td><{$colStat[$levelKey]}></td>
+                </foreach>
+                <td><{:array_sum($colStat)}></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</block>
+
+<block name="footer">
+    <script src="/Public/static/vendor/timepicker/js/timepicker.js"></script>
+    <script>
+        $(function() {
+            $('#start_time').datepicker({format: 'yyyy-mm-dd', changeMonth: true, changeYear: true});
+            $('#end_time').datepicker({format: 'yyyy-mm-dd', changeMonth: true, changeYear: true});
+        })
+    </script>
+</block>

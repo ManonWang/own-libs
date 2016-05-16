@@ -1,0 +1,82 @@
+<extend name="Base:master" />
+
+<block name="title"><title>JT28分析 -- 机车质量跟踪 -- 研判预警</title></block>
+<block name="content">
+<div id="breadcrumb">
+ <ol class="breadcrumb">
+  <li><a href="/analyse/supervise.html">研判预警</a></li>
+  <li><a href="/analyse/engine.html">机车质量跟踪</a></li>
+  <li class="active">JT28分析</li>
+ </ol>
+</div>
+
+<div class="inline-form">
+  <form id="query-form" class="form-inline">
+    <div class="form-group">
+       <label for="query_time">检修时间</label>
+       <select class="form-control" name="timeYear"> 
+        <for start="date('Y')" end="date('Y') - 30" comparison="gt" step="-1" name="index">
+        <option value="<{$index}>" <if condition="$index eq $timeYear">selected="selected"</if> ><{$index}></option>
+        </for>
+       </select>
+       年
+       <select class="form-control" name="timeMonth"> 
+        <option value="">选择月</option>
+        <for start="1" end="13" comparison="lt" name="index">
+        <option value="<{$index}>" <if condition="$index eq $timeMonth">selected="selected"</if> ><{:sprintf('%02d', $index)}></option>
+        </for>
+       </select>
+       月
+    </div>
+    <div class="form-group">
+       <input type="submit" class="btn btn-primary btn-md form-control" value="查询" />
+    </div>
+  </form>
+  <hr/>
+</div>
+
+<p class="page-title">机车质量跟踪系统-JT28分析</p>
+<table class="table table-striped table-bordered table-hover">
+  <caption class="text-center"><strong>电力机车</strong></caption>
+  <thead>
+    <tr>
+        <th>车型</th>
+        <foreach name="dicLists[$allTypes['live_own']]" item="item">
+        <th><{$item['name']}></th>
+        </foreach>
+    </tr>
+  </thead>
+  <tbody>
+    <foreach name="data[$typeData['power']['id']]" key="type" item="power">
+    <tr>
+        <td><{$type}></td>
+        <foreach name="dicLists[$allTypes['live_own']]" item="item">
+        <td><{$power[$item['id']]}></td>
+        </foreach>
+    </tr>
+    </foreach>
+  </tbody>
+</table>
+
+<table class="table table-striped table-bordered table-hover">
+  <caption class="text-center"><strong>内燃机车</strong></caption>
+  <thead>
+    <tr>
+        <th>车型</th>
+        <foreach name="dicLists[$allTypes['live_own']]" item="item">
+        <th><{$item['name']}></th>
+        </foreach>
+    </tr>
+  </thead>
+  <tbody>
+    <foreach name="data[$typeData['diesel']['id']]" key="type" item="diesel">
+    <tr>
+        <td><{$type}></td>
+        <foreach name="dicLists[$allTypes['live_own']]" item="item">
+        <td><{$diesel[$item['id']]}></td>
+        </foreach>
+    </tr>
+    </foreach>
+  </tbody>
+</table>
+</block>

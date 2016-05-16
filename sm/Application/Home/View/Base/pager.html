@@ -1,0 +1,27 @@
+<if condition="1 lt $pagedList['total_page']">
+<div class="pager-style">
+<nav>
+  <ul class="pagination">
+    <if condition="1 eq $pagedList['current_page']">  
+    <li class="disabled"><a href="javascript:void(0);" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+    <else/>
+    <li><a href="<{$pagedList['paged_url']}><{$pagedList['current_page'] - 1}>" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+    </if>
+
+    <foreach name="pagedList['show_num']" item="index">
+      <if condition="$index eq $pagedList['current_page']">
+        <li class="active"><a href="javascript:void(0);"><{$index}></a></li>
+      <else/>
+        <li><a href="<{$pagedList['paged_url']}><{$index}>"><{$index}></a></li>
+      </if>
+    </foreach>
+
+    <if condition="$pagedList['total_page'] eq $pagedList['current_page']">  
+    <li class="disabled"><a href="javascript:void(0);" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+    <else/>
+    <li><a href="<{$pagedList['paged_url']}><{$pagedList['current_page'] + 1}>" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+    </if>
+  </ul>
+</nav>
+</div>
+</if>

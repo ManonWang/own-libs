@@ -1,0 +1,82 @@
+<extend name="Base:master" />
+
+<block name="title"><title>预警信息统计 -- 数据分析预警 -- 研判预警</title></block>
+<block name="header">
+    <link href="/Public/static/vendor/timepicker/css/timepicker.css" rel="stylesheet">
+</block>
+
+<block name="content">
+    <div id="breadcrumb">
+        <ol class="breadcrumb">
+            <li><a href="/analyse/supervise.html">研判预警</a></li>
+            <li><a href="/analyse/audit.html">预警信息管理</a></li>
+            <li class="active">预警信息统计</li>
+        </ol>    
+    </div>
+<div class="inline-form">
+   <form id="query-form" class="form-inline">
+        <div class="form-group">
+              <label for="start_time">预警时间</label>
+              <input type="text" class="form-control" id="start_time" name="start_time" value="<{:date("Y-m-d", $startTime)}>">
+              <label for="end_time">至</label>
+              <input type="text" class="form-control" id="end_time" name="end_time" value="<{:date("Y-m-d", $endTime)}>">
+        </div>
+        &nbsp;&nbsp;
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary btn-md form-control" value="查询" />
+        </div>
+   </form>
+   <hr/>
+</div>
+
+    <p class="page-title"> 预警信息统计</p>
+    <div class="analyse_div"> 
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>预警类型</th>
+                    <foreach name="data" key="deptId" item="item">
+                    <th><{$dicLists[$allTypes['department']][$deptId]['name']}></th>
+                   </foreach>
+                   <th>全段</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>监督检查预警</td>
+                <foreach name="data" key="deptId" item="statData">
+                <td><{$statData[$typeData['supervise']['id']]}></td>
+                <assign name="rowStat['supervise']" value="$rowStat['supervise'] + $statData[$typeData['supervise']['id']]" />
+                </foreach>
+                <td><{$rowStat['supervise']}></td>
+            </tr>
+            <tr>
+                <td>数据分析预警</td>
+                <foreach name="data" key="deptId" item="statData">
+                <td><{$statData[$typeData['analyse']['id']]}></td>
+                <assign name="rowStat['analyse']" value="$rowStat['analyse'] + $statData[$typeData['analyse']['id']]" />
+                </foreach>
+                <td><{$rowStat['analyse']}></td>
+            </tr>
+            <tr>
+                <td>职工行为预警</td>
+                <foreach name="data" key="deptId" item="statData">
+                <td><{$statData[$typeData['staff']['id']]}></td>
+                <assign name="rowStat['staff']" value="$rowStat['staff'] + $statData[$typeData['staff']['id']]" />
+                </foreach>
+                <td><{$rowStat['staff']}></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</block>
+
+<block name="footer">
+    <script src="/Public/static/vendor/timepicker/js/timepicker.js"></script>
+    <script>
+        $(function() {
+            $('#start_time').datepicker({format: 'yyyy-mm-dd', changeMonth: true, changeYear: true});
+            $('#end_time').datepicker({format: 'yyyy-mm-dd', changeMonth: true, changeYear: true});
+        })
+    </script>
+</block>

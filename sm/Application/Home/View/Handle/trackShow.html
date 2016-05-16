@@ -1,0 +1,86 @@
+<extend name="Base:master" />
+
+<block name="title"><title>安全风险信息审核 -- 风险审核 -- 过程控制</title></block>
+<block name="header">
+    <link href="/Public/static/vendor/timepicker/css/timepicker.css" rel="stylesheet">
+</block>
+
+<block name="content">
+<div id="breadcrumb">
+ <ol class="breadcrumb">
+  <li><a href="/handle/aduit.html">过程控制</a></li>
+  <li><a href="/handle/select.html">追踪分析</a></li>
+  <li class="active">信息追踪</li>
+ </ol>
+</div>
+
+<p class="page-title">每日重点安全信息追踪分析</p>
+<form id="add-form">
+<table class="table table-bordered form-table">
+    <tr>
+        <td class="feild-title" >追踪时间</td>
+        <td>
+            <if  condition="$data['id'] gt 0">
+                <{$data['track_time']}>
+            <else/>
+                <input type="text" name="track_time" id="track_time" class="form-control" value="<{$track_time}>"/>
+            </if>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title" >追踪类别</td>
+        <td>
+            <select name="track_type" class="form-control">
+              <foreach name="dicLists[$allTypes['track_type']]" item="item">
+                <option value="<{$item['id']}>" <if condition="$item['id'] eq $data['track_type']">selected="selected"</if> ><{$item['name']}></option>
+              </foreach>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title" >追踪部门</td>
+        <td>
+            <select name="track_dept" class="form-control">
+              <foreach name="dicLists[$allTypes['department']]" item="item">
+                <option value="<{$item['id']}>" <if condition="$item['id'] eq $data['track_dept']">selected="selected"</if> ><{$item['name']}></option>
+              </foreach>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">信息内容</td>
+        <td class="td-ctr-line">
+            <textarea class="form-control" rows="3" cols="100" name="content"><{$data['content']}></textarea>
+        </td>
+    </tr>
+    <if  condition="$data['id'] gt 0">
+    <tr>
+        <td class="feild-title" >附件</td>
+        <td>
+            <input type="hidden" name="id" value="<{$data['id']}>" />
+            <if condition="$data['access_url'] neq ''">
+                <a href="<{$data['access_url']}>">点击下载附件</a>
+            </if>
+        </td>
+    </tr>
+    </if>
+</table>
+
+<div class="text-center">
+    <input type="botton" value="返回" class="btn btn-primary" onclick="history.go(-1);"/>
+    <input type="botton" value="保存" class="btn btn-primary action-btn"  action="/handle/trackSave"  jump-url="/handle/track.html"/>
+</div>
+</form>
+</block>
+
+<block name="footer">
+    <script src="/Public/static/vendor/timepicker/js/timepicker.js"></script>
+    <script type="text/javascript">
+        $(function() {
+             $('#track_time').datetimepicker({format: 'yyyy-mm-dd hh:ii', changeMonth: true, changeYear: true,});
+             $('.action-btn').click(function(){ //保存表单
+                 requestObject.submitForm($(this), $('#add-form'))
+             });
+        })
+   </script>
+</block>

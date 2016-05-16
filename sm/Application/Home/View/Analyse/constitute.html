@@ -1,0 +1,93 @@
+<extend name="Base:master" />
+
+<block name="title"><title>构成分析 -- 数据分析预警 -- 研判预警</title></block>
+<block name="header">
+    <link href="/Public/static/vendor/timepicker/css/timepicker.css" rel="stylesheet">
+</block>
+
+<block name="content">
+    <div id="breadcrumb">
+        <ol class="breadcrumb">
+            <li><a href="/analyse/supervise.html">研判预警</a></li>
+            <li><a href="/analyse/source.html">数据分析预警</a></li>
+            <li class="active">构成分析</li>
+        </ol>    
+    </div>
+
+    <div class="inline-form">
+        <form id="query-form" class="form-inline">
+            <div class="form-group">
+                <label for="type">责任单位</label>
+                <select name="resp_dept_id" class="form-control" id="resp_dept_id">
+                    <option value="">全段</option>
+                    <foreach name="dicLists[$allTypes['department']]" item="item">
+                        <option value="<{$item['id']}>" <if condition="$item['id'] == $respDeptId">selected="selected"</if>><{$item['name']}></option>
+                    </foreach>
+                </select>
+            </div> 
+            &nbsp;&nbsp;
+            <div class="form-group">
+                <label for="start_time">时间</label>
+                <input type="text" class="form-control" id="start_time" name="start_time" value="<{:date("Y-m-d", $startTime)}>">
+                <label for="end_time">至</label>
+                <input type="text" class="form-control" id="end_time" name="end_time" value="<{:date("Y-m-d", $endTime)}>">
+            </div>
+            &nbsp;&nbsp;
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-md form-control" value="查询" />
+            </div>
+        </form>
+        <hr/>
+    </div>
+
+    <p class="page-title"><{:date("Y年m月d日", $startTime)}>至<{:date("Y年m月d日", $endTime)}>安全风险问题构成分析</p>
+    <div class="analyse_div" id="analyse_div" style="height:500px;width: 100%"></div>
+</block>
+
+<block name="footer">
+    <script src="/Public/static/vendor/timepicker/js/timepicker.js"></script>
+    <script src="/Public/static/vendor/echarts/dist/echarts.min.js"></script>
+    <script>
+    $(function(){
+        $('#start_time').datepicker({format: 'yyyy-mm-dd', changeMonth: true, changeYear: true});
+        $('#end_time').datepicker({format: 'yyyy-mm-dd', changeMonth: true, changeYear: true});
+        var myChart = echarts.init(document.getElementById('analyse_div'));
+        var option = {
+            title : {
+                text: '风险问题构成分析图',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} 占比({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                top: 'bottom',
+                data: [<foreach name="data" key="key" item="item">'<{$dicLists[$allTypes['risk_item']][$key]['name']}>',</foreach>]
+            },
+            series : [
+                {
+                    name: '问题占比',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:[
+                        <foreach name="data" key="key" item="item">
+                        {value:<{$item}>, name:'<{$dicLists[$allTypes['risk_item']][$key]['name']}>'},
+                        </foreach>
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                           shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        myChart.setOption(option);
+    })
+    </script>
+</block>

@@ -1,0 +1,197 @@
+* {
+    margin:0px; 
+    padding:0px; 
+    font-family:'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif
+}
+
+#body-container {
+    width:80%;
+    margin:auto;
+    min-width:1024px;
+    width:expression_r(document.body.clientWidth < 1024 ? "1024px": "auto" );
+}
+
+#session {
+    height:40px;
+    line-height:40px;           
+    font-size:14px;
+    color:white;       
+/*    background:#3B6B9C; */
+    background:#2F5B86;
+    border-top:1px solid white;           
+}
+
+#session a {
+    color:white;
+}
+
+#session a:hover {
+    color:white; 
+    text-decoration:underline;
+}
+
+#footer {
+    margin-top:50px;
+    padding-top:10px;
+    border-top:1px solid black;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu > a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover > a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left > .dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+.nav-info a {
+    border-radius: 0px!important;
+}
+
+.nav-info .first-menu {
+    border-right:solid white;
+    background:#3B6B9C;
+    height: 48px;
+    padding-top: 2px;
+}
+
+.nav-info .first-menu > a , .nav-info .open > a {
+    color:white;
+    font-size:16px;
+    background: #3B6B9C!important;
+}
+
+.nav-info .first-menu > a:hover, .nav-info .open > a:hover {
+    color:black!important;
+}
+
+.nav-info .open .second-menu {
+    font-size:15px;
+    background:rgb(5,130,185);
+}
+
+.nav-info .open .second-menu li > a {
+    color:white!important;
+}
+
+.nav-info .open .second-menu > li > a:hover {
+    color:black!important;
+    background: rgb(5,130,185)!important;
+}
+
+.nav-info .thrid-menu {
+    font-size:14px;
+    background:rgb(0,150,190);
+}
+
+.nav-info .thrid-menu li > a:hover {
+    color:black!important;
+    background:rgb(0,150,190)!important;
+}
+
+#nav {
+    border-top:solid white;
+    background:#3B6B9C;
+}
+
+#breadcrumb ol {
+    padding-left: 3px;
+    background:none;
+}
+
+#breadcrumb ol li {
+    font-size:15px;
+}
+
+.page-title {
+    text-align:center;
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.form-table .feild-title {
+    text-align:center;
+    vertical-align: middle!important;
+}
+
+.form-table .time-select option, .form-table .time-select{
+   width:100px;
+   vertical-align: middle!important;            
+}
+
+.form-table .form-control {
+    width: auto!important;;
+}
+
+.form-table .tr-muti {
+    margin-top:5px;
+}
+
+.form-table .td-ctr-line .form-control {
+   display:inline; 
+}
+
+.margin-top-18 {
+    margin-top:18px;
+}
+
+.pager-style {
+    text-align:right;
+}
+
+#risk_tree {
+    width:1600px;
+    padding-right:20px;
+}
+
+.modal_max {
+  overflow:auto;
+  max-height:400px;
+  height : expression_r(function(el){el.style.height=el.scrollHeight > 400 ? "400px" : "auto";}(this));
+}
+
+.analyse_div {
+  width: 100%;
+  overflow: auto;
+}

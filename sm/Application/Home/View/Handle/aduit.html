@@ -1,0 +1,44 @@
+<extend name="Base:master" />
+
+<block name="title"><title>风险办审核风险信息列表 -- 过程控制</title></block>
+
+<block name="content">
+<div id="breadcrumb">
+ <ol class="breadcrumb">
+  <li><a href="/handle/aduit.html">过程控制</a></li>
+  <li class="active">风险办审核风险信息列表</li>
+ </ol>    
+</div>
+
+<p class="page-title">风险办审核风险信息列表</p>
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+        <th>序号</th>
+        <th>提报部门</th>
+        <th>提报时间</th>
+        <th>风险类别</th>
+        <th>风险等级</th>
+        <th>风险概述</th>
+        <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <foreach name="pagedList['data_list']" item="item">
+    <tr>
+        <td style="width:80px;"><{$item['id']}></td>
+        <td style="width:150px;"><{$dicLists[$allTypes['department']][$item['from_dept_id']]['name']}></td>
+        <td style="width:100px;"><{:date("Y-m-d H:i:s", $item['create_time'])}></td>
+        <td style="width:100px;"><{$dicLists[$allTypes['risk_type']][$item['risk_type']]['name']}></td>
+        <td style="width:100px;"><{$dicLists[$allTypes['risk_level']][$item['risk_level']]['name']}></td>
+        <td><{$dicLists[$allTypes['risk_item']][$item['risk_outline_id']]['name']}></td>
+        <td style="width:80px">
+            <a href="/handle/aduitShow.html?id=<{$item['id']}>">进入审核</a> 
+        </td>
+    </tr>
+    </foreach>
+  </tbody>
+</table>
+
+<include file="Base/pager" />
+</block>

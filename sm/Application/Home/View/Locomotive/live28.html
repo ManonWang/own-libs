@@ -1,0 +1,147 @@
+<extend name="Base:master" />
+
+<block name="title"><title>机统-28活项填写 -- 机车质量跟踪分析中心 -- 风险信息</title></block>
+
+<block name="header">
+    <link href="/Public/static/vendor/timepicker/css/timepicker.css" rel="stylesheet"> 
+</block>
+
+<block name="content">
+<div id="breadcrumb">
+ <ol class="breadcrumb">
+  <li><a href="/risk/add.html?menu_cat=1&menu_type=1">风险信息</a></li>
+  <li><a href="/locomotive/add.html">机车质量跟踪分析中心</a></li>
+  <li class="active">机统-28活项填写</li>
+ </ol>    
+</div>
+
+<p class="page-title">机统-28活项填写</p>
+
+<form id="add-form">
+<table class="table table-bordered form-table">
+    <tr>
+        <td class="feild-title">机车类型</td>  
+        <td> 
+            <select name="type" class="form-control" id="type"  data="value" action="/locomotive/getEngineModel">
+              <option value="0">请选择</option>
+              <foreach name="dicLists[$allTypes['locomotive_type']]" item="item">
+              <option value="<{$item['id']}>"><{$item['name']}></option>
+              </foreach>
+            </select>
+        </td>
+        <td class="feild-title">机车车型</td>  
+        <td> 
+            <select name="model" class="form-control" id="model" data="value" action="/locomotive/getEngineNumber">
+              <option value="0">请选择</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">机车号</td>  
+        <td> 
+            <select name="number" class="form-control" id="number">
+              <option value="0">请选择</option>
+            </select>
+        </td>
+        <td class="feild-title">预报时间</td>  
+        <td colspan="3"> 
+            <input type="text" class="form-control" name="report_time" id="report_time"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">修程</td>  
+        <td> 
+            <select name="repair_process" class="form-control">
+              <foreach name="dicLists[$allTypes['repair_process']]" item="item">
+              <option value="<{$item['id']}>"><{$item['name']}></option>
+              </foreach>
+            </select>
+        </td>
+        <td class="feild-title">施修班组</td>  
+        <td> 
+            <input type="text" class="form-control" name="repair_team" id="repair_team" />
+            <!--
+            <select name="repair_team" class="form-control">
+              <foreach name="dicLists[$allTypes['team']]" item="item">
+              <option value="<{$item['id']}>"><{$item['name']}></option>
+              </foreach>
+            </select>
+            -->
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">活项归属</td>  
+        <td colspan="3"> 
+            <select name="live_own" class="form-control">
+              <foreach name="dicLists[$allTypes['live_own']]" item="item">
+              <option value="<{$item['id']}>"><{$item['name']}></option>
+              </foreach>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">施修方法</td>  
+        <td colspan="3"> 
+            <textarea rows="5" cols="105" class="form-control" name="repair_method"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">活项</td>  
+        <td colspan="3"> 
+            <textarea rows="5" cols="105" class="form-control" name="live_item"></textarea>
+        </td>
+    </tr>
+</table>
+<div class="text-center">
+    <input type="botton" value="保存" class="btn btn-primary" id="save-btn" action="/locomotive/insert28" />
+</div>
+</form>
+</block>
+
+<block name="footer">
+<script src="/Public/static/vendor/timepicker/js/timepicker.js"></script>
+<script>
+    $(function(){
+        $('#report_time').datetimepicker({format: 'yyyy-mm-dd hh:ii', changeMonth: true, changeYear: true});
+
+        $('#type').change(function(){
+            $('#model option[value!=0]').remove();
+            if ($(this).val() != 0) {
+                requestObject.simpleRequest($(this), function(res){
+                    for (var idx in res.data) {
+                        $('#model').append("<option value='" + res.data[idx].model + "'>" + res.data[idx].model + "</option>")       
+                    }
+                });
+            }
+        });
+
+        $('#model').change(function(){
+            $('#number option[value!=0]').remove();
+            if ($(this).val() != 0) {
+                requestObject.simpleRequest($(this), function(res){
+                    for (var idx in res.data) {
+                        $('#number').append("<option value='" + res.data[idx].number + "'>" + res.data[idx].number + "</option>")       
+                    }
+                });
+            }
+        });
+
+        $('#save-btn').click(function(){ //保存表单
+            requestObject.submitForm($(this), $('#add-form'))
+        });
+    })
+</script>
+<!--
+
+        <td class="feild-title">机车活项</td>  
+        <td> 
+            <select name="live_type" class="form-control" id="live_type">
+              <foreach name="dicLists[$allTypes['live_type']]" item="item">
+              <option value="<{$item['id']}>"><{$item['name']}></option>
+              </foreach>
+            </select>
+        </td>
+    </tr>
+    <tr>
+-->    
+</block>

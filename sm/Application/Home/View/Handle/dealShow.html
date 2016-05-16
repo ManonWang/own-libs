@@ -1,0 +1,93 @@
+<extend name="Base:master" />
+
+<block name="title"><title>预警信息审核 -- 预警信息管理 -- 研判预警</title></block>
+<block name="header">
+    <link href="/Public/static/vendor/timepicker/css/timepicker.css" rel="stylesheet">
+    <link href="/Public/static/vendor/multiselect/multiselect.css" rel="stylesheet">
+</block>
+
+<block name="content">
+<div id="breadcrumb">
+ <ol class="breadcrumb">
+  <li><a href="/analyse/supervise.html">研判预警</a></li>
+  <li><a href="/analyse/audit.html">预警信息管理</a></li>
+  <li class="active">预警信息审核</li>
+ </ol>    
+</div>
+
+<p class="page-title">安全预警审核</p>
+<form id="add-form">
+<table class="table table-bordered form-table">
+    <tr>
+        <td class="feild-title">预警类型</td>
+        <td>
+             <{$dicLists[$allTypes['alarm_type']][$data['type']]['name']}>
+            <input type="hidden" name="type" value="<{$alarmType['supervise']['id']}>" />
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">预警时间</td>
+        <td><{$data['alarm_time']}></td>
+    </tr>
+    <tr>
+        <td class="feild-title">落实时限</td>
+        <td ><{$data['fix_time']}></td>
+    </tr>
+    <tr>
+        <td class="feild-title">预警来源</td>
+        <td >
+           <foreach name="dicLists[$allTypes['alarm_source']]" item="item">
+               <if condition="$item['id'] == $data['alarm_source']"><{$item['name']}></if>
+           </foreach>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">落实部门</td>
+        <td >
+            <foreach name="dicLists[$allTypes['department']]" item="item">
+              <if condition="in_array($item['id'], $data['fix_dept'])"><{$item['name']}>&nbsp;</if>
+            </foreach>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">预警主题</td>
+        <td ><{$data['alarm_title']}></td>
+    </tr>
+    <tr>
+        <td class="feild-title">预警内容</td>
+        <td ><{$data['alarm_content']}></td>
+    </tr>
+    <tr>
+        <td class="feild-title">整改要求</td>
+        <td ><{$data['fix_method']}></td>
+    </tr>
+    <tr>
+        <td class="feild-title">预警响应</td>
+        <td >
+            <textarea class="form-control" rows="5" cols="45" name="alarm_resp"><{$data['alarm_resp']}></textarea>
+        </td>
+    </tr>
+</table>
+
+<div class="text-center">
+    <input type="hidden" name="id" value="<{$data['id']}>" />
+    <input type="botton" value="返回" class="btn btn-primary" onclick="history.go(-1);" />
+    <input type="botton" value="添加响应" class="btn btn-primary action-btn"  action="/handle/auditResp"  jump-url="/handle/deal.html"/>
+</div>
+</form>
+</block>
+
+<block name="footer">
+<script src="/Public/static/vendor/timepicker/js/timepicker.js"></script>
+<script src="/Public/static/vendor/multiselect/multiselect.js"></script>
+<script>
+    $(function(){
+        $("#fix_dept").multiselect();
+        $('#alarm_time').datetimepicker({format: 'yyyy-mm-dd hh:ii', changeMonth: true, changeYear: true,});
+        $('#fix_time').datetimepicker({format: 'yyyy-mm-dd hh:ii', changeMonth: true, changeYear: true,});
+        $('.action-btn').click(function(){ //保存表单
+            requestObject.submitForm($(this), $('#add-form'))
+        });
+    })
+</script>
+</block>

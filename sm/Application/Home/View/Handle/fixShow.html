@@ -1,0 +1,95 @@
+<extend name="Base:master" />
+<block name="header">
+    <link href="/Public/static/vendor/typeahead/dist/jquery.typeahead.min.css" rel="stylesheet">
+    <link href="/Public/static/vendor/treeview/dist/bootstrap-treeview.min.css" rel="stylesheet">
+    <link href="/Public/static/vendor/timepicker/css/timepicker.css" rel="stylesheet">
+</block>
+
+<block name="title"><title>整改处置 -- 风险审核 -- 过程控制</title></block>
+
+<block name="content">
+<div id="breadcrumb">
+ <ol class="breadcrumb">
+  <li><a href="/handle/aduit.html">过程控制</a></li>
+  <li class="active">整改处置</li>
+ </ol>
+</div>
+
+<p class="page-title">安全风险问题明细</p>
+<form id="add-form">
+<input type="hidden" name="id" value="<{$data['id']}>" />
+<table class="table table-bordered form-table">
+    <tr>
+        <td class="feild-title" >提报时间</td>
+        <td><{:date("Y-m-d H:i:s", $data['create_time'])}></td>
+        <td class="feild-title">来源部门</td>
+        <td><{$dicLists[$allTypes['department']][$data['from_dept_id']]['name']}></td>
+    </tr>
+    <tr>
+        <td class="feild-title" >责任部门</td>
+        <td><{$dicLists[$allTypes['department']][$data['resp_dept_id']]['name']}></td>
+        <td class="feild-title">处置时限</td>
+        <td><{:date('Y-m-d H:i:s', $data['audit_time'] + 7 * 86400)}></td>
+    </tr>
+    <tr>
+        <td class="feild-title">风险概述</td>
+        <td class="td-ctr-line"><{$dicLists[$allTypes['risk_type']][$data['risk_type']]['name']}></td>
+        <td colspan="2">
+            <{$dicLists[$allTypes['risk_item']][$data['risk_outline_id']]['name']}>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">风险详述</td>
+        <td class="td-ctr-line" colspan="3"><{$data['risk_detail']}></td>
+    </tr>
+    <tr>
+        <td class="feild-title">责任人落实</td>
+        <td class="feild-title" colspan="2">
+        <table class="table table-bordered form-table">
+           <tr>
+                <td class="feild-title">工号&nbsp;</td>
+                <td>
+                    <div class="typeahead__container">
+                     <div class="typeahead__field">
+                       <span class="typeahead__query">
+                        <input type="text" class="js-typeahead form-control" style="width: 100%!important;" autocomplete="off" data-id="1"/> 
+                        <input type="hidden" name="fix_user_id" data="value" action="/staff/department"/>
+                       </span>
+                    </div>
+                </div>
+           </tr>
+        </table>
+        </td>
+        <td class="feild-title">
+            <input type="button" value="新增责任人" class="form-control btn btn-primary btn-sm"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">问题原因</td>
+        <td class="td-ctr-line" colspan="3">
+            <textarea class="form-control" rows="3" cols="100" name="risk_reason" id="risk_outline"></textarea>
+        </td>
+    </tr>
+</table>
+<div class="text-center">
+    <input type="botton" value="提交" class="btn btn-primary action-btn"  action="/handle/fixDeal"  jump-url="/handle/fix.html"/>
+</div>
+</form>
+</block>
+
+<block name="footer">
+    <script src="/Public/static/vendor/treeview/dist/bootstrap-treeview.min.js"></script>
+    <script src="/Public/static/vendor/timepicker/js/timepicker.js"></script>
+    <script type="text/javascript">
+        $(function() {
+             smUtils.satff_suggest('.js-typeahead', function (node, a, item, event) {
+                node.siblings('input[type="hidden"]').val(item.work_id)
+             });
+
+             $('.action-btn').click(function(){ //保存表单
+                 requestObject.submitForm($(this), $('#add-form'))
+             });
+
+        })
+   </script>
+</block>

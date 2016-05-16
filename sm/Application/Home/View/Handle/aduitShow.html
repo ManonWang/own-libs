@@ -1,0 +1,295 @@
+<extend name="Base:master" />
+<block name="header">
+    <link href="/Public/static/vendor/typeahead/dist/jquery.typeahead.min.css" rel="stylesheet">
+    <link href="/Public/static/vendor/treeview/dist/bootstrap-treeview.min.css" rel="stylesheet">
+    <link href="/Public/static/vendor/timepicker/css/timepicker.css" rel="stylesheet">
+</block>
+
+<block name="title"><title>安全风险信息审核 -- 风险审核 -- 过程控制</title></block>
+
+<block name="content">
+<div id="breadcrumb">
+ <ol class="breadcrumb">
+  <li><a href="/handle/aduit.html">过程控制</a></li>
+  <li class="active">安全风险信息审核</li>
+ </ol>
+</div>
+
+<p class="page-title">安全风险信息审核</p>
+<form id="add-form">
+<input type="hidden" name="menu_cat" value="<{$data['menu_cat']}>" />
+<input type="hidden" name="menu_type" value="<{$data['menu_type']}>" />
+<input type="hidden" name="id" value="<{$data['id']}>" />
+<table class="table table-bordered form-table">
+    <tr>
+        <td class="feild-title" >提报人</td>
+        <td>
+            <div class="typeahead__container">
+               <div class="typeahead__field">
+                   <span class="typeahead__query">
+                        <input type="text" class="js-typeahead form-control" style="width: 100%!important;" id="report_user_id" autocomplete="off" 
+                        value="<{$staff[$data['report_user_id']]['salary_id']}> | <{$staff[$data['report_user_id']]['name']}> | <{$staff[$data['report_user_id']]['work_id']}>"/>
+                        <input type="hidden" name="report_user_id" value="<{$data['report_user_id']}>" data="value" action="/staff/department"/>
+                    </span>
+                </div>
+            </div>
+        </td>
+        <td class="feild-title">来源部门</td>
+        <td>
+            <select name="from_dept_id" class="form-control">
+            <foreach name="dicLists[$allTypes['department']]" item="item">
+              <option value="<{$item['id']}>" <if condition="$item['id'] eq $data['from_dept_id']">selected="selected"</if> ><{$item['name']}></option>
+            </foreach>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title" >事件发生时间</td>
+        <td class="td-ctr-line">
+            <input type="text" name="event_date_time" class="form-control" id="event_date_time" value="<{$data['event_date_time']}>"/>
+        </td>
+        <td class="feild-title">列车类别</td>
+        <td>
+             <select name="train_type" class="form-control">
+             <foreach name="dicLists[$allTypes['train']]" item="item">
+               <option value="<{$item['id']}>" <if condition="$item['id'] eq $data['train_type']">selected="selected"</if>><{$item['name']}></option>
+             </foreach>
+             </select>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title" rowspan="2">事件发生地点</td>
+        <td colspan="3" class="td-ctr-line" style="border-bottom:none;">
+             <input name="event_place_type" type="radio" value="1" <if condition="1 eq $data['event_place_type']">checked="checked"</if> /> &nbsp;
+             <select name="event_place_line_1" class="form-control" id="event_place_line_1" action="/LineStop/getList" data="value">
+               <option value="0">请选择</option>
+               <foreach name="dicLists[$allTypes['line']]" item="item">
+               <option value="<{$item['id']}>" <if condition="$item['id'] eq $data['event_place_line'] and 1 eq $data['event_place_type']">selected="selected"</if> ><{$item['name']}></option>
+               </foreach>
+             </select> <label>线</label>
+             <select name="event_place_station" class="form-control" id="event_place_station">
+               <option value="0">请选择</option>
+               <if condition="1 eq $data['event_place_type']">
+                   <option value="<{$data['event_place_station']}>" selected="selected"><{$dicLists[$allTypes['station']][$data['event_place_station']]['name']}></option>
+               </if>
+             </select> <label>站/场</label>
+         </td>
+    </tr>
+    <tr>
+         <td colspan="3" class="td-ctr-line" style="border-top:none;">
+             <input name="event_place_type" type="radio" value="2" <if condition="2 eq $data['event_place_type']">checked="checked"</if> /> &nbsp;
+             <select name="event_place_line_2" class="form-control" id="event_place_line_2" action="/LineStop/getList" data="value">
+               <option value="0">请选择</option>
+               <foreach name="dicLists[$allTypes['line']]" item="item">
+               <option value="<{$item['id']}>" <if condition="$item['id'] eq $data['event_place_line'] and 2 eq $data['event_place_type']">selected="selected"</if>><{$item['name']}></option>
+               </foreach>
+             </select> <label>线</label>
+             <select name="event_place_start" class="form-control" id="event_place_start">
+               <option value="0">请选择</option>
+               <if condition="2 eq $data['event_place_type']">
+                   <option value="<{$data['event_place_start']}>" selected="selected"><{$dicLists[$allTypes['station']][$data['event_place_start']]['name']}></option>
+               </if>
+             </select> <label>站至</label>
+             <select name="event_place_end" class="form-control" id="event_place_end">
+               <option value="0">请选择</option>
+               <if condition="2 eq $data['event_place_type']">
+                   <option value="<{$data['event_place_end']}>" selected="selected"><{$dicLists[$allTypes['station']][$data['event_place_end']]['name']}></option>
+               </if>
+             </select> <label>站/场</label>
+         </td>
+    </tr>
+    <tr>
+        <td class="feild-title">天气情况</td>
+        <td class="td-ctr-line" colspan="3">
+            <php> $weather = explode(',', $data['weather_type']);</php>
+            <foreach name="dicLists[$allTypes['weather']]" item="item">
+            <input type="checkbox" name="weather_type[]" value="<{$item['id']}>" id="weather_<{$item['id']}>" <if condition="in_array($item['id'], $weather)">checked="checked"</if>/>
+            <label for="weather_<{$item['id']}>"><{$item['name']}></label> &nbsp;
+            </foreach> 
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">责任人</td>
+        <td>
+            <div class="typeahead__container">
+               <div class="typeahead__field">
+                   <span class="typeahead__query">
+                        <input type="text" class="js-typeahead form-control" style="width: 100%!important;" id="resp_user_id" autocomplete="off"
+                        value="<{$staff[$data['resp_user_id']]['salary_id']}> | <{$staff[$data['resp_user_id']]['name']}> | <{$staff[$data['resp_user_id']]['work_id']}>"/>
+                        <input type="hidden" name="resp_user_id" value="<{$data['resp_user_id']}>" data="value" action="/staff/department"/>
+                    </span>
+                </div>
+            </div>
+        </td>
+        <td class="feild-title">责任部门</td>
+        <td>
+            <select name="resp_dept_id" class="form-control">
+            <foreach name="dicLists[$allTypes['department']]" item="item">
+              <option value="<{$item['id']}>" <if condition="$data['resp_dept_id'] eq $item['id']">selected="selected"</if>  ><{$item['name']}></option>
+            </foreach>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title" rowspan="2">风险概述</td>
+        <td class="td-ctr-line" colspan="3" style="border-bottom:none;"> 
+             <input type="button" value="点击选择" class="btn btn-primary form-control" data-toggle="modal" data-target="#modalTree"/> 
+             &nbsp; &nbsp; 
+             <select name="risk_type" class="form-control" id="risk_type">
+             <foreach name="dicLists[$allTypes['risk_type']]" item="item">
+               <option value="<{$item['id']}>" <if condition="$data['risk_type'] eq $item['id']">selected="selected"</if> ><{$item['name']}></option>
+             </foreach>
+             </select>
+             &nbsp; &nbsp; 
+             <select name="risk_level" class="form-control" id="risk_level">
+               <foreach name="dicLists[$allTypes['risk_level']]" item="item">
+               <option value="<{$item['id']}>" <if condition="$data['risk_level'] eq $item['id']">selected="selected"</if> ><{$item['name']}></option>
+               </foreach>
+             </select>
+        </td>
+    </tr>  
+    <tr>
+        <td colspan="3" style="border-top:none;">
+            <textarea class="form-control" rows="3" cols="100" name="risk_outline" id="risk_outline"><{$dicLists[$allTypes['risk_item']][$data['risk_outline_id']]['name']}></textarea>
+            <input type="hidden" class="form-control" name="risk_outline_id" id="risk_outline_id" value="<{$data['risk_outline_id']}>"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">风险详述</td>
+        <td class="td-ctr-line" colspan="3"> 
+            <textarea class="form-control" rows="3" cols="100" name="risk_detail" id="risk_detail"><{$data['risk_detail']}></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">风险存储</td>
+        <td class="td-ctr-line" colspan="3"> 
+            <label for="risk_store_2"><input type="radio" name="risk_store" id="risk_store_2" value="2" <if condition="2 eq $data['risk_store']">checked="checked"</if> /> 库内 </label>&nbsp;
+            <label for="risk_store_1"><input type="radio" name="risk_store" id="risk_store_1" value="1" <if condition="1 eq $data['risk_store']">checked="checked"</if> /> 库外 </label>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">是否需要<br/>车间/科室签认</td>
+        <td class="td-ctr-line" colspan="3"> 
+            <label for="room_sign_2"><input type="radio" name="room_sign" id="room_sign_2" value="2" <if condition="2 == $data['room_sign']"> checked="checked" </if> /> 否 </label> &nbsp; 
+            <label for="room_sign_1"><input type="radio" name="room_sign" id="room_sign_1" value="1" <if condition="1 == $data['room_sign']"> checked="checked" </if> /> 是 </label>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">是否需要<br/>分管领导签认</td>
+        <td class="td-ctr-line" colspan="3"> 
+            <label for="leader_sign_2"><input type="radio" name="leader_sign" id="leader_sign_2" value="2" <if condition="2 == $data['leader_sign']"> checked="checked" </if> /> 否 </label> &nbsp; 
+            <label for="leader_sign_1"><input type="radio" name="leader_sign" id="leader_sign_1" value="1" <if condition="1 == $data['leader_sign']"> checked="checked" </if> /> 是 </label>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">是否需要<br/>填写处置落实情况</td>
+        <td class="td-ctr-line" colspan="3"> 
+            <label for="need_fix_text_2"><input type="radio" name="need_fix_text" id="need_fix_text_2" value="2" <if condition="2 == $data['need_fix_text']"> checked="checked" </if> /> 否 </label> &nbsp; 
+            <label for="need_fix_text_1"><input type="radio" name="need_fix_text" id="need_fix_text_1" value="1" <if condition="1 == $data['need_fix_text']"> checked="checked" </if> /> 是 </label>
+        </td>
+    </tr>
+    <tr>
+        <td class="feild-title">是否进入<br/>日分析重点甄选队列</td>
+        <td class="td-ctr-line" colspan="3"> 
+            <label for="is_stress_2"><input type="radio" name="is_stress" id="is_stress_2" value="2" <if condition="2 == $data['is_stress']"> checked="checked" </if> /> 否 </label> &nbsp; 
+            <label for="is_stress_1"><input type="radio" name="is_stress" id="is_stress_1" value="1" <if condition="1 == $data['is_stress']"> checked="checked" </if> /> 是 </label>
+        </td>
+    </tr>
+</table>
+<div class="text-center">
+    <input type="botton" value="返回" class="btn btn-primary" onclick="history.go(-1);" />
+    <input type="botton" value="删除" class="btn btn-primary action-btn"      action="/handle/auditDeal?act=delete" jump-url="/handle/aduit.html"/>
+    <input type="botton" value="修改" class="btn btn-primary action-btn"      action="/handle/auditDeal?act=modify" reload="true"/>
+    <input type="botton" value="通过审核" class="btn btn-primary action-btn"  action="/handle/auditDeal?act=audit"  jump-url="/handle/aduit.html"/>
+</div>
+</form>
+
+<div class="modal fade" id="modalTree" tabindex="-1" role="dialog" aria-labelledby="modalTreeLabel" aria-hidden="true" data-backdrop="false" data-show="false">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title" id="modalTreeLabel">选择风险概述</h4>
+         </div>
+         <div class="modal-body modal_max">
+             <div id="risk_tree"></div> 
+         </div>
+      </div>
+   </div>
+</div>
+</block>
+
+<block name="footer">
+    <script src="/Public/static/vendor/treeview/dist/bootstrap-treeview.min.js"></script>
+    <script src="/Public/static/vendor/timepicker/js/timepicker.js"></script>
+    <script type="text/javascript">
+        $(function() {
+             $('#event_date_time').datetimepicker({format: 'yyyy-mm-dd hh:ii', changeMonth: true, changeYear: true,});
+
+             $('#modalTree').modal(); //模态窗口
+
+             var treeView = $('#risk_tree').treeview({ //树
+                  data: <{$treeData}>,
+                  onNodeSelected: function(event, node) {
+                      if (undefined != node.nodes) {
+                          return false;
+                      }
+                      
+                      var cats = []
+                      var tnode = node
+                      cats.push(tnode.tags.did)
+                      while ($.isPlainObject(tnode = treeView.treeview('getParent', tnode))) {
+                            cats.push(tnode.tags.did)                            
+                      }
+                    
+                      $('#risk_type option[value='+ cats.pop() +']').attr("selected", "selected")
+                      $('#risk_level option[value='+ cats.pop() +']').attr("selected", "selected")
+
+                      $('#risk_outline').text(node.text)
+                      $('#risk_outline_id').val(node.tags.did)
+
+                      $('#modalTree').modal('hide')
+                  }
+             });
+
+             smUtils.satff_suggest('#report_user_id', function (node, a, item, event) {
+                $('input[type="hidden"][name="report_user_id"]').val(item.work_id)
+                requestObject.simpleRequest($('input[name="report_user_id"]'), function(res){
+                    $('select[name="from_dept_id"]').children("option[value='" + res.data.depart_id +"']").attr("selected", "selected")
+                })
+             });
+
+             smUtils.satff_suggest('#resp_user_id', function (node, a, item, event) {
+                $('input[type="hidden"][name="resp_user_id"]').val(item.work_id)
+                requestObject.simpleRequest($('input[name="resp_user_id"]'), function(res){
+                    $('select[name="resp_dept_id"]').children("option[value='" + res.data.depart_id +"']").attr("selected", "selected")
+                })
+             });
+
+             $('#event_place_line_1').change(function(){ //发生在某站
+                 requestObject.simpleRequest($(this), function(data){
+                     $('#event_place_station option').remove()
+                     for(i in data.data) {
+                       $("<option value='" + data.data[i].station_id + "'>" + data.data[i].station_name + "</option>").appendTo('#event_place_station');
+                     }
+                 })
+             })
+
+             $('#event_place_line_2').change(function(){ //发生在某区间
+                 requestObject.simpleRequest($(this), function(data){
+                     $('#event_place_start option').remove()
+                     $('#event_place_end option').remove()
+                     for(i in data.data) {
+                       $("<option value='" + data.data[i].station_id + "'>" + data.data[i].station_name + "</option>").appendTo('#event_place_start');
+                       $("<option value='" + data.data[i].station_id + "'>" + data.data[i].station_name + "</option>").appendTo('#event_place_end');
+                     }
+                 })
+             })
+
+             $('.action-btn').click(function(){ //保存表单
+                 requestObject.submitForm($(this), $('#add-form'))
+             });
+
+        })
+   </script>
+</block>    
