@@ -15,43 +15,50 @@
 </div>
 
 <div class="inline-form">
-  <form id="query-form" class="form-inline">
-    <div class="form-group">
-        <label>机车类型</label>
-       <select name="type" class="form-control" id="type"  data="value" action="/locomotive/getEngineModel">
-         <option value="0">请选择</option>
-         <foreach name="dicLists[$allTypes['locomotive_type']]" item="item">
-         <option value="<{$item['id']}>" <if condition="$item['id'] eq $type">selected="selected"</if> ><{$item['name']}></option>
-         </foreach>
-       </select>
-    </div>
-    &nbsp;&nbsp;
-    <div class="form-group"> 
-        <label>机车车型</label>
-        <select name="model" class="form-control" id="model" data="value" action="/locomotive/getEngineNumber">
-          <option value="0">请选择</option>
-        </select>
-    </div>
-    &nbsp;&nbsp;
-    <div class="form-group"> 
-        <label>机车号</label>
-        <select name="number" class="form-control" id="number">
-          <option value="0">请选择</option>
-        </select>
-    </div>
-    &nbsp;&nbsp;
-    <div class="form-group">
-        <label for="start_time">时间</label>
-        <input type="text" class="form-control" id="start_time" name="start_time" value="<{$start_time}>">
-        <label for="end_time">至</label>
-        <input type="text" class="form-control" id="end_time" name="end_time" value="<{$end_time}>">
-    </div>
-    &nbsp;&nbsp;
-    <div class="form-group">
-       <input type="submit" class="btn btn-primary btn-md form-control" value="查询" />
-    </div>
-  </form>
-  <hr/>
+<form id="query-form">
+<table class="table table-bordered form-table">
+    <tr>
+        <td class="feild-title">机车类型</td>
+        <td>
+          <select name="type" class="form-control" id="type"  data="value" action="/locomotive/getEngineModel">
+             <option value="0">请选择</option>
+             <foreach name="dicLists[$allTypes['locomotive_type']]" item="item">
+             <option value="<{$item['id']}>" <if condition="$item['id'] eq $type">selected="selected"</if> ><{$item['name']}></option>
+             </foreach>
+           </select>
+         </td>
+        <td class="feild-title">机车车型</td>
+        <td>
+            <select name="model" class="form-control" id="model" data="value" action="/locomotive/getEngineNumber">
+              <option value="0">请选择</option>
+            </select>
+        </td>
+        <td class="feild-title">机车号</td>
+        <td>
+            <select name="number" class="form-control" id="number">
+              <option value="0">请选择</option>
+            </select>
+        </td>
+   </tr>
+   <tr>
+        <td class="feild-title">开始时间</td>
+        <td>
+            <input type="text" class="form-control" id="start_time" name="start_time" value="<{$start_time}>">
+        </td>
+        <td class="feild-title">结束时间</td>
+        <td>
+           <input type="text" class="form-control" id="end_time" name="end_time" value="<{$end_time}>">
+        </td>
+        <td class="feild-title">关键字</td>
+        <td>
+            <input type="text" name="keywords" class="form-control" value="<{$keywords}>"/>
+        </td>
+   </tr>
+</table>
+<div class="text-left">
+  <input type="submit" class="btn btn-primary form-control" value=" 查询 " style="width:120px"/>
+</div>
+</form>
 </div>
 
 <p class="page-title">机车质量跟踪系统-综合查询</p>

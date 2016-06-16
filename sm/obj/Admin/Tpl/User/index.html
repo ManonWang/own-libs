@@ -1,0 +1,59 @@
+<include file="Public:pagerForm" />
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__URL__" method="post">
+	<div class="searchBar">
+		<ul class="searchContent">
+			<!-- <li>
+				<label>用户名：</label>
+				<input type="text" name="user" value=""/>
+			</li> -->
+		</ul>
+		<div class="subBar">
+			<!-- <ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
+			</ul> -->
+		</div>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="__URL__/add" target="dialog" width="350" height="200" ><span>新增</span></a></li>
+			<li class="line">line</li>
+			<li><a class="delete" href="__URL__/foreverdelete/id/{id_article}/navTabId/__MODULE__" target="ajaxTodo" title="你确定要删除吗？" warn="请选择用户"rel="id_article"><span>删除</span></a></li>
+			<li class="line">line</li>
+			<li><a class="icon" href="__URL__/password/id/{id_article}" target="dialog" mask="true" warn="请选择用户"><span>修改密码</span></a></li>
+		</ul>
+	</div>
+
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+		<tr>
+			<th width="60">编号</th>
+			<th width="100">用户名</th>
+			<th width="100" >添加时间</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist id="vo" name="list">
+			<tr target="id_article" rel="{$vo['id']}">
+				<td>{$vo.id}</td>
+				<td>{$vo.user}</td>
+				<td>{$vo.ctime|date="Y-m-d",###}</td>
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+<div class="panelBar">
+		<div class="pages">
+			<span>共{$totalCount}条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+
+</div>
+
+

@@ -82,7 +82,7 @@
                 </tr>
             </foreach>
             <tr>
-                <td colspan="5"> <div id="charts" style="height:300px;width: 100%"></div></td>
+                <td colspan="5"> <div id="charts" style="height:400px;width: 100%"></div></td>
             </tr>
         </table>
     </div>
@@ -110,6 +110,17 @@
     $(function(){
         $('#modalTree').modal(); //模态窗口
 
+        var treeView = $('#risk_tree').treeview({ //树
+            data: <{$treeData}>,
+            onNodeSelected: function(event, node) {
+              if (undefined == node.nodes) {
+                 $('#risk_outline_id').val(node.tags.did)
+                 $('#risk_item').val(node.text);
+                 $('#modalTree').modal('hide')
+              }
+           }
+        });
+
         $('#risk_item').blur(function(){ //情况值
             if ($(this).val() == "") {
                 $('#risk_outline_id').val("");
@@ -130,6 +141,8 @@
                 }
             },
             legend: {
+                orient: 'vertical',
+                right: 'right',
                 data:[
                        <foreach name="data['stage']" item="risk_outline_id">
                         '<{$dicLists[$allTypes['risk_item']][$risk_outline_id]['name']|htmlspecialchars}>',
@@ -167,7 +180,6 @@
             ]
         };
         myChart.setOption(option);
-        
     })
     </script>
 </block>

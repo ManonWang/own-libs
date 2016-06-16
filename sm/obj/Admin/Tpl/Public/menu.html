@@ -1,0 +1,64 @@
+	
+<div class="accordion" fillSpace="sideBar">
+	<div class="accordionHeader">
+		<h2><span>Folder</span>店铺管理</h2>
+	</div>
+	<div class="accordionContent">
+		<ul class="tree treeFolder">
+			<li><a href="__APP__/Public/profile" target="dialog" rel="info" mask="true" width=900 height=600>店铺信息</a></li>
+		</ul>
+	</div>
+	<php>if($_SESSION['state'] == '1'){</php>
+	<div class="accordionHeader">
+		<h2><span>Folder</span>分类管理</h2>
+	</div>
+	<div class="accordionContent">
+		<ul class="tree treeFolder">
+			<li><a href="__APP__/Category/index" target="navTab" rel="user">店铺分类</a></li>
+		</ul>
+	</div>
+	<div class="accordionHeader">
+		<h2><span>Folder</span>商品管理</h2>
+	</div>
+	<div class="accordionContent">
+		<ul class="tree treeFolder">
+				<li><a href="__APP__/Goods/index" target="navTab" rel="goods">商品列表</a></li>
+		</ul>
+	</div>
+	<div class="accordionHeader">
+		<h2><span>Folder</span>订单管理</h2>
+	</div>
+	<div class="accordionContent">
+		<ul class="tree treeFolder">
+			<li><a href="__APP__/Orders/index" target="navTab" rel="orders">订单列表</a></li>
+		</ul>
+	</div>
+	<div class="accordionHeader">
+		<h2><span>Folder</span>配送管理</h2>
+	</div>
+	<div class="accordionContent">
+		<ul class="tree treeFolder">
+			<li><a href="__APP__/Ship/index" target="dialog" rel="ship">基础运费设置</a></li>
+			<li><a href="__APP__/Area/index" target="navTab" rel="area">特殊地区运费设置</a></li>
+		</ul>
+	</div>
+	<div class="accordionHeader">
+		<h2><span>Folder</span>提现管理</h2>
+	</div>
+	<div class="accordionContent">
+		<ul class="tree treeFolder">
+			<li><a href="__APP__/Withdrawal/index" target="navTab" rel="withdrawal">提现列表</a></li>
+		</ul>
+	</div>
+	<div class="accordionHeader">
+		<h2><span>Folder</span>商品评论</h2>
+	</div>
+	<div class="accordionContent">
+		<ul class="tree treeFolder">
+			<li><a href="__APP__/Comment/index" target="navTab" rel="comment">评论列表</a></li>
+		</ul>
+	</div>
+	<php>}</php>
+</div>
+
+

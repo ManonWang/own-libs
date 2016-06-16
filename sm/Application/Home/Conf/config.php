@@ -1,7 +1,7 @@
 <?php
 
 return array(
-	'SHOW_PAGE_TRACE' => true,
+	'SHOW_PAGE_TRACE' => false,
 	'URL_CASE_INSENSITIVE' => false,
 	'URL_MODEL'  => 2,
 

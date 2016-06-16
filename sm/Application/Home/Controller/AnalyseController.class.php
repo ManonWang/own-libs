@@ -337,7 +337,7 @@ class AnalyseController extends AnalyseBaseController {
         $this->setDicData(array('live_type', 'locomotive_type', 'live_own', 'repair_process'));
 
         $model = $this->getModel($name);
-        $result = $model->queryJT($data);
+        $result = $model->queryJT($data, $name);
         $this->assign('data', $result);
 
         if ('Live6' == $name) {
@@ -373,4 +373,82 @@ class AnalyseController extends AnalyseBaseController {
 
         $this->display();
     }
+
+    public function trend() {
+        $deptIds = I('resp_dept_id');
+        $this->assign('resp_dept_id', $deptIds);
+
+        $time = strtotime(date('Y-m-00'));
+        $data['start_time'] = date('Y-m-d H:i:s', strtotime('-12 month, +1 day', $time));
+        $data['end_time'] = date('Y-m-d H:i:s', $time);
+
+        $model = $this->getModel('Risk');
+        $result = $model->getTrendData($data);
+        $dicData = $this->setDeptAndRiskLevel($model);
+
+        $levelData = $dicData['levelData'];
+        $needLevel = array($levelData['level_2']['id'], $levelData['level_3']['id'], $levelData['level_4']['id']);
+
+        $allResult  = array();
+        $deptResult = array();
+        foreach ($result as $item) {
+            $month = $item['event_time_month'];
+            $dept  = $item['resp_dept_id'];
+
+            $allResult[$month]['all_level'] ++;
+            if (in_array($item['risk_level'], $needLevel)) {
+                $allResult[$month]['need_level'] ++ ;
+            }
+
+            if (!empty($deptIds) && in_array($dept, $deptIds)) {
+                $deptResult[$dept][$month]['all_level'] ++;
+                if (in_array($item['risk_level'], $needLevel)) {
+                    $deptResult[$dept][$month]['need_level'] ++;
+                }
+            }
+        }
+
+        $this->assign('startMonth', (int) date('m', strtotime($data['start_time'])));
+        $this->assign('allResult', $allResult);
+        $this->assign('deptResult', $deptResult);
+
+        $this->display();
+    }
+
+    public function score() {
+        $data = I();
+        foreach ($data as $key => $val) {
+            $this->assign($key, $val);
+        }
+
+        $allTypes = DictionaryModel::$types;
+        $dicData = $this->setDicData(array('department', 'risk_level', 'work_type', 'position_name'));
+        $levelData = $dicData[$allTypes['risk_level']];
+
+        $scores = array();
+        $model  = $this->getModel('Risk');
+        $result = $model->getScoreData($data);
+        foreach ($result as $workId => $workData) {
+            foreach ($workData as $levelId => $levelCount) {
+                $scores[$workId] += ($this->scoreMap[$levelData[$levelId]['user_key']] * $levelCount);
+            }
+        }
+
+        $workIds = array_keys($result);
+        if (!empty($data['resp_user_id'])) {
+            $workIds[] = $data['resp_user_id'];
+        }
+
+        if (!empty($workIds)) {
+            $model = $this->getModel('Staff');
+            $data  = $model->getStaffByWorkIds(array('work_ids' => $workIds));
+            $data  = $model->hashByFeild($data, 'work_id');
+            $this->assign('staff', $data);
+        }
+
+        $this->assign('type', intval(I('timeMonth')) > 0);
+        $this->assign('score', $scores);
+        $this->display();
+    }
+
 }

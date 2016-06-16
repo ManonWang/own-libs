@@ -39,3 +39,12 @@ function get_star($risk_data, $risk_level) {
     $yellow = $sum - $red * $score_map[$red_id] - $orange * $score_map[$orange_id];
     return array('red' => $red, 'orange' => $orange, 'yellow' => $yellow);
 }
+
+function Page($count,$size){
+    $page  = new \Think\Page($count,$size);// 实例化分页类 传入总记录数和每页显示的记录数
+    $show  = $page->show();// 分页显示输出
+    $limit = $page->firstRow.','.$page->listRows;
+    $item['show']  = $show;
+    $item['limit'] = $limit;
+    return $item;
+}

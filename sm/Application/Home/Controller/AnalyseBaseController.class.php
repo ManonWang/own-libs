@@ -46,6 +46,8 @@ class AnalyseBaseController extends BaseController {
 
         $levelData = $model->hashByFeild($lists[$allTypes['risk_level']], 'user_key');
         $this->assign('levelData', $levelData);
+
+        return array('lists' => $lists, 'deptData' => $deptData, 'levelData' => $levelData);
     }
 
     public function setAnalyseSourceData($startTime, $endTime, $type) {

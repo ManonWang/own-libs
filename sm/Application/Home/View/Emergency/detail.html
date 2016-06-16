@@ -1,0 +1,26 @@
+<extend name="Base:master" />
+
+<block name="title"><title>应急管理 -- 应急管理</title></block>
+
+<block name="content">
+    <div id="breadcrumb">
+        <ol class="breadcrumb">
+            <li><a href="/Emergency/index.html">应急管理</a></li>
+            <li class="active"><a href="javascript:window.history.go(-1)"><{$vo.p_name}></a> </li>
+            <li class="active"><{$vo.title}></li>
+        </ol>
+    </div>
+
+    <p class="page-title"><{$vo.title}></p>
+    <div class="text-center"><{$vo.content}></div>
+</block>
+
+<block name="footer">
+    <script type="text/javascript">
+        $(function() {
+            $('a.fix_status').click(function(){
+                requestObject.simpleRequest($(this));
+            });
+        });
+    </script>
+</block>

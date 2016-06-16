@@ -1,0 +1,244 @@
+<extend name="Base:master" />
+
+
+<block name="title"><title>基础管理 -- 典型事故</title></block>
+
+<block name="content">
+    <div id="breadcrumb">
+        <ol class="breadcrumb">
+            <li><a href="/analyse/supervise.html">基础管理</a></li>
+            <li class="active">典型事故</li>
+        </ol>
+    </div>
+
+    <p class="page-title">全路典型事故查询</p>
+    <form name="myform" method="get" action="<{:U('BasicManage/accident')}>">
+    <table class="table table-striped table-bordered table-hover">
+        <tr>
+            <td rowspan="4">&nbsp;<p style="padding-top: 40px;">请输入查询条件</p></td>
+            <td>&nbsp;起止日期</td>
+            <td>&nbsp;<input type="datetime" value="<{$select['start_time']}>" name="start_time" id="default_datetimepicker">
+                至
+                <input type="datetime" value="<{$select['end_time']}>" name="end_time" id="default_datetimepicker1"></td>
+            <td>&nbsp;事故发生地点</td>
+            <td>&nbsp;<input type="text" name="address" value="<{$select['address']}>">站</td>
+        </tr>
+        <tr>
+            <td>&nbsp;事故责任单位</td>
+            <td>&nbsp;
+                <select name="company">
+                    <option <if condition="$select['company'] eq ''">selected="selected"</if> value="">==请选择==</option>
+                    <option <if condition="$select['company'] eq '北京铁路局'">selected="selected"</if> value="北京铁路局">北京铁路局</option>
+                    <option <if condition="$select['company'] eq '沈阳铁路局'">selected="selected"</if> value="沈阳铁路局">沈阳铁路局</option>
+                    <option <if condition="$select['company'] eq '上海铁路局'">selected="selected"</if> value="上海铁路局">上海铁路局</option>
+                    <option <if condition="$select['company'] eq '南昌铁路局'">selected="selected"</if> value="南昌铁路局">南昌铁路局</option>
+                    <option <if condition="$select['company'] eq '成都铁路局'">selected="selected"</if> value="成都铁路局">成都铁路局</option>
+                    <option <if condition="$select['company'] eq '郑州铁路局'">selected="selected"</if> value="郑州铁路局">郑州铁路局</option>
+                    <option <if condition="$select['company'] eq '武汉铁路局'">selected="selected"</if> value="武汉铁路局">武汉铁路局</option>
+                    <option <if condition="$select['company'] eq '西安铁路局'">selected="selected"</if> value="西安铁路局">西安铁路局</option>
+                    <option <if condition="$select['company'] eq '太原铁路局'">selected="selected"</if> value="太原铁路局">太原铁路局</option>
+                    <option <if condition="$select['company'] eq '济南铁路局'">selected="selected"</if> value="济南铁路局">济南铁路局</option>
+                    <option <if condition="$select['company'] eq '南宁铁路局'">selected="selected"</if> value="南宁铁路局">南宁铁路局</option>
+                    <option <if condition="$select['company'] eq '昆明铁路局'">selected="selected"</if> value="昆明铁路局">昆明铁路局</option>
+                    <option <if condition="$select['company'] eq '兰州铁路局'">selected="selected"</if> value="兰州铁路局">兰州铁路局</option>
+                    <option <if condition="$select['company'] eq '哈尔滨铁路局'">selected="selected"</if> value="哈尔滨铁路局">哈尔滨铁路局</option>
+                    <option <if condition="$select['company'] eq '呼和浩特铁路局'">selected="selected"</if> value="呼和浩特铁路局">呼和浩特铁路局</option>
+                    <option <if condition="$select['company'] eq '乌鲁木齐铁路局'">selected="selected"</if> value="乌鲁木齐铁路局">乌鲁木齐铁路局</option>
+                    <option <if condition="$select['company'] eq '广铁集团'">selected="selected"</if> value="广铁集团">广铁集团</option>
+                    <option <if condition="$select['company'] eq '青藏铁路公司'">selected="selected"</if> value="青藏铁路公司">青藏铁路公司</option>
+                    <option <if condition="$select['company'] eq '青藏铁路公司'">selected="selected"</if> value="青藏铁路公司">其他</option>
+                </select>铁路局
+                <input type="text" name="blance" value="<{$select['blance']}>">机务段
+            </td>
+            <td>&nbsp;事故类别</td>
+            <td>&nbsp;
+                <select name="type">
+                    <option <if condition="$select['type'] eq ''">selected="selected"</if> value="">==请选择==</option>
+                    <option <if condition="$select['type'] eq '特别重大事故'">selected="selected"</if> value="特别重大事故">特别重大事故</option>
+                    <option <if condition="$select['type'] eq '重大事故'">selected="selected"</if> value="重大事故">重大事故</option>
+                    <option <if condition="$select['type'] eq '较大事故'">selected="selected"</if> value="较大事故">较大事故</option>
+                    <option <if condition="$select['type'] eq 'A1'">selected="selected"</if> value="A1">A1</option>
+                    <option <if condition="$select['type'] eq 'A2'">selected="selected"</if> value="A2">A2</option>
+                    <option <if condition="$select['type'] eq 'A3'">selected="selected"</if> value="A3">A3</option>
+                    <option <if condition="$select['type'] eq 'A4'">selected="selected"</if> value="A4">A4</option>
+                    <option <if condition="$select['type'] eq 'A4.1'">selected="selected"</if> value="A4.1">A4.1</option>
+                    <option <if condition="$select['type'] eq 'A4.2'">selected="selected"</if> value="A4.2">A4.2</option>
+                    <option <if condition="$select['type'] eq 'A4.3'">selected="selected"</if> value="A4.3">A4.3</option>
+                    <option <if condition="$select['type'] eq 'A4.4'">selected="selected"</if> value="A4.4">A4.4</option>
+                    <option <if condition="$select['type'] eq 'A4.5'">selected="selected"</if> value="A4.5">A4.5</option>
+                    <option <if condition="$select['type'] eq 'A4.6'">selected="selected"</if> value="A4.6">A4.6</option>
+                    <option <if condition="$select['type'] eq 'A4.7'">selected="selected"</if> value="A4.7">A4.7</option>
+                    <option <if condition="$select['type'] eq 'A4.8'">selected="selected"</if> value="A4.8">A4.8</option>
+                    <option <if condition="$select['type'] eq 'A4.9'">selected="selected"</if> value="A4.9">A4.9</option>
+                    <option <if condition="$select['type'] eq 'B1'">selected="selected"</if> value="B1">B1</option>
+                    <option <if condition="$select['type'] eq 'B2'">selected="selected"</if> value="B2">B2</option>
+                    <option <if condition="$select['type'] eq 'B3'">selected="selected"</if> value="B3">B3</option>
+                    <option <if condition="$select['type'] eq 'B4'">selected="selected"</if> value="B4">B4</option>
+                    <option <if condition="$select['type'] eq 'B4.1'">selected="selected"</if> value="B4.1">B4.1</option>
+                    <option <if condition="$select['type'] eq 'B4.2'">selected="selected"</if> value="B4.2">B4.2</option>
+                    <option <if condition="$select['type'] eq 'B4.3'">selected="selected"</if> value="B4.3">B4.3</option>
+                    <option <if condition="$select['type'] eq 'B4.4'">selected="selected"</if> value="B4.4">B4.4</option>
+                    <option <if condition="$select['type'] eq 'B4.5'">selected="selected"</if> value="B4.5">B4.5</option>
+                    <option <if condition="$select['type'] eq 'B4.6'">selected="selected"</if> value="B4.6">B4.6</option>
+                    <option <if condition="$select['type'] eq 'B4.7'">selected="selected"</if> value="B4.7">B4.7</option>
+                    <option <if condition="$select['type'] eq 'C1'">selected="selected"</if> value="C1">C1</option>
+                    <option <if condition="$select['type'] eq 'C2'">selected="selected"</if> value="C2">C2</option>
+                    <option <if condition="$select['type'] eq 'C3'">selected="selected"</if> value="C3">C3</option>
+                    <option <if condition="$select['type'] eq 'C4'">selected="selected"</if> value="C4">C4</option>
+                    <option <if condition="$select['type'] eq 'C5'">selected="selected"</if> value="C5">C5</option>
+                    <option <if condition="$select['type'] eq 'C6'">selected="selected"</if> value="C6">C6</option>
+                    <option <if condition="$select['type'] eq 'C7'">selected="selected"</if> value="C7">C7</option>
+                    <option <if condition="$select['type'] eq 'C8'">selected="selected"</if> value="C8">C8</option>
+                    <option <if condition="$select['type'] eq 'C9'">selected="selected"</if> value="C9">C9</option>
+                    <option <if condition="$select['type'] eq 'ClO'">selected="selected"</if> value="ClO">ClO</option>
+                    <option <if condition="$select['type'] eq 'C11'">selected="selected"</if> value="C11">C11</option>
+                    <option <if condition="$select['type'] eq 'C12'">selected="selected"</if> value="C12">C12</option>
+                    <option <if condition="$select['type'] eq 'C13'">selected="selected"</if> value="C13">C13</option>
+                    <option <if condition="$select['type'] eq 'C14'">selected="selected"</if> value="C14">C14</option>
+                    <option <if condition="$select['type'] eq 'C15'">selected="selected"</if> value="C15">C15</option>
+                    <option <if condition="$select['type'] eq 'C16'">selected="selected"</if> value="C16">C16</option>
+                    <option <if condition="$select['type'] eq 'C17'">selected="selected"</if> value="C17">C17</option>
+                    <option <if condition="$select['type'] eq 'C18'">selected="selected"</if> value="C18">C18</option>
+                    <option <if condition="$select['type'] eq 'C19'">selected="selected"</if> value="C19">C19</option>
+                    <option <if condition="$select['type'] eq 'C20'">selected="selected"</if> value="C20">C20</option>
+                    <option <if condition="$select['type'] eq 'C21'">selected="selected"</if> value="C21">C21</option>
+                    <option <if condition="$select['type'] eq 'C22'">selected="selected"</if> value="C22">C22</option>
+                    <option <if condition="$select['type'] eq 'C23'">selected="selected"</if> value="C23">C23</option>
+                    <option <if condition="$select['type'] eq 'C24'">selected="selected"</if> value="C24">C24</option>
+                    <option <if condition="$select['type'] eq 'C25'">selected="selected"</if> value="C25">C25</option>
+                    <option <if condition="$select['type'] eq 'D1'">selected="selected"</if> value="D1">D1</option>
+                    <option <if condition="$select['type'] eq 'D2'">selected="selected"</if> value="D2">D2</option>
+                    <option <if condition="$select['type'] eq 'D3'">selected="selected"</if> value="D3">D3</option>
+                    <option <if condition="$select['type'] eq 'D4'">selected="selected"</if> value="D4">D4</option>
+                    <option <if condition="$select['type'] eq 'D5'">selected="selected"</if> value="D5">D5</option>
+                    <option <if condition="$select['type'] eq 'D6'">selected="selected"</if> value="D6">D6</option>
+                    <option <if condition="$select['type'] eq 'D7'">selected="selected"</if> value="D7">D7</option>
+                    <option <if condition="$select['type'] eq 'D8'">selected="selected"</if> value="D8">D8</option>
+                    <option <if condition="$select['type'] eq 'D9'">selected="selected"</if> value="D9">D9</option>
+                    <option <if condition="$select['type'] eq 'D10'">selected="selected"</if> value="D10">D10</option>
+                    <option <if condition="$select['type'] eq 'D11'">selected="selected"</if> value="D11">D11</option>
+                    <option <if condition="$select['type'] eq 'D12'">selected="selected"</if> value="D12">D12</option>
+                    <option <if condition="$select['type'] eq 'D13'">selected="selected"</if> value="D13">D13</option>
+                    <option <if condition="$select['type'] eq 'D14'">selected="selected"</if> value="D14">D14</option>
+                    <option <if condition="$select['type'] eq 'D15'">selected="selected"</if> value="D15">D15</option>
+                    <option <if condition="$select['type'] eq 'D16'">selected="selected"</if> value="D16">D16</option>
+                    <option <if condition="$select['type'] eq 'D17'">selected="selected"</if> value="D17">D17</option>
+                    <option <if condition="$select['type'] eq 'D18'">selected="selected"</if> value="D18">D18</option>
+                    <option <if condition="$select['type'] eq 'D19'">selected="selected"</if> value="D19">D19</option>
+                    <option <if condition="$select['type'] eq 'D20'">selected="selected"</if> value="D20">D20</option>
+                    <option <if condition="$select['type'] eq 'D21'">selected="selected"</if> value="D21">D21</option>
+                    <option <if condition="$select['type'] eq '其他事故'">selected="selected"</if> value="其他事故">其他事故</option>
+                    <option <if condition="$select['type'] eq '未知'">selected="selected"</if> value="未知">未知</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;列车分类</td>
+            <td>&nbsp;
+                <select name="cartype">
+                    <option <if condition="$select['cartype'] eq ''">selected="selected"</if> value="">==请选择==</option>
+                    <option <if condition="$select['cartype'] eq '货车'">selected="selected"</if> value="货车">货车</option>
+                    <option <if condition="$select['cartype'] eq '客车'">selected="selected"</if> value="客车">客车</option>
+                    <option <if condition="$select['cartype'] eq '动车'">selected="selected"</if> value="动车">动车</option>
+                    <option <if condition="$select['cartype'] eq '行包车'">selected="selected"</if> value="行包车">行包车</option>
+                    <option <if condition="$select['cartype'] eq '出租车'">selected="selected"</if> value="出租车">出租车</option>
+                    <option <if condition="$select['cartype'] eq '调车'">selected="selected"</if> value="调车">调车</option>
+                    <option <if condition="$select['cartype'] eq '单机'">selected="selected"</if> value="单机">单机</option>
+                    <option <if condition="$select['cartype'] eq '其他'">selected="selected"</if> value="其他">其他</option>
+                </select>
+            </td>
+            <td>&nbsp;天气情况</td>
+            <td>&nbsp;
+                <select name="weather">
+                    <option <if condition="$select['weather'] eq ''">selected="selected"</if> value="">==请选择==</option>
+                    <option <if condition="$select['weather'] eq '晴'">selected="selected"</if> value="晴">晴</option>
+                    <option <if condition="$select['weather'] eq '风'">selected="selected"</if> value="风">风</option>
+                    <option <if condition="$select['weather'] eq '大风'">selected="selected"</if> value="大风">大风</option>
+                    <option <if condition="$select['weather'] eq '雨'">selected="selected"</if> value="雨">雨</option>
+                    <option <if condition="$select['weather'] eq '大雨'">selected="selected"</if> value="大雨">大雨</option>
+                    <option <if condition="$select['weather'] eq '霜'">selected="selected"</if> value="霜">霜</option>
+                    <option <if condition="$select['weather'] eq '雪'">selected="selected"</if> value="雪">雪</option>
+                    <option <if condition="$select['weather'] eq '大雪'">selected="selected"</if> value="大雪">大雪</option>
+                    <option <if condition="$select['weather'] eq '雾'">selected="selected"</if> value="雾">雾</option>
+                    <option <if condition="$select['weather'] eq '霾'">selected="selected"</if> value="霾">霾</option>
+                    <option <if condition="$select['weather'] eq '沙尘'">selected="selected"</if> value="沙尘">沙尘</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;事故原因</td>
+            <td>&nbsp;
+                <input type="text" value="<{$select['reason']}>" name="reason">
+            </td>
+            <td>&nbsp;</td>
+            <td>&nbsp;<input type="submit" value="查询" class="btn btn-primary btn-xs"></td>
+        </tr>
+    </table>
+    </form>
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>时间</th>
+            <th>责任单位</th>
+            <th>地点</th>
+            <th>类别</th>
+            <th>事故概况</th>
+        </tr>
+        </thead>
+        <tbody>
+            <if condition="empty($list)">
+                <tr>
+                    <td colspan="6" align="center">暂无数据</td>
+                </tr>
+                <else />
+                <foreach name="list" item="vo">
+                    <tr>
+                        <td><{$vo.id}></td>
+                        <td><{$vo.starttime|date='Y-m-d H:i:s',###}></td>
+                        <td><{$vo.company}></td>
+                        <td><{$vo.address}></td>
+                        <td><{$vo.type}></td>
+                        <td><{$vo.desc}></td>
+                    </tr>
+                </foreach>
+            </if>
+
+        </tbody>
+    </table>
+
+    <div class="bootstarp_fenye" style="text-align: right;"><{$page}></div>
+</block>
+
+<block name="footer">
+    <script type="text/javascript">
+        $(function() {
+            $('a.fix_status').click(function(){
+                requestObject.simpleRequest($(this));
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function(){
+            $(".bootstarp_fenye a").css('margin','0 3px');
+            $(".bootstarp_fenye span").css('margin','0 3px');
+            $(".bootstarp_fenye a,.bootstarp_fenye span").addClass("btn btn-default");
+            $(".bootstarp_fenye a,.bootstarp_fenye span").css('border-radius','0');
+            $(".bootstarp_fenye span").addClass("btn btn-info");
+        });
+    </script>
+    <link href="/Public/static/css/jquery.datetimepicker.css" rel="stylesheet">
+    <script src="/Public/static/js/jquery.datetimepicker.full.js"></script>
+    <script type="text/javascript">
+        $('#default_datetimepicker').datetimepicker({
+            format:'Y-m-d',
+            defaultTime:'10:00',
+            timepickerScrollbar:false
+        });
+        $('#default_datetimepicker1').datetimepicker({
+            format:'Y-m-d',
+            defaultTime:'10:00',
+            timepickerScrollbar:false
+        });
+    </script>
+</block>

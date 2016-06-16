@@ -19,12 +19,14 @@
             <div class="col-md-4 text-right"> 
                 <span>登陆部门:风险办</span> &nbsp;
                 <a href="/">修改密码</a> &nbsp;
-                <a href="/">退出系统</a>
+                <a href="/user/logout.html">退出系统</a>
             </div>
         </div>
 
         <!--carousel-->
         <div id="carousel" class="carousel slide" data-ride="carousel">
+           <img src="/Public/static/img/c0.png" style="width:100%;height:220px">
+        <!--
           <ol class="carousel-indicators">
               <li data-target="#carousel" data-slide-to="0" class="active"></li>
               <li data-target="#carousel" data-slide-to="1"></li>
@@ -39,14 +41,19 @@
           </div>
           <a class="carousel-control left"  href="#carousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
           <a class="carousel-control right" href="#carousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+          -->
         </div> 
 
         <!--nav-->
         <div id="nav"> 
           <ul class="nav nav-pills nav-info">
+            <include file="BasicManage/menu" />
             <include file="Risk/menu" />
             <include file="Analyse/menu" />
             <include file="Handle/menu" />
+			<include file="Emergency/menu" />
+            <include file="Evaluation/menu" />
+            <include file="backstage/menu" />
          </ul>  
         </div>
 
@@ -56,7 +63,7 @@
         <div>
 
         <!--footer-->
-        <div id="footer" class="footer">
+        <div id="footer" class="footer" >
             <p  class="text-left"><em> Copyright ©  集宁机务段版权所有 </em></p>
             <p  class="text-left"><em> Power By 集宁机务段信息科技术支持</em></p>
         </div>

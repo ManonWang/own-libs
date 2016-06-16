@@ -1,0 +1,74 @@
+
+<script language="JavaScript">
+<!--
+function checkName(){
+	ThinkAjax.send('__URL__/checkAccount/','ajax=1&account='+$F('account'));
+}
+//-->
+</script>
+
+
+<div class="pageContent">
+	<form method="post" action="__URL__/insert/navTabId/__MODULE__?callbackType=closeCurrent" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
+		<div class="pageFormContent" layoutH="58">
+            <div class="unit">
+                <label>事故时间：</label>
+                <input type="text" name="data[starttime]" readonly="true" value="{$res.starttime|date='Y-m-d H:i:s',###}">
+            </div>
+			<div class="unit">
+				<label>事故地点：</label>
+				<input type="text"class="required"  name="data[address]" readonly="true" value="{$res.address}">
+			</div>
+            <div class="unit">
+                <label>事故责任单位：</label>
+                <input type="text"class="required"  name="data[company]"readonly="true" value="{$res.company}">
+                <label>机务段：</label>
+                <input type="text"class="required"  name="data[blance]"readonly="true" value="{$res.blance}">
+            </div>
+            <div class="unit">
+                <label>事故类别：</label>
+                <input type="text"class="required"  name="data[weather]"readonly="true" value="{$res.type}">
+            </div>
+            <div class="unit">
+                <label>列车分类：</label>
+                <input type="text"class="required"  name="data[weather]"readonly="true" value="{$res.cartype}">
+            </div>
+            <div class="unit">
+                <label>天气情况：</label>
+                <input type="text"class="required"  name="data[weather]"readonly="true" value="{$res.weather}">
+            </div>
+            <div class="unit">
+                <label>事故关键词：</label>
+                <input type="text"class="required"  name="data[world]"readonly="true" value="{$res.world}">
+            </div>
+			<div class="unit">
+				<label>事故概况：</label>
+				<textarea name="data[desc]" cols=80 rows=5 class="required" readonly="true">{$res.desc}</textarea>
+			</div>
+            <div class="unit">
+                <label>事故原因：</label>
+                <textarea name="data[reason]" cols=80 rows=5 class="required" readonly="true">{$res.reason}</textarea>
+            </div>
+            <div class="unit">
+                <label>采取措施：</label>
+                <textarea name="data[measures]" cols=80 rows=5 class="required" readonly="true">{$res.measures}</textarea>
+            </div>
+            <div class="unit">
+                <label>责任定则：</label>
+                <textarea name="data[responsibility]" cols=80 rows=5 class="required" readonly="true">{$res.responsibility}</textarea>
+            </div>
+            <div class="unit">
+                <label>吸取教训：</label>
+                <textarea name="data[lesson]" cols=80 rows=5 class="required" readonly="true">{$res.lesson}</textarea>
+            </div>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+
+
+

@@ -6,15 +6,23 @@ use Think\Controller;
 use Home\Model\DictionaryModel;
 
 class BaseController extends Controller {
-  
+
     const MODEL_NAMESPACE_PREFIX = '\\Home\\Model\\';
 
     protected $model = null;
 
     public function _initialize() {
+        $this->checkLogin();
         $this->initTime();
         $this->initMenu();
         $this->initModel();
+    }
+
+    protected function checkLogin() {
+        $userInfo = session('userInfo');
+        if (empty($userInfo)) {
+            header("Location:/user/login.html");
+        }
     }
 
     protected function initTime() {

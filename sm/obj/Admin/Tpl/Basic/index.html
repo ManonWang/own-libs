@@ -1,0 +1,81 @@
+<include file="Public:pagerForm" />
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__URL__" method="post">
+	<input type="hidden" name="pageNum" value="1" />
+	<input type="hidden" name="address" value="{$address}"/>
+	<input type="hidden" name="company" value="{$company}"/>
+	<input type="hidden" name="type" value="{$type}"/>
+	<div class="searchBar">
+		<ul class="searchContent">
+			<li>
+				<label>地点：</label>
+				<input type="text" name="address" value="{$address}"/>
+			</li>
+			<li>
+				<label>责任单位：</label>
+				<input type="text" name="company" value="{$company}"/>
+			</li>
+			<li>
+				<label>事故类别：</label>
+				<input type="text" name="type" value="{$type}"/>
+			</li>
+		</ul>
+		<div class="subBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
+			</ul>
+		</div>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="__URL__/add" target="dialog" mask="true" width=900 height=650><span>事故录入</span></a></li>
+			<li class="line">line</li>
+			<li><a class="delete" href="__URL__/foreverdelete/id/{gid}/navTabId/__MODULE__" target="ajaxTodo" title="你确定要删除吗？" warn="请选择内容"rel="gid"><span>删除</span></a></li>
+			<li class="line">line</li>
+            <li><a class="icon" href="__URL__/info/id/{gid}" target="dialog" mask="true" warn="请选择内容" width=900 height=650><span>详情</span></a></li>
+		</ul>
+	</div>
+
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+		<tr>
+			<th width="70">事故时间</th>
+			<th width="100">发生地</th>
+			<th width="100">责任单位</th>
+            <th width="100">（机务段）</th>
+			<th width="100">事故类别</th>
+			<th width="100">列车分类</th>
+			<th width="100">天气</th>
+			<th width="100">事故关键词</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist id="vo" name="list">
+			<tr target="gid" rel="{$vo['id']}">
+				<td>{$vo['starttime']|date="Y-m-d H:i:s",###}</td>
+				<td>{$vo['address']}</td>
+				<td>{$vo['company']}</td>
+				<td>{$vo['blance']}</td>
+				<td>{$vo['type']}</td>
+				<td>{$vo['cartype']}</td>
+				<td>{$vo['weather']}</td>
+                <td>{$vo['world']}</td>
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+<div class="panelBar">
+		<div class="pages">
+			<span>共{$totalCount}条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+
+</div>
+
+

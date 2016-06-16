@@ -62,8 +62,12 @@ class LiveBaseModel extends BaseModel {
         return $return;
     }
 
-    public function queryJT($data) {
+    public function queryJT($data, $type) {
         $conds = $this->getConds($data);
+        if (!empty($data['keywords'])) {
+            $column = 'Live6' == $type ? 'damage_palce' : 'live_item';
+            $conds[$column] = array('LIKE', '%' . $data['keywords'] . '%');
+        }
         return $this->getList($conds, 'id DESC');
     }
 

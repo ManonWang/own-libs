@@ -1,0 +1,46 @@
+
+<script language="JavaScript">
+<!--
+function checkName(){
+	ThinkAjax.send('__URL__/checkAccount/','ajax=1&account='+$F('account'));
+}
+//-->
+</script>
+
+
+<div class="pageContent">
+	<form method="post" action="__URL__/doadd/navTabId/__MODULE__?callbackType=closeCurrent" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
+		<div class="pageFormContent" layoutH="58">
+			<div class="unit">
+				<label>文件名：</label>
+				<input type="text"class="required"  name="data[name]">
+			</div>
+			<div class="unit">
+				<label>文件编号：</label>
+				<input type="text"class="required"  name="data[number]">
+			</div>
+			<div class="unit">
+				<label>级别：</label>
+				<select name="data[level]">
+					<option value="国家级">国家级</option>
+					<option value="总公司">总公司</option>
+					<option value="铁路局">铁路局</option>
+					<option value="机务段">机务段</option>
+				</select>
+			</div>
+			<div class="unit">
+				<label>上传文件：</label>
+				<input name="url" type="file">
+			</div>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+
+
+

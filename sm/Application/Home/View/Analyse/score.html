@@ -1,0 +1,103 @@
+<extend name="Base:master" />
+
+<block name="title"><title>干部履责评价 -- 评价体系</title></block>
+<block name="header">
+    <link href="/Public/static/vendor/typeahead/dist/jquery.typeahead.min.css" rel="stylesheet">
+    <link href="/Public/static/vendor/timepicker/css/timepicker.css" rel="stylesheet">
+</block>
+
+<block name="content">
+    <div id="breadcrumb">
+        <ol class="breadcrumb">
+            <li><a href="/evaluation/index.html">评价体系</a></li>
+            <li class="active">干部履责评价</li>
+        </ol>    
+    </div>
+
+    <form  id="query-form" class="form-inline">
+        <table class="table table-striped table-bordered table-hover form-table">
+            <tr>
+                <td class="feild-title">统计年月</td>
+                <td>
+                   <select class="form-control" name="timeYear"> 
+                     <for start="date('Y')" end="date('Y') - 30" comparison="gt" step="-1" name="index">
+                     <option value="<{$index}>" <if condition="$index eq $timeYear">selected="selected"</if> ><{$index}></option>
+                     </for>
+                   </select>
+                   <select class="form-control" name="timeMonth"> 
+                     <option value="">选择月</option>
+                     <for start="1" end="13" comparison="lt" name="index">
+                     <option value="<{$index}>" <if condition="$index eq $timeMonth">selected="selected"</if> ><{:sprintf('%02d', $index)}></option>
+                     </for>
+                   </select>
+                </td> 
+                <td class="feild-title">部门</td>
+                <td>
+                    <select name="resp_dept_id" class="form-control" id="resp_dept_id">
+                        <option value="">选择</option>
+                        <foreach name="dicLists[$allTypes['department']]" item="item">
+                            <option value="<{$item['id']}>" <if condition="$item['id'] == $resp_dept_id">selected="selected"</if>><{$item['name']}></option>
+                        </foreach>
+                    </select>
+                </td>
+                <td class="feild-title">姓名</td>
+                <td>
+                    <div class="typeahead__container">
+                      <div class="typeahead__field">
+                         <span class="typeahead__query">
+                            <input type="text" class="js-typeahead form-control" id="resp_user_id" autocomplete="off" style="width: 100%!important;"
+                             <if  condition="'' neq $staff[$resp_user_id]">value="<{$staff[$resp_user_id]['salary_id']}> | <{$staff[$resp_user_id]['name']}> | <{$staff[$resp_user_id]['work_id']}>"</if> />
+                            <input type="hidden" name="resp_user_id" value="<{$resp_user_id}>" data="value" action="/staff/department"/>
+                         </span>
+                      </div>
+                   </div>
+                </td>
+            </tr>
+         </table>
+        <div class="text-left"><input type="submit" class="btn btn-primary btn-md" value=" 查询 " style="width: 120px" /></div>
+    </form>
+    <hr/>
+
+    <p class="page-title">干部履责评价</p>
+    <div class="analyse_div" id="analyse_div">
+        <table class="table table-striped table-bordered table-hover">
+            <tr>
+                <th> 姓名 </th>
+                <th> 部门 </th>
+                <th> 工号 </th>
+                <th> 工种/职务 </th>
+                <th> 积分 </th>
+            </tr>
+            <foreach name="score" key="work_id" item="work_score">
+                <tr>
+                    <td> <{$staff[$work_id]['name']}> </td>
+                    <td> <{$dicLists[$allTypes['department']][$staff[$work_id]['depart_id']]['name']}> </td>
+                    <td> <{$staff[$work_id]['salary_id']}></td>
+                    <td>
+                        <assign name="work_type" value="$dicLists[$allTypes['work_type']][$staff[$work_id]['work_type']]['name']" />
+                        <if condition="'' neq $work_type">
+                            <{$work_type}>
+                        <else/>
+                            <{$dicLists[$allTypes['position_name']][$staff[$work_id]['position_id']]['name']}> 
+                        </if>
+                    </td>
+                    <td> <{$work_score}></td>
+                </tr>
+            </foreach>
+        </table>
+    </div>
+</block>
+
+<block name="footer">
+    <script src="/Public/static/vendor/timepicker/js/timepicker.js"></script>
+    <script>
+        $(function() {
+            $('#resp_user_id').blur(function(){
+                "" == $(this).val() && $('input[type="hidden"][name="resp_user_id"]').val("");
+            })
+            smUtils.satff_suggest('#resp_user_id', function (node, a, item, event) {
+                $('input[type="hidden"][name="resp_user_id"]').val(item.work_id)
+            });
+        })
+    </script>
+</block>

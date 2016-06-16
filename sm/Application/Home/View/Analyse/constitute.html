@@ -64,7 +64,8 @@
             legend: {
                 orient: 'vertical',
                 top: 'bottom',
-                data: [<foreach name="data" key="key" item="item">'<{$dicLists[$allTypes['risk_item']][$key]['name']}>',</foreach>]
+                left: 'left',
+                data: [<foreach name="data" key="key" item="item"><if condition="$dicLists[$allTypes['risk_item']][$key]">'<{$dicLists[$allTypes['risk_item']][$key]['name']}>'<else/>'其它'</if>,</foreach>]
             },
             series : [
                 {
@@ -74,7 +75,7 @@
                     center: ['50%', '60%'],
                     data:[
                         <foreach name="data" key="key" item="item">
-                        {value:<{$item}>, name:'<{$dicLists[$allTypes['risk_item']][$key]['name']}>'},
+                        {value:<{$item}>, name:<if condition="$dicLists[$allTypes['risk_item']][$key]">'<{$dicLists[$allTypes['risk_item']][$key]['name']}>'<else/>'其它'</if>},
                         </foreach>
                     ],
                     itemStyle: {

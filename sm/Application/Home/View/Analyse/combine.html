@@ -105,6 +105,7 @@
                 <th style="width: 80px;"> 列车类别 </th>
                 <th style="width: 80px;"> 问题等级 </th>
                 <th> 风险概述 </th>
+                <th> 风险详情 </th>
             </tr>
             <foreach name="pagedList['data_list']" item="item">
                 <tr>
@@ -121,6 +122,7 @@
                     <td> <{$dicLists[$allTypes['train']][$item['train_type']]['name']}> </td>
                     <td> <{$dicLists[$allTypes['risk_level']][$item['risk_level']]['name']}> </td>
                     <td> <{$dicLists[$allTypes['risk_item']][$item['risk_outline_id']]['name']}> </td>
+                    <td> <{$item['risk_detail']}> </td>
                 </tr>
             </foreach>
         </table>

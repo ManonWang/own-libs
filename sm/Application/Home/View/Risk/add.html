@@ -192,14 +192,14 @@
                       if (undefined != node.nodes) {
                           return false;
                       }
-                      
+
                       var cats = []
                       var tnode = node
                       cats.push(tnode.tags.did)
                       while ($.isPlainObject(tnode = treeView.treeview('getParent', tnode))) {
-                            cats.push(tnode.tags.did)                            
+                            cats.push(tnode.tags.did)
                       }
-                    
+
                       $('#risk_type option[value='+ cats.pop() +']').attr("selected", "selected")
                       $('#risk_level option[value='+ cats.pop() +']').attr("selected", "selected")
 

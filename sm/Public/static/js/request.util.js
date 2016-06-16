@@ -41,7 +41,7 @@ requestObject.submitForm = function(target, fromObj, succCall, beforeCall, failC
                if (undefined != failCall) {
                    return failCall(data, target); 
                } else {                
-                   alert("操作失败，请稍后重试");
+                   alert(data.msg == undefined || data.msg.length <= 0 ?  '操作失败，请稍后重试!' : data.msg);
                    return false;
                }
             }

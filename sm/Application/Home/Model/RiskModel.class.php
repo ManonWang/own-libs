@@ -44,6 +44,9 @@ class RiskModel extends BaseModel {
         if (!empty($data['resp_dept_id'])) {
             $conds['resp_dept_id'] = intval($data['resp_dept_id']);
         }
+        if (!empty($data['resp_user_id'])) {
+            $conds['resp_user_id'] = intval($data['resp_user_id']);
+        }
         if (!empty($data['train_type'])) {
             $conds['train_type'] = intval($data['train_type']);
         }
@@ -77,7 +80,7 @@ class RiskModel extends BaseModel {
         } else {
             $result = $this->field("from_dept_id, risk_level, COUNT(*) as num")->group('from_dept_id, risk_level')->getList($conds, 'num DESC');
             foreach ($result as $item) {
-                $return[$item['from_dept_id']][$item['risk_level']]++;
+                $return[$item['from_dept_id']][$item['risk_level']] = $item['num'];
             }
         }
 
@@ -91,7 +94,7 @@ class RiskModel extends BaseModel {
         if (in_array($data['type'], array(1, 2))) {
             $result = $this->field("resp_dept_id, risk_level, COUNT(*) as num")->group('resp_dept_id, risk_level')->getList($conds, 'num DESC');
             foreach ($result as $item) {
-                $return[$item['resp_dept_id']][$item['risk_level']]++;
+                $return[$item['resp_dept_id']][$item['risk_level']] = $item['num'];
             }
         } elseif (3 == $data['type']) {
             if (is_array($data['department']) && count($data['department'])) {
@@ -120,7 +123,7 @@ class RiskModel extends BaseModel {
         } elseif (4 == $data['type']) {
             $result = $this->field("resp_dept_id, risk_level, COUNT(*) as num")->group('resp_dept_id, risk_level')->getList($conds, 'num DESC');
             foreach ($result as $item) {
-                $return['risk_data'][$item['resp_dept_id']][$item['risk_level']]++;
+                $return['risk_data'][$item['resp_dept_id']][$item['risk_level']] = $item['num'];
             }
 
             $staffModel = new StaffModel();
@@ -176,7 +179,7 @@ class RiskModel extends BaseModel {
 
         $result = $this->field('event_time_hour, risk_level, COUNT(*) as num')->group('event_time_hour, risk_level')->getList($conds, 'num DESC');
         foreach ($result as $item) {
-            $return[$item['event_time_hour']][$item['risk_level']]++;
+            $return[$item['event_time_hour']][$item['risk_level']] = $item['num'];
         }
 
         return $return;
@@ -188,9 +191,18 @@ class RiskModel extends BaseModel {
 
         $result = $this->field('risk_outline_id, COUNT(*) as num')->group('risk_outline_id')->getList($conds, 'num DESC');
         foreach ($result as $item) {
-            $return[$item['risk_outline_id']]++;
+            $return[$item['risk_outline_id']] = $item['num'];
         }
 
+        $count = 1;
+        foreach ($return as $riskOutlineId => $num) {
+            if ($count ++ > 9) {
+                $total += $num;
+                unset($return[$riskOutlineId]);
+            }
+        }
+
+        $return['other'] = $total;
         return $return;
     }
 
@@ -209,7 +221,7 @@ class RiskModel extends BaseModel {
         $data['end_time'] = $data[$endTimeKey];
 
         $conds = $this->getAnalyseConds($data);
-        return $this->field('risk_outline_id, COUNT(*) as num')->group('risk_outline_id')->getList($conds, 'num DESC');
+        return $this->field('risk_outline_id, COUNT(*) as num')->group('risk_outline_id')->limit(10)->getList($conds, 'num DESC');
     }
 
     public function queryList($data) {
@@ -241,6 +253,37 @@ class RiskModel extends BaseModel {
             }
         }
         return true;
+    }
+
+    public function getTrendData($data) {
+        $conds = $this->getAnalyseConds($data);
+        return $this->field('event_time_month, resp_dept_id, risk_level')->getList($conds, 'event_date_time ASC');
+    }
+
+    public function getScoreData($data) {
+        if (empty($data['timeYear'])) {
+            $data['timeYear'] = date('Y');
+        }
+
+        if (!empty($data['timeMonth'])) {
+            $datetime = strtotime($data['timeYear'] . '-' .  sprintf('%02d', $data['timeMonth']) . '-01');
+            $startTime = date('Y-m', $datetime);
+            $endTime = date('Y-m', strtotime('+1 month', $datetime));
+        } else {
+            $startTime = intval($data['timeYear']);
+            $endTime = $startTime + 1;
+        }
+
+        $data['start_time'] = (string) $startTime;
+        $data['end_time']   = (string) $endTime;
+        $conds = $this->getAnalyseConds($data);
+
+        $return = array();
+        $result = $this->field('resp_user_id, risk_level, COUNT(*) as num')->group('resp_user_id, risk_level')->getList($conds);
+        foreach ($result as $item) {
+             $return[$item['resp_user_id']][$item['risk_level']] = $item['num'];
+        }
+        return $return;
     }
 
 }

@@ -1,0 +1,42 @@
+
+<script language="JavaScript">
+<!--
+function checkName(){
+	ThinkAjax.send('__URL__/checkAccount/','ajax=1&account='+$F('account'));
+}
+//-->
+</script>
+
+
+<div class="pageContent">
+	<form method="post" action="__URL__/doadd/navTabId/__MODULE__?callbackType=closeCurrent" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return iframeCallback(this, dialogAjaxDone);">
+		<div class="pageFormContent" layoutH="58">
+			<div class="unit">
+				<label>标题：</label>
+				<input type="text"class="required"  name="title">
+			</div>
+			<div class="unit">
+				<label>分类：</label>
+				<select name="category">
+					<volist name="category_list" id="vo">
+						<option value="{$vo.id}">{$vo.name}</option>
+					</volist>
+				</select>
+			</div>
+			<div class="unit">
+				<label>内容：</label>
+				<textarea class="editor" name="content" rows="18" cols="100" upImgUrl="__URL__/editorimg" upImgExt="jpg,jpeg,gif,png">
+				</textarea>
+			</div>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+
+
+
