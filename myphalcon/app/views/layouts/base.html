@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% autoescape false %}
+        {{elements.outputCss('bootstrap')}}
+    {% endautoescape %}
+
+    {% block header %}{% endblock %}
+  </head>
+  <body>
+    <div class="container" id="container">
+       {% block content %}{% endblock %}
+    </div>
+
+    {% autoescape false %}
+        {{elements.outputJs('jquery')}}
+        {{elements.outputJs('bootstrap')}}
+        <!--[if lt IE 9]>
+          {{elements.outputJs('html5shiv')}}
+          {{elements.outputJs('respond')}}
+        <![endif]-->
+    {% endautoescape %}
+
+    {% block footer %}{% endblock %}
+  </body>
+</html>
