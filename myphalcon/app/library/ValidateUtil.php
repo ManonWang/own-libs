@@ -39,6 +39,9 @@ class ValidateUtil {
         'ERROR_MAX_COUNT'  => '最多选择%s项',
         'ERROR_DOMAIN'     => '请输入正确的域名',
         'ERROR_ID'         => '请输入正确的身份证号',
+        'ERROR_DATE'       => '请输入正确的日期',
+        'ERROR_DATTIME'    => '请输入正确的时间',
+
     );
 
     private static $checker = array(
@@ -69,6 +72,8 @@ class ValidateUtil {
         'max-count'  => 'checkMaxCount',
         'domain'     => 'checkDomain',
         'id'         => 'checkId',
+        'date'       => 'checkDate',
+        'datetime'   => 'checkDatetime',
     );
 
 
@@ -456,6 +461,38 @@ class ValidateUtil {
         $checkRes = is_string($fieldValue) ? strlen($fieldValue) > 0 : false == empty($fieldValue);
         if (!$checkRes) {
             self::addError($fieldName, self::getErrorMsg('ERROR_NOT_EMPTY', $userError));
+        }
+
+        return $checkRes;
+    }
+
+    private static function checkDate($fieldName, $ruleArgs, $userError) {
+        $fieldValue = self::getParamValue($fieldName);
+        if (is_string($fieldValue) && StringUtil::strLenth($fieldValue) == 0) {
+            return true;
+        }
+
+        $format = empty($ruleArgs[0]) ? 'Y-m-d' : $ruleArgs[0];
+        $checkRes = $fieldValue == date($format, strtotime($fieldValue));
+        if (!$checkRes) {
+            $errorMsg = sprintf(self::getErrorMsg('ERROR_DATE', $userError), $maxCount);
+            self::addError($fieldName, $errorMsg);
+        }
+
+        return $checkRes;
+    }
+
+    private static function checkDatetime($fieldName, $ruleArgs, $userError) {
+        $fieldValue = self::getParamValue($fieldName);
+        if (is_string($fieldValue) && StringUtil::strLenth($fieldValue) == 0) {
+            return true;
+        }
+
+        $format = empty($ruleArgs[0]) ? 'Y-m-d H:i:s' : $ruleArgs[0];
+        $checkRes = $fieldValue == date($format, strtotime($fieldValue));
+        if (!$checkRes) {
+            $errorMsg = sprintf(self::getErrorMsg('ERROR_DATTIME', $userError), $maxCount);
+            self::addError($fieldName, $errorMsg);
         }
 
         return $checkRes;

@@ -21,12 +21,11 @@ class ServiceConfig {
         IS_CLI_APP ? self::cliRegister() : self::cgiRegister();
     }
 
+    //命令行应用
     private static function cliRegister() {
         $di = get_app_di();
         $config = self::getConfig();
-
-        self::registDBService($di, $config);
-        $di->setShared('config', $config);
+        self::registCommonService($di, $config);
 
         $di->setShared('dispatcher', function () {
             $dispatcher = new \Phalcon\Cli\Dispatcher();
@@ -35,12 +34,11 @@ class ServiceConfig {
         });
     }
 
+    //web应用
     private static function cgiRegister() {
         $di = get_app_di();
         $config = self::getConfig();
-
-        self::registDBService($di, $config);
-        $di->setShared('config', $config);
+        self::registCommonService($di, $config);
 
         $di->setShared('router', function () {
             $router = new \Phalcon\Mvc\Router();
@@ -99,7 +97,13 @@ class ServiceConfig {
 
     }
 
-    private static function registDBService($di, $config) {
+    private static function registCommonService($di, $config) {
+        $di->setShared('config', $config);
+
+        $di->setShared('profiler', function () {
+             return new \Phalcon\Db\Profiler();
+         });
+
         $di->setShared('modelsMetadata', function() use ($di, $config) {
             if ('file' == $config->metaData->saveType) {
                 $savePath = $config->metaData->savePath;
@@ -112,10 +116,6 @@ class ServiceConfig {
                 return $metaData;
             }
         });
-
-        $di->setShared('profiler', function () {
-             return new \Phalcon\Db\Profiler();
-         });
 
         $di->setShared('db_myPhalcon_w', function () use ($di, $config) {
              $profiler = $di->getProfiler();
@@ -169,6 +169,26 @@ class ServiceConfig {
 
               $db->setEventsManager($eventsManager);
               return $db;
+        });
+
+        $di->setShared('redisCache', function () use ($di, $config) {
+             require VENDOR_PATH . '/predis/Autoloader.php';
+             \Predis\Autoloader::register();
+             $host = $config->redisCache->host;
+             $port = $config->redisCache->port;
+             return new \Predis\Client("tcp://{$host}:{$port}");
+        });
+
+        $di->setShared('curl', function () use ($di, $config) {
+            require VENDOR_PATH . '/Curl/Autoloader.php';
+            \Curl\Autoloader::register();
+            return new \Curl\Curl();
+        });
+
+        $di->setShared('image', function () use ($di, $config) {
+            require VENDOR_PATH . '/Image/Autoloader.php';
+            \Image\Autoloader::register();
+            return new \Image\Image(\Image\Image::IMAGE_IMAGICK);
         });
     }
 

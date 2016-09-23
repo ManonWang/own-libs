@@ -391,4 +391,72 @@ class BaseModel extends \Phalcon\Mvc\Model {
         return $this->getRows(array('conditions' => $conds, 'bind' => $binds), $order, $columns, $limit);
     }
 
+    /**
+     * 执行原生的查询sql
+     * @params string $sql    查询的sql
+     * @params array $params  查询的参数
+     * @params bool  $read  是否是读实例
+     * @return false or array 执行失败返回false， 成功返回数组
+     */
+    public function execSelect($sql, $params = null, $read = true) {
+        try {
+            $connect = $read ? $this->getReadConnection() : $this->getWriteConnection();
+            $result  = $connect->query($sql, $params);
+            if (false === $result) {
+                LoggerUtil::error($connect->getErrorInfo());
+                return false;
+            }
+
+            $result = new \Phalcon\Mvc\Model\Resultset\Simple(null, $this, $result);
+            return $result->toArray();
+        } catch(\Exception $e) {
+            LoggerUtil::error($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * 执行原生的插入sql
+     * @params string $sql    查询的sql
+     * @params array $params  查询的参数
+     * @return false or int 执行失败返回false, 成功返回插入的id
+     */
+    public function execInsert($sql, $params = null) {
+        try {
+            $connect = $this->getWriteConnection();
+            $result = $connect->execute($sql, $params);
+            if (false === $result) {
+                LoggerUtil::error($connect->getErrorInfo());
+                return false;
+            }
+
+            return $connect->lastInsertId();
+        } catch(\Exception $e) {
+            LoggerUtil::error($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * 执行原生的更新sql
+     * @params string $sql    查询的sql
+     * @params array $params  查询的参数
+     * @return false or int 执行失败返回false，成功返回影响行数
+     */
+    public function execUpdate($sql, $params = null) {
+        try {
+            $connect = $this->getWriteConnection();
+            $result = $connect->execute($sql, $params);
+            if (false === $result) {
+                LoggerUtil::error($connect->getErrorInfo());
+                return false;
+            }
+
+            return $connect->affectedRows();
+        } catch(\Exception $e) {
+            LoggerUtil::error($e->getMessage());
+            return false;
+        }
+    }
+
 }

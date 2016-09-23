@@ -37,6 +37,11 @@ return array(
         'savePath' => CACHE_PATH . '/metadata/',
     ),
 
+   'redisCache' => array(
+        'host' => '127.0.0.1',
+        'port' => '6379',
+    ),
+
    'mysql' => array(
         'myPhalcon_w' => array(
             'host'      => '127.0.0.1',
@@ -56,9 +61,9 @@ return array(
 
    'block' => array(
        'login_fail' => array( //登录错误次数限制
-            'type'   => 1, // 1: 严格限制  2: 非严格限制
+            'type'   => 2, // 1: 严格限制  2: 非严格限制
             'prefix' => 'login_fail_block_by_',
-            'rules'  => array('60' => '10', '300' => '40', '900' => '90'),
+            'rules'  => array('60' => '3', '300' => '10', '900' => '25'),
         ),
     ),
 

@@ -6,23 +6,28 @@ use MyPhalcon\App\Models\BaseModel;
 
 class User extends BaseModel {
 
-    public function onConstruct() {
-        //这之下是系统生成的代码，请勿修改
-        $this->zh_name = '';
-        $this->is_delete = '0';
-        $this->age = '10';
-        $this->a = date("Y-m-d H:i:s");
-        //这之上是系统生成的代码，请勿修改
+    public function getUserByEnName($data) {
+        $conds = 'en_name = :en_name:';
+        $binds = array('en_name' => $data['en_name']);
+
+        if (!empty($data['id'])) {
+            $conds .= ' AND id != :id:';
+            $binds['id'] = $data['id'];
+        }
+
+        return $this->getRow(array('conditions' => $conds, 'bind' => $binds));
     }
 
+    public function getPagedConds($data) {
+        $conds = '1 = 1';
+        $binds = array();
 
-    public function onConstructaaa() {
-        //这之下是系统生成的代码，请勿修改
-        $this->zh_name = '';
-        $this->is_delete = '0';
-        $this->age = '10';
-        $this->a = date("Y-m-d H:i:s");
-        //这之上是系统生成的代码，请勿修改
+        if (!empty($data['zh_name'])) {
+            $conds .= ' AND zh_name = :zh_name:';
+            $binds['zh_name'] = $data['zh_name'];
+        }
+
+        return array('conditions' => $conds, 'bind' => $binds);
     }
 
 }
