@@ -4,6 +4,15 @@ namespace MyPhalcon\App\Library;
 
 class HttpUtil {
 
+    public static function getUrlInfo($url, $parseParams = true) {
+        $urlInfo = parse_url($url);
+        if ($parseParams) {
+            parse_str($urlInfo['query'], $urlParams);
+            $urlInfo['params'] = $urlParams;
+        }
+        return $urlInfo;
+    }
+
     public static function redirect($url, $second = 0) {
         $content = sprintf('refresh:%s; url=%s', $second, $url);
         header($content);
