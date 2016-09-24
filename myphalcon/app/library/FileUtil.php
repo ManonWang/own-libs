@@ -11,7 +11,7 @@ class FileUtil {
      * @param $callback
      * @param $user_param 用户参数,透传
      */
-    public static function dealFileline($filename, $callback, $user_param = '') {
+    public static function dealFileLine($filename, $callback, $user_param = '') {
         $handle = fopen($filename, 'r');
         while ($handle && !feof($handle)) {
             if (!call_user_func_array($callback, array(fgets($handle), $user_param))) {
