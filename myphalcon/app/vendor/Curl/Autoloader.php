@@ -2,6 +2,10 @@
 
 namespace Curl;
 
+/**
+ *  curl类库
+ *  https://github.com/php-curl-class/php-curl-class
+ */
 class Autoloader
 {
     private $directory;

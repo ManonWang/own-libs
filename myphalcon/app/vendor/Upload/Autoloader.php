@@ -2,9 +2,10 @@
 /**
  * Upload
  *
+ * github       https://github.com/brandonsavage/Upload
+ *
  * @author      Josh Lockhart <info@joshlockhart.com>
  * @copyright   2012 Josh Lockhart
- * @link        https://github.com/brandonsavage/Upload
  * @version     2.0.0
  *
  * MIT LICENSE

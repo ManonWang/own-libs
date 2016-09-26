@@ -1,9 +1,9 @@
 <?php
 
-namespace Image;
+namespace DiDom;
 
 /**
- * 图片 压缩水印 来自thinkphp
+ * html / xml 解析 https://github.com/Imangazaliev/DiDOM
  */
 class Autoloader
 {
@@ -27,7 +27,7 @@ class Autoloader
     {
         if (0 === strpos($className, $this->prefix)) {
             $parts = explode('\\', substr($className, $this->prefixLength));
-            $filepath = $this->directory.DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $parts).'.class.php';
+            $filepath = $this->directory.DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $parts).'.php';
 
             if (is_file($filepath)) {
                 require $filepath;
