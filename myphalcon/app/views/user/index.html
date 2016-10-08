@@ -1,0 +1,17 @@
+{% extends "layouts/base.html" %}
+
+{% block header %}
+    <title>新增/编辑用户</title>
+{% endblock %}
+
+{% block content %}
+
+    {% for key, item in data['rows'] %}
+        {{item['en_name']}} -- {{item['zh_name']}} <br/>
+    {% endfor %}
+
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}

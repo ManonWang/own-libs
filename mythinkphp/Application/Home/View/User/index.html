@@ -1,0 +1,15 @@
+<extend name="Layout:base" />
+
+<block name="header">
+    <title>用户列表</title>
+</block>
+
+<block name="content">
+    <foreach name="data['rows']" item="item" key="key">
+        <{$item['en_name']}> -- <{$item['zh_name']}> <br/>
+    </foreach>
+</block>
+
+<block name="footer">
+
+</block>
