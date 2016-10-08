@@ -1,4 +1,10 @@
 <?php
+
 return array(
-	//'配置项'=>'配置值'
+
+    'AUTOLOAD_NAMESPACE' => array(
+        'Library'  => MODULE_PATH . 'Library',
+        'Facade'   => MODULE_PATH . 'Facade',
+     )
+
 );

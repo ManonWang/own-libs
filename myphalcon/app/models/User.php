@@ -6,6 +6,10 @@ use MyPhalcon\App\Models\BaseModel;
 
 class User extends BaseModel {
 
+    public function onConstruct() {
+
+    }
+
     public function getUserByEnName($data) {
         $conds = 'en_name = :en_name:';
         $binds = array('en_name' => $data['en_name']);

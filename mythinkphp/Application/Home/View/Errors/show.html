@@ -1,0 +1,14 @@
+<extend name="Layout:base" />
+
+<block name="header">
+    <title>错误页</title>
+    <meta http-equiv="refresh" content="<{$stay}>; url=<{$url}>">
+</block>
+
+
+<block name="content">
+    <div class="text-center" style="margin-top:150px;">
+        <h4><{$error}></h4>
+        <h5><a href="<{$url}>">点击</a>立即返回</h5>
+    </div>
+</block>

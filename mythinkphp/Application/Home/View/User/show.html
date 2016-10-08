@@ -1,0 +1,120 @@
+<extend name="Layout:base" />
+
+<block name="header">
+    <title>新增/编辑项目</title>
+</block>
+
+<block name="content">
+    <form class="form-horizontal" action="/User/save" method="post" enctype="multipart/form-data">
+
+      <div class="form-group">
+          <label class="col-md-2 control-label">英文名</label>
+          <div class="col-md-4">
+             <input type="text" name="en_name" class="form-control" id="en_name" placeholder="2-10字符" value="<{$data['en_name']}>"/>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-md-2 control-label">用户名</label>
+          <div class="col-md-4">
+            <input type="text" name="zh_name" class="form-control" id="zh_name" placeholder="2-10字符" value="<{$data['zh_name']}>"/>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-md-2 control-label">手机号</label>
+          <div class="col-md-4">
+            <input type="text" name="mobile" class="form-control" id="mobile" placeholder="输入手机号" value="<{$data['mobile']}>"/>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-md-2 control-label">邮箱</label>
+          <div class="col-md-4">
+            <input type="text" name="email" class="form-control" id="email" placeholder="123456789@qq.com" value="<{$data['email']}>"/>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-md-2 control-label">年龄</label>
+          <div class="col-md-4">
+            <input type="text" name="age" class="form-control" id="age" placeholder="整数" value="<{$data['age']}>"/>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-md-2 control-label">主页</label>
+          <div class="col-md-4">
+            <input type="text" name="url" class="form-control" id="url" placeholder="http://www.baidu.com" value="<{$data['url']}>"/>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-md-2 control-label">密码</label>
+          <div class="col-md-4">
+            <input type="password" name="password" class="form-control" id="password" placeholder="6-20个字符,大小写数字混合" value="<{$data['password']}>"/>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-md-2 control-label">确认密码</label>
+          <div class="col-md-4">
+            <input type="password" name="repassword" class="form-control" id="repassword" placeholder="再次输入密码" value="<{$data['password']}>"/>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-md-2 control-label">个人简介</label>
+          <div class="col-md-4">
+            <textarea name="intro" id="intro" class="form-control" placeholder="一段中文介绍自己吧"><{$data['intro']}></textarea>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-md-2 control-label">个人爱好</label>
+          <div class="col-md-4">
+                <label for="hoppy_1"><input id="hoppy_1" type="checkbox" name="hoppy[]" value="1" <if condition="in_array(1, $data['hoppy'])" >checked="checked"</if> > 篮球</label>
+                <label for="hoppy_2"><input id="hoppy_2" type="checkbox" name="hoppy[]" value="2" <if condition="in_array(2, $data['hoppy'])" >checked="checked"</if> > 足球</label>
+                <label for="hoppy_3"><input id="hoppy_3" type="checkbox" name="hoppy[]" value="3" <if condition="in_array(3, $data['hoppy'])" >checked="checked"</if> > 羽毛球</label>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-md-2 control-label">性别</label>
+          <div class="col-md-4">
+                <label><input type="radio"  value="1" <if condition="1 == $data['sex']" >checked="checked"</if> name="sex" > 男</label>
+                <label><input type="radio"  value="2" <if condition="2 == $data['sex']" >checked="checked"</if> name="sex" > 女</label>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-md-2 control-label">城市</label>
+          <div class="col-md-4">
+                <select name="city" id="city"  class="form-control" data-required="true" error-required="请选择城市">
+                    <option value="">请选择</option>
+                    <option value="1" <if condition="1 == $data['city']" >selected="selected"</if>>北京</option>
+                    <option value="2" <if condition="2 == $data['city']" >selected="selected"</if>>天津</option>
+                </select>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-md-2 control-label">文件</label>
+          <div class="col-md-4">
+             <input type="file" name="file" id="file"  class="form-control" />
+          </div>
+      </div>
+
+      <div class="form-group">
+          <div class="col-md-4 col-md-offset-2">
+            <input type="hidden" name="id" id="id"  class="form-control" value="<{$data['id']}>"/>
+            <button type="submit" class="btn btn-primary">提交</button>
+          </div>
+      </div>
+
+    </form>
+</block>
+
+<block name="footer">
+
+</block>

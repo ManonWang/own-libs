@@ -88,7 +88,7 @@ class DefaultFacade extends BaseFacade  {
     /*============================删除=======================================*/
     //服务端验证
     public function beforeDel() {
-        return data_pack(get_code('SUC8C'));
+        return data_pack(get_code('SUCC'));
     }
 
     //服务端验证

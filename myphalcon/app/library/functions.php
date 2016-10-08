@@ -44,9 +44,9 @@ function get_cli_arguments($argv) {
     foreach ($argv as $index => $arg) {
         if ($index == 1) {
             $arguments['task'] = $arg;
-        } elseif ($k == 2) {
+        } elseif ($index == 2) {
             $arguments['action'] = $arg;
-        } elseif ($k >= 3) {
+        } elseif ($index >= 3) {
             $arguments['params'][] = $arg;
         }
     }

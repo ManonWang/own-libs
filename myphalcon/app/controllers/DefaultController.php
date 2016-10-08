@@ -7,7 +7,7 @@ use MyPhalcon\App\Controllers\BaseController;
 class DefaultController extends BaseController {
 
     public function runValidate() {
-        $methodName = 'Validate' . $this->getActionName();
+        $methodName = 'valid' . $this->getActionName();
         if (method_exists($this, $methodName)) {
             return $this->$methodName();
         }
@@ -44,7 +44,8 @@ class DefaultController extends BaseController {
     public function showAction() {
         $valiRes = $this->runValidate();
         if (!$valiRes['result']) {
-            return $this->isAjax() ? $this->ajaxReturn(get_code('PARAM_VALI_FAIL'), $valiRes['error']) : $this->showError($valiRes['error']);
+            return $this->isAjax() ? $this->ajaxReturn(get_code('PARAM_VALI_FAIL'), $valiRes['error'])
+                                   : $this->showError($valiRes['error']);
         }
 
         $params = $this->runBefore($valiRes['data']);
@@ -60,7 +61,8 @@ class DefaultController extends BaseController {
     public function saveAction() {
         $valiRes = $this->runValidate();
         if (!$valiRes['result']) {
-            return $this->isAjax() ? $this->ajaxReturn(get_code('PARAM_VALI_FAIL'), $valiRes['error']) : $this->showError($valiRes['error']);
+            return $this->isAjax() ? $this->ajaxReturn(get_code('PARAM_VALI_FAIL'), $valiRes['error'])
+                                   : $this->showError($valiRes['error']);
         }
 
         $params = $this->runBefore($valiRes['data']);
@@ -76,7 +78,8 @@ class DefaultController extends BaseController {
     public function delAction() {
         $valiRes = $this->runValidate();
         if (!$valiRes['result']) {
-            return $this->isAjax() ? $this->ajaxReturn(get_code('PARAM_VALI_FAIL'), $valiRes['error']) : $this->showError($valiRes['error']);
+            return $this->isAjax() ? $this->ajaxReturn(get_code('PARAM_VALI_FAIL'), $valiRes['error'])
+                                   : $this->showError($valiRes['error']);
         }
 
         $params = $this->runBefore($valiRes['data']);
@@ -92,7 +95,8 @@ class DefaultController extends BaseController {
     public function indexAction() {
         $valiRes = $this->runValidate();
         if (!$valiRes['result']) {
-            return $this->isAjax() ? $this->ajaxReturn(get_code('PARAM_VALI_FAIL'), $valiRes['error']) : $this->showError($valiRes['error']);
+            return $this->isAjax() ? $this->ajaxReturn(get_code('PARAM_VALI_FAIL'), $valiRes['error'])
+                                   : $this->showError($valiRes['error']);
         }
 
         $params = $this->runBefore($valiRes['data']);

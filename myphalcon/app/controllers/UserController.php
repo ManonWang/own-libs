@@ -7,7 +7,7 @@ use MyPhalcon\App\Controllers\DefaultController;
 class UserController extends DefaultController {
 
     /*************************展示*****************************/
-    public function validateShow() {
+    public function validShow() {
         return $this->validate(array('id' => array('int' => '参数错误')));
     }
 
@@ -23,7 +23,7 @@ class UserController extends DefaultController {
         return $params;
     }
 
-    public function validateSave() {
+    public function validSave() {
          return $this->validate(array(
            'id'          => array('int'),
            'en_name'     => array('not-empty', 'max-len:50'),
@@ -37,7 +37,7 @@ class UserController extends DefaultController {
            'hoppy'       => array('not-empty', 'count:2'),
            'sex'         => array('not-empty', 'in-list:1,2'),
            'city'        => array('not-empty', 'in-list:1,2'),
-           'file'        => array('file', 'ext-in:png,jpeg'),
+           'file'        => array('file', 'ext-in:png,jpeg,jpg'),
            'intro',
          ));
     }
@@ -49,7 +49,7 @@ class UserController extends DefaultController {
 
 
     /*************************删除*****************************/
-    public function validateDel() {
+    public function validDel() {
         return $this->validate(array('id' => array('not-empty', 'int')));
     }
 
