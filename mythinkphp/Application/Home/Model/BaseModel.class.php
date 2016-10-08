@@ -35,7 +35,7 @@ class BaseModel extends Model {
     public function insertRow(array $data) {
         try {
             $result = $this->data($data)->add();
-            LoggerUtil::info($this->getLastSql());
+            $this->logLastSql();
 
             if (false !== $result) {
                 $data['id'] = $result;
@@ -62,7 +62,7 @@ class BaseModel extends Model {
     public function updateRow(array $data) {
         try {
             $result = $this->data($data)->save();
-            LoggerUtil::info($this->getLastSql());
+            $this->logLastSql();
 
             if (false !== $result) {
                 return $data;
@@ -127,7 +127,7 @@ class BaseModel extends Model {
             }
 
             $result = $this->where($criteria['conds'])->bind($criteria['bind'])->field($criteria['columns'])->order($criteria['order'])->find();
-            LoggerUtil::info($this->getLastSql());
+            $this->logLastSql();
 
             if (false !== $result) {
                 return (array) $result;
@@ -181,7 +181,7 @@ class BaseModel extends Model {
             }
 
             $result = $this->where($criteria['conds'])->bind($criteria['bind'])->field($criteria['columns'])->order($criteria['order'])->limit($criteria['limit'])->select();
-            LoggerUtil::info($this->getLastSql());
+            $this->logLastSql();
 
             if (false !== $result) {
                 return (array) $result;
@@ -210,6 +210,8 @@ class BaseModel extends Model {
             $criteria = $conds;
 
             $result = $this->where($criteria['conds'])->bind($criteria['bind'])->count();
+            $this->logLastSql();
+
             if (false !== $result) {
                 return $result;
             }
@@ -420,30 +422,6 @@ class BaseModel extends Model {
     }
 
     /**
-     * 执行原生的查询sql
-     * @params string $sql    查询的sql
-     * @params array $params  查询的参数
-     * @params bool  $read  是否是读实例
-     * @return false or array 执行失败返回false， 成功返回数组
-     */
-    public function execSelect($sql, $params = null, $read = true) {
-        try {
-            $connect = $read ? $this->getReadConnection() : $this->getWriteConnection();
-            $result  = $connect->query($sql, $params);
-            if (false === $result) {
-                LoggerUtil::error($connect->getErrorInfo());
-                return false;
-            }
-
-            $result = new \Phalcon\Mvc\Model\Resultset\Simple(null, $this, $result);
-            return $result->toArray();
-        } catch(\Exception $e) {
-            LoggerUtil::error($e->getMessage());
-            return false;
-        }
-    }
-
-    /**
      * 执行原生的插入sql
      * @params string $sql    查询的sql
      * @params array $params  查询的参数
@@ -451,14 +429,15 @@ class BaseModel extends Model {
      */
     public function execInsert($sql, $params = null) {
         try {
-            $connect = $this->getWriteConnection();
-            $result = $connect->execute($sql, $params);
+            $result = $this->execute($sql, $params);
+            $this->logLastSql();
+
             if (false === $result) {
-                LoggerUtil::error($connect->getErrorInfo());
+                LoggerUtil::error($this->getFirstError());
                 return false;
             }
 
-            return $connect->lastInsertId();
+            return $this->getLastInsID();
         } catch(\Exception $e) {
             LoggerUtil::error($e->getMessage());
             return false;
@@ -473,17 +452,88 @@ class BaseModel extends Model {
      */
     public function execUpdate($sql, $params = null) {
         try {
-            $connect = $this->getWriteConnection();
-            $result = $connect->execute($sql, $params);
+            $result = $this->execute($sql, $params);
+            $this->logLastSql();
+
             if (false === $result) {
-                LoggerUtil::error($connect->getErrorInfo());
+                LoggerUtil::error($this->getFirstError());
                 return false;
             }
 
-            return $connect->affectedRows();
+            return $result;
         } catch(\Exception $e) {
             LoggerUtil::error($e->getMessage());
             return false;
+        }
+    }
+
+    /**
+     * 执行原生的查询sql
+     * @params string $sql    查询的sql
+     * @params array $params  查询的参数
+     * @return false or array 执行失败返回false， 成功返回数组
+     */
+    public function execSelect($sql, $params = null) {
+        try {
+            $result  = $this->query($sql, $params);
+            $this->logLastSql();
+
+            if (false === $result) {
+                LoggerUtil::error($this->getFirstError());
+                return false;
+            }
+
+            return $result;
+        } catch(\Exception $e) {
+            LoggerUtil::error($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * 是否从主库读取数据, 使用完记得切换回去
+     * @param string $type , true master false slave
+     * @return \Think\Model
+     * @auth byron sampson
+     */
+    public function master($type = false){
+        $config = C($this->connection);
+        $deploy = $config['DB_DEPLOY_TYPE'];
+
+        if ($type && !empty($deploy)){
+            $_config['username'] = explode(',', $config['DB_USER']);
+            $_config['password'] = explode(',', $config['DB_PWD']);
+            $_config['hostname'] = explode(',', $config['DB_HOST']);
+            $_config['hostport'] = explode(',', $config['DB_PORT']);
+            $_config['database'] = explode(',', $config['DB_NAME']);
+            $_config['charset']  = explode(',', $config['DB_CHARSET']);
+
+            $m = floor(mt_rand(0, $config['DB_MASTER_NUM'] - 1));
+            $master  =   array(
+               'DB_TYPE'    =>  $config['DB_TYPE'],
+               'DB_USER'    =>  isset($_config['username'][$m]) ? $_config['username'][$m] : $_config['username'][0],
+               'DB_PWD'     =>  isset($_config['password'][$m]) ? $_config['password'][$m] : $_config['password'][0],
+               'DB_HOST'    =>  isset($_config['hostname'][$m]) ? $_config['hostname'][$m] : $_config['hostname'][0],
+               'DB_PORT'    =>  isset($_config['hostport'][$m]) ? $_config['hostport'][$m] : $_config['hostport'][0],
+               'DB_NAME'    =>  isset($_config['database'][$m]) ? $_config['database'][$m] : $_config['database'][0],
+               'DB_CHARSET' =>  isset($_config['charset'][$m])  ? $_config['charset'][$m]  : $_config['charset'][0],
+            );
+
+            $this->db(1, $master);
+        } else {
+            $this->db(0, $config);
+        }
+
+        return $this;
+    }
+
+    /**
+     * 记录上次执行sql
+     */
+    public function logLastSql() {
+        $sql = $this->getLastSql();
+        if (!empty($sql)) {
+            LoggerUtil::info($sql);
         }
     }
 

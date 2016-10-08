@@ -4,11 +4,11 @@ namespace Home\Controller;
 
 class ErrorsController extends BaseController {
 
-    public function show404Action() {
+    public function show404() {
         $this->display();
     }
 
-    public function show500Action() {
+    public function show500() {
         $this->display();
     }
 

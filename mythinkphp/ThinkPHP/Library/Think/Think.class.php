@@ -225,9 +225,10 @@ class Think {
         }
         $error['trace']     =   $e->getTraceAsString();
         Log::record($error['message'],Log::ERR);
+
         // 发送404信息
         header('HTTP/1.1 404 Not Found');
-        header('Status:404 Not Found');
+
         self::halt($error);
     }
 
@@ -282,6 +283,10 @@ class Think {
      * @return void
      */
     static public function halt($error) {
+        if (class_exists('\Common\Library\LoggerUtil')) {
+            \Common\Library\LoggerUtil::error(is_array($error) ? $error['message'] : $error);
+        }
+
         $e = array();
         if (APP_DEBUG || IS_CLI) {
             //调试模式下输出错误信息

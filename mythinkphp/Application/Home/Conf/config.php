@@ -29,7 +29,10 @@ return array(
          )
     ),
 
+   'ERROR_PAGE' => '/Errors/show500',
+
    'myphalcon' => array(
+      'DB_RW_SEPARATE' => true,
       'DB_DEPLOY_TYPE' => 1,
       'DB_TYPE'        => 'mysql',
       'DB_HOST'        => '127.0.0.1',
@@ -40,6 +43,5 @@ return array(
       'DB_CHARSET'     => 'utf8',
       'DB_PREFIX'      => '',
    ),
-
 
 );

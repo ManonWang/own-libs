@@ -107,6 +107,7 @@ class BaseFacade extends \Phalcon\Mvc\User\Component  {
         if (empty($data['id'])) {
             $data['create_time'] = $data['update_time'];
             $data['is_delete'] = 0;
+            unset($data['id']);
         }
 
         $model = $this->getModel($options['model_name']);
@@ -129,6 +130,7 @@ class BaseFacade extends \Phalcon\Mvc\User\Component  {
             if (empty($row['id'])) {
                 $row['create_time'] = $row['update_time'];
                 $row['is_delete'] = 0;
+                unset($row['id']);
             }
 
             $model = $this->getModel($options['model_name']);

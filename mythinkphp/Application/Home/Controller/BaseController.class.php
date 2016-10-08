@@ -100,4 +100,8 @@ class BaseController extends Controller {
         return empty($valiRes['error']) ? get_lang('PARAMA_ERROR') : current($valiRes['error']);
     }
 
+    public function _empty() {
+        HttpUtil::redirect('/Errors/show404');
+    }
+
 }

@@ -32,7 +32,7 @@ class DefaultFacade extends BaseFacade  {
 
         //更新
         $facadeResult = $this->getRowById($this->data['input']['id']);
-        if (false === $facadeResult || $facadeResult['is_delete']) {
+        if (empty($facadeResult) || $facadeResult['is_delete']) {
             return data_pack(get_code('FIND_DATA_FAIL'), get_lang('DATA_NOT_FOUND'));
         }
         $this->data['origin'] = $facadeResult;
@@ -59,7 +59,7 @@ class DefaultFacade extends BaseFacade  {
         $facadeResult = array();
         if (!empty($params['id'])) {
             $facadeResult = $this->getRowById($params['id']);
-            if (false === $facadeResult || $facadeResult['is_delete']) {
+            if (empty($facadeResult) || $facadeResult['is_delete']) {
                 return data_pack(get_code('FIND_DATA_FAIL'), get_lang('DATA_NOT_FOUND'));
             }
         }
@@ -96,7 +96,7 @@ class DefaultFacade extends BaseFacade  {
         $this->data = array('input' => $params);
 
         $facadeResult = $this->getRowById($this->data['input']['id']);
-        if (false === $facadeResult || $facadeResult['is_delete']) {
+        if (empty($facadeResult) || $facadeResult['is_delete']) {
             return data_pack(get_code('FIND_DATA_FAIL'), get_lang('DATA_NOT_FOUND'));
         }
 

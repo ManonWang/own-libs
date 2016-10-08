@@ -6,12 +6,12 @@ use MyPhalcon\App\Library\LoggerUtil;
 
 class BaseModel extends \Phalcon\Mvc\Model {
 
-    const DB_READ_KEY  = 'db_myPhalcon_r'; //读服务
-    const DB_WRITE_KEY = 'db_myPhalcon_w'; //写服务
+    protected $readService  = 'db_myPhalcon_r'; //读服务
+    protected $writeService = 'db_myPhalcon_w'; //写服务
 
     public function initialize() {
-        $this->setReadConnectionService(self::DB_READ_KEY);
-        $this->setWriteConnectionService(self::DB_WRITE_KEY);
+        $this->setReadConnectionService($this->readService);
+        $this->setWriteConnectionService($this->writeService);
     }
 
     /**
@@ -392,30 +392,6 @@ class BaseModel extends \Phalcon\Mvc\Model {
     }
 
     /**
-     * 执行原生的查询sql
-     * @params string $sql    查询的sql
-     * @params array $params  查询的参数
-     * @params bool  $read  是否是读实例
-     * @return false or array 执行失败返回false， 成功返回数组
-     */
-    public function execSelect($sql, $params = null, $read = true) {
-        try {
-            $connect = $read ? $this->getReadConnection() : $this->getWriteConnection();
-            $result  = $connect->query($sql, $params);
-            if (false === $result) {
-                LoggerUtil::error($connect->getErrorInfo());
-                return false;
-            }
-
-            $result = new \Phalcon\Mvc\Model\Resultset\Simple(null, $this, $result);
-            return $result->toArray();
-        } catch(\Exception $e) {
-            LoggerUtil::error($e->getMessage());
-            return false;
-        }
-    }
-
-    /**
      * 执行原生的插入sql
      * @params string $sql    查询的sql
      * @params array $params  查询的参数
@@ -456,6 +432,42 @@ class BaseModel extends \Phalcon\Mvc\Model {
         } catch(\Exception $e) {
             LoggerUtil::error($e->getMessage());
             return false;
+        }
+    }
+
+    /**
+     * 执行原生的查询sql
+     * @params string $sql    查询的sql
+     * @params array $params  查询的参数
+     * @params bool  $read  是否是读实例
+     * @return false or array 执行失败返回false， 成功返回数组
+     */
+    public function execSelect($sql, $params = null) {
+        try {
+            $connect = $this->getReadConnection();
+            $result  = $connect->query($sql, $params);
+            if (false === $result) {
+                LoggerUtil::error($connect->getErrorInfo());
+                return false;
+            }
+
+            $result = new \Phalcon\Mvc\Model\Resultset\Simple(null, $this, $result);
+            return $result->toArray();
+        } catch(\Exception $e) {
+            LoggerUtil::error($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * 是否切换主从库
+     * $type true master false slave
+     */
+    public function master($type = false) {
+        if ($type) {
+            $this->setReadConnectionService($this->writeService);
+        } else {
+            $this->setReadConnectionService($this->readService);
         }
     }
 
