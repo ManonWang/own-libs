@@ -7,6 +7,10 @@ use MyPhalcon\App\Library\LoggerUtil;
 
 class AppInit {
 
+    private static function url2Lower() {
+        $_GET['_url'] = strtolower($_GET['_url']);
+    }
+
     private static function initDebug() {
         $di = get_app_di();
         if ($di->get('config')->debug) {
@@ -55,6 +59,7 @@ class AppInit {
     }
 
     public static function initContext() {
+        self::url2Lower();
         self::initDebug();
         self::setTimeZone();
         self::setCharset();
