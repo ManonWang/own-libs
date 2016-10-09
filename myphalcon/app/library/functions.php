@@ -4,7 +4,7 @@
 function init_app_constant() {
     defined('APP_PATH')         || define('APP_PATH',         ROOT_PATH . '/app');
     defined('CONFIG_PATH')      || define('CONFIG_PATH',      APP_PATH  . '/config');
-    defined('FACADE_PATH')      || define('FACADE_PATH',      APP_PATH  . '/facade');
+    defined('SERVICE_PATH')     || define('SERVICE_PATH',     APP_PATH  . '/service');
     defined('LIBRARY_PATH')     || define('LIBRARY_PATH',     APP_PATH  . '/library');
     defined('MODELS_PATH')      || define('MODELS_PATH',      APP_PATH  . '/models');
     defined('TASKS_PATH')       || define('TASKS_PATH',       APP_PATH  . '/tasks');
@@ -22,7 +22,7 @@ function init_app_autoload() {
     $loader->registerNamespaces(array(
          'MyPhalcon\App\Controllers' => CONTROLLERS_PATH,
          'MyPhalcon\App\Models'      => MODELS_PATH,
-         'MyPhalcon\App\Facade'      => FACADE_PATH,
+         'MyPhalcon\App\Service'     => SERVICE_PATH,
          'MyPhalcon\App\Library'     => LIBRARY_PATH,
          'MyPhalcon\App\Config'      => CONFIG_PATH,
          'MyPhalcon\App\Tasks'       => TASKS_PATH,

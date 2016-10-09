@@ -29,7 +29,7 @@ return array(
          )
     ),
 
-   'RPC_URI' => 'http://www.mythinkphp.com/rpc/index',
+   'RPC_URI' => 'http://www.mythinkphp.com/rpc',
    'ERROR_PAGE' => '/Errors/show500',
 
    'myphalcon' => array(

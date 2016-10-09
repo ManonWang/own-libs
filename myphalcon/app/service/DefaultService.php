@@ -1,10 +1,10 @@
 <?php
 
-namespace MyPhalcon\App\Facade;
+namespace MyPhalcon\App\Service;
 
-use MyPhalcon\App\Facade\BaseFacade;
+use MyPhalcon\App\Service\BaseService;
 
-class DefaultFacade extends BaseFacade  {
+class DefaultService extends BaseService  {
 
     public $data = array();
 
@@ -25,17 +25,17 @@ class DefaultFacade extends BaseFacade  {
 
         //新增
         if (empty($params['id'])) {
-            $facadeResult = array();
-            $this->data['origin'] = $facadeResult;
+            $serviceResult = array();
+            $this->data['origin'] = $serviceResult;
             return $this->afterShow();
         }
 
         //更新
-        $facadeResult = $this->getRowById($this->data['input']['id']);
-        if (empty($facadeResult) || $facadeResult['is_delete']) {
+        $serviceResult = $this->getRowById($this->data['input']['id']);
+        if (empty($serviceResult) || $serviceResult['is_delete']) {
             return data_pack(get_code('FIND_DATA_FAIL'), get_lang('DATA_NOT_FOUND'));
         }
-        $this->data['origin'] = $facadeResult;
+        $this->data['origin'] = $serviceResult;
 
         return $this->afterShow();
     }
@@ -56,26 +56,26 @@ class DefaultFacade extends BaseFacade  {
         $this->data = array('input' => $params);
 
         //更新
-        $facadeResult = array();
+        $serviceResult = array();
         if (!empty($params['id'])) {
-            $facadeResult = $this->getRowById($params['id']);
-            if (empty($facadeResult) || $facadeResult['is_delete']) {
+            $serviceResult = $this->getRowById($params['id']);
+            if (empty($serviceResult) || $serviceResult['is_delete']) {
                 return data_pack(get_code('FIND_DATA_FAIL'), get_lang('DATA_NOT_FOUND'));
             }
         }
 
-        $this->data['origin'] = $facadeResult;
+        $this->data['origin'] = $serviceResult;
         $beforeResult = $this->beforeSave();
         if (!is_succ_pack($beforeResult)) {
             return $beforeResult;
         }
 
         $saveData = array_merge($this->data['origin'], $this->data['input']);
-        $facadeResult = $this->saveRow($saveData);
-        if (false === $facadeResult) {
+        $serviceResult = $this->saveRow($saveData);
+        if (false === $serviceResult) {
             return data_pack(get_code('SAVE_DATA_FAIL'), get_lang('OPERATION_FAIL'));
         }
-        $this->data['latest'] = $facadeResult;
+        $this->data['latest'] = $serviceResult;
 
         return $this->afterSave();
     }
@@ -95,12 +95,12 @@ class DefaultFacade extends BaseFacade  {
     public function del($params) {
         $this->data = array('input' => $params);
 
-        $facadeResult = $this->getRowById($this->data['input']['id']);
-        if (empty($facadeResult) || $facadeResult['is_delete']) {
+        $serviceResult = $this->getRowById($this->data['input']['id']);
+        if (empty($serviceResult) || $serviceResult['is_delete']) {
             return data_pack(get_code('FIND_DATA_FAIL'), get_lang('DATA_NOT_FOUND'));
         }
 
-        $this->data['origin'] = $facadeResult;
+        $this->data['origin'] = $serviceResult;
         $beforeResult = $this->beforeDel();
         if (!is_succ_pack($beforeResult)) {
             return $beforeResult;
@@ -109,11 +109,11 @@ class DefaultFacade extends BaseFacade  {
         $saveData = $this->data['origin'];
         $saveData['is_delete'] = 1;
 
-        $facadeResult = $this->saveRow($saveData);
-        if (false === $facadeResult) {
+        $serviceResult = $this->saveRow($saveData);
+        if (false === $serviceResult) {
             return data_pack(get_code('SAVE_DATA_FAIL'), get_lang('OPERATION_FAIL'));
         }
-        $this->data['latest'] = $facadeResult;
+        $this->data['latest'] = $serviceResult;
 
         return $this->afterDel();
     }
@@ -139,11 +139,11 @@ class DefaultFacade extends BaseFacade  {
         }
 
         $model = $this->getModel();
-        $facadeResult = $model->getPagedList($this->data['input']);
-        if (false === $facadeResult) {
+        $serviceResult = $model->getPagedList($this->data['input']);
+        if (false === $serviceResult) {
             return data_pack(get_code('FIND_DATA_FAIL'), get_lang('OPERATION_FAIL'));
         }
-        $this->data['origin'] = $facadeResult;
+        $this->data['origin'] = $serviceResult;
 
         return $this->afterIndex();
     }

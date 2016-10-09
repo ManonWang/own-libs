@@ -67,4 +67,5 @@ return array(
         ),
     ),
 
+   'rpcUri' => 'http://www.myphalcon.com/rpc',
 );

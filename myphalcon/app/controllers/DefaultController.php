@@ -49,8 +49,8 @@ class DefaultController extends BaseController {
         }
 
         $params = $this->runBefore($valiRes['data']);
-        $facade = $this->getFacade();
-        $result = $facade->show($params);
+        $service = $this->getService();
+        $result = $service->show($params);
         if (!is_succ_pack($result)) {
             return $this->isAjax() ? $this->ajaxReturn($result) : $this->showError($result['error']);
         }
@@ -66,8 +66,8 @@ class DefaultController extends BaseController {
         }
 
         $params = $this->runBefore($valiRes['data']);
-        $facade = $this->getFacade();
-        $result = $facade->save($params);
+        $service = $this->getService();
+        $result = $service->save($params);
         if (!is_succ_pack($result)) {
             return $this->isAjax() ? $this->ajaxReturn($result) : $this->showError($result['error']);
         }
@@ -83,8 +83,8 @@ class DefaultController extends BaseController {
         }
 
         $params = $this->runBefore($valiRes['data']);
-        $facade = $this->getFacade();
-        $result = $facade->del($params);
+        $service = $this->getService();
+        $result = $service->del($params);
         if (!is_succ_pack($result)) {
             return $this->isAjax() ? $this->ajaxReturn($result) : $this->showError($result['error']);
         }
@@ -100,8 +100,8 @@ class DefaultController extends BaseController {
         }
 
         $params = $this->runBefore($valiRes['data']);
-        $facade = $this->getFacade();
-        $result = $facade->index($params);
+        $service = $this->getService();
+        $result = $service->index($params);
         if (!is_succ_pack($result)) {
             return $this->isAjax() ? $this->ajaxReturn($result) : $this->showError($result['error']);
         }

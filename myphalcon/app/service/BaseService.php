@@ -1,11 +1,11 @@
 <?php
 
-namespace MyPhalcon\App\Facade;
+namespace MyPhalcon\App\Service;
 
 use MyPhalcon\App\Library\ClassUtil;
 use MyPhalcon\App\Models\BaseModel;
 
-class BaseFacade extends \Phalcon\Mvc\User\Component  {
+class BaseService extends \Phalcon\Mvc\User\Component  {
 
     public function __construct() {
         $this->setDI(get_app_di());
@@ -48,7 +48,7 @@ class BaseFacade extends \Phalcon\Mvc\User\Component  {
      */
     public function getModel($modelName = '') {
         if (empty($modelName)) {
-            $modelName = preg_replace('/Facade$/i', '', ClassUtil::getClassName(get_class($this)));
+            $modelName = preg_replace('/Service$/i', '', ClassUtil::getClassName(get_class($this)));
         }
 
         $modelName = 'MyPhalcon\App\Models\\' . ucfirst($modelName);

@@ -8,17 +8,17 @@ class BaseTask extends \Phalcon\CLI\Task {
         return $this->dispatcher->getTaskName();
     }
 
-    public function getFacade($facadeName = '') {
-        if (empty($facadeName)) {
-            $facadeName = $this->getTaskName();
+    public function getService($serviceName = '') {
+        if (empty($serviceName)) {
+            $serviceName = $this->getTaskName();
         }
 
-        $facadeName = 'MyPhalcon\App\Facade\\' . ucfirst($facadeName) . 'Facade';
-        if (!class_exists($facadeName)) {
-            throw new \Exception(get_lang('CLASS_NOT_FOUND', $facadeName));
+        $serviceName = 'MyPhalcon\App\Service\\' . ucfirst($serviceName) . 'Service';
+        if (!class_exists($serviceName)) {
+            throw new \Exception(get_lang('CLASS_NOT_FOUND', $serviceName));
         }
 
-        return new $facadeName();
+        return new $serviceName();
     }
 
 }

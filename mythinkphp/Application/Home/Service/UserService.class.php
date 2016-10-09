@@ -23,4 +23,7 @@ class UserService extends DefaultService {
         return $this->checkEnNameUnique($this->data['input']);
     }
 
+    public function test() {
+        return data_pack(get_code('SUCC'), null, func_get_args());
+    }
 }

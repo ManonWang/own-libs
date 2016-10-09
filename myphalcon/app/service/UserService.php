@@ -1,10 +1,10 @@
 <?php
 
-namespace MyPhalcon\App\Facade;
+namespace MyPhalcon\App\Service;
 
-use MyPhalcon\App\Facade\DefaultFacade;
+use MyPhalcon\App\Service\DefaultService;
 
-class UserFacade extends DefaultFacade {
+class UserService extends DefaultService {
 
     public function checkEnNameUnique($data) {
         $userModel = $this->getModel();
