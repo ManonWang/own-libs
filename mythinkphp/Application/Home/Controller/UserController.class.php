@@ -52,8 +52,4 @@ class UserController extends DefaultController {
         return $this->validate(array('id' => array('not-empty', 'int')));
     }
 
-    public function test() {
-        p($this->rpc('user', 'test', array('a', 'b' => 'c' , array('d'))));
-    }
-
 }
