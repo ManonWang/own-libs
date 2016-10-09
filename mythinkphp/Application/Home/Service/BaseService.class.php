@@ -1,10 +1,10 @@
 <?php
 
-namespace Home\Facade;
+namespace Home\Service;
 
 use Common\Library\ClassUtil;
 
-class BaseFacade {
+class BaseService {
 
     /**
      * 获取model对象
@@ -13,7 +13,7 @@ class BaseFacade {
      */
     public function getModel($modelName = '') {
         if (empty($modelName)) {
-            $modelName = preg_replace('/Facade$/i', '', ClassUtil::getClassName(get_class($this)));
+            $modelName = preg_replace('/Service$/i', '', ClassUtil::getClassName(get_class($this)));
         }
 
         $modelName = MODULE_NAME . '\\Model\\' . ucfirst($modelName) . 'Model';

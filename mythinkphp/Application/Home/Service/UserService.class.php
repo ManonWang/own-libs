@@ -1,8 +1,8 @@
 <?php
 
-namespace Home\Facade;
+namespace Home\Service;
 
-class UserFacade extends DefaultFacade {
+class UserService extends DefaultService {
 
     public function checkEnNameUnique($data) {
         $userModel = $this->getModel();

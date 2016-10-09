@@ -12,6 +12,7 @@ return array(
         'DATA_NOT_FOUND'       =>  '没有找到数据',
         'PARAMA_ERROR'         =>  '参数错误',
         'UNKNOW_ERROR'         =>  '未知错误',
+        'METHOD_NOT_FOUND'     =>  '找不到方法:%s',
     ),
 
    'en' => array(
@@ -24,6 +25,7 @@ return array(
         'DATA_NOT_FOUND'       => 'data not found',
         'PARAMA_ERROR'         => 'param is error',
         'UNKNOW_ERROR'         => 'unknow error',
+        'METHOD_NOT_FOUND'     => 'can not find method %s',
     ),
 
 );

@@ -2,8 +2,8 @@
 
 return array(
 
-    'APP_DEBUG' => true,
-    'SHOW_PAGE_TRACE' => true,
+    'APP_DEBUG' => false,
+    'SHOW_PAGE_TRACE' => false,
 
     'URL_CASE_INSENSITIVE' => false,
     'URL_MODEL'  => 2,
@@ -29,6 +29,7 @@ return array(
          )
     ),
 
+   'RPC_URI' => 'http://www.mythinkphp.com/rpc/index',
    'ERROR_PAGE' => '/Errors/show500',
 
    'myphalcon' => array(

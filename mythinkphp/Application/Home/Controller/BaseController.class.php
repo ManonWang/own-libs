@@ -6,6 +6,7 @@ use Think\Controller;
 use Common\Library\HttpUtil;
 use Common\Library\StringUtil;
 use Common\Library\ValidateUtil;
+use Common\Library\LoggerUtil;
 
 class BaseController extends Controller {
 
@@ -50,17 +51,17 @@ class BaseController extends Controller {
         return ACTION_NAME;
     }
 
-    public function getFacade($facadeName = '') {
-        if (empty($facadeName)) {
-            $facadeName = $this->getControllerName();
+    public function getService($serviceName = '') {
+        if (empty($serviceName)) {
+            $serviceName = $this->getControllerName();
         }
 
-        $facadeName = MODULE_NAME . '\\Facade\\' . ucfirst($facadeName) . 'Facade';
-        if (!class_exists($facadeName)) {
-            throw new \Exception(get_lang('CLASS_NOT_FOUND', $facadeName));
+        $serviceName = MODULE_NAME . '\\Service\\' . ucfirst($serviceName) . 'Service';
+        if (!class_exists($serviceName)) {
+            throw new \Exception(get_lang('CLASS_NOT_FOUND', $serviceName));
         }
 
-        return new $facadeName();
+        return new $serviceName();
     }
 
     public function ajaxReturn($code, $msg = '', $data = array()) {
@@ -102,6 +103,29 @@ class BaseController extends Controller {
 
     public function _empty() {
         HttpUtil::redirect('/Errors/show404');
+    }
+
+    public function rpcCall($service, $method, $params, $uri, $whole) {
+        vendor('Hprose.HproseHttpClient');
+        try {
+            $params = $whole ? array($params) : $params;
+            $rpcArgs = array('service' => $service, 'method'  => $method, 'params'  => $params);
+            LoggerUtil::info('RPC CALL: ' . json_encode($rpcArgs, JSON_UNESCAPED_UNICODE));
+
+            $client = new \HproseHttpClient($uri);
+            $result = $client->run($rpcArgs);
+
+            LoggerUtil::info('RPC SUCC: ' . json_encode($result, JSON_UNESCAPED_UNICODE));
+            return $result;
+        } catch (\Exception $e) {
+            LoggerUtil::error('RPC FAIL: ' . $e->getMessage());
+            return data_pack(get_code('FAIL'));
+        }
+    }
+
+    public function rpc($service, $method, $params = array(), $whole = true) {
+        $uri = C('RPC_URI');
+        return $this->rpcCall($service, $method, $params, $uri, $whole);
     }
 
 }
