@@ -51,17 +51,30 @@ class BaseController extends \Phalcon\Mvc\Controller {
         return $this->dispatcher->getActionName();
     }
 
-    public function getService($serviceName = '') {
+    public function getServiceName($serviceName = '', $short = false) {
         if (empty($serviceName)) {
             $serviceName = $this->getControllerName();
         }
 
+        $shortName = $serviceName;
         $serviceName = 'MyPhalcon\App\Service\\' . ucfirst($serviceName) . 'Service';
         if (!class_exists($serviceName)) {
             throw new \Exception(get_lang('CLASS_NOT_FOUND', $serviceName));
         }
 
-        return new $serviceName();
+        return $short ? $shortName : $serviceName;
+    }
+
+    public function getService($serviceName = '') {
+        if (!$this->config->rpcCall) {
+            $serviceName = $this->getServiceName($serviceName, false);
+            return new $serviceName();
+        }
+
+        require VENDOR_PATH . '/Hprose/Hprose.php';
+        $client = new \Hprose\Http\Client($this->config->rpcUri, false);
+        $serviceName = $this->getServiceName($serviceName, true);
+        return $client->$serviceName;
     }
 
     public function ajaxReturn($code, $msg = '', $data = array()) {
@@ -100,29 +113,6 @@ class BaseController extends \Phalcon\Mvc\Controller {
 
     public function getFirstValiError($valiRes) {
         return empty($valiRes['error']) ? get_lang('PARAMA_ERROR') : current($valiRes['error']);
-    }
-
-    public function rpcCall($service, $method, $params, $uri, $whole) {
-        require VENDOR_PATH . '/Hprose/Hprose.php';
-        try {
-            $params = $whole ? array($params) : $params;
-            $rpcArgs = array('service' => $service, 'method'  => $method, 'params'  => $params);
-            LoggerUtil::info('RPC CALL: ' . json_encode($rpcArgs, JSON_UNESCAPED_UNICODE));
-
-            $client = new \Hprose\Http\Client($uri, false);
-            $result = $client->run($rpcArgs);
-
-            LoggerUtil::info('RPC SUCC: ' . json_encode($result, JSON_UNESCAPED_UNICODE));
-            return $result;
-        } catch (\Exception $e) {
-            LoggerUtil::error('RPC FAIL: ' . $e->getMessage());
-            return data_pack(get_code('FAIL'));
-        }
-    }
-
-    public function rpc($service, $method, $params = array(), $whole = true) {
-        $uri = $this->config->rpcUri;
-        return $this->rpcCall($service, $method, $params, $uri, $whole);
     }
 
 }

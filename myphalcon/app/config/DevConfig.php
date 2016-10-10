@@ -4,12 +4,6 @@ return array(
 
    'debug' => true,
 
-   'logger' => array(
-        'file' => array(
-           'path' => ''
-         )
-    ),
-
    'view' => array(
         'templatePath' => VIEWS_PATH,
         'compiledPath' => CACHE_PATH . '/views/',
@@ -67,5 +61,6 @@ return array(
         ),
     ),
 
-   'rpcUri' => 'http://www.myphalcon.com/rpc',
+   'rpcCall' => false,
+   'rpcUri'  => 'http://www.myphalcon.com/rpc',
 );

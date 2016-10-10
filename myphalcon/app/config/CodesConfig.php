@@ -11,5 +11,6 @@ return array(
      'UPDATE_DATA_FAIL' => '500005', //更新数据失败
      'FIND_DATA_FAIL'   => '500006', //查询数据失败
      'DATA_REPEATE'     => '500007', //数据已经重复
+     'REMOTE_RPC_FAIL'  => '500008', //RPC发生错误
 
 );

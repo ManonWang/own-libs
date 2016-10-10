@@ -4,7 +4,7 @@ namespace MyPhalcon\App\Controllers;
 
 use MyPhalcon\App\Library\LoggerUtil;
 
-class RpcController extends \Phalcon\Mvc\Controller {
+class RpcController extends BaseController {
 
     protected $debug            =   false;
     protected $crossDomain      =   true;
@@ -15,7 +15,7 @@ class RpcController extends \Phalcon\Mvc\Controller {
         require VENDOR_PATH . '/Hprose/Hprose.php';
 
         $server  = new \Hprose\Http\Server();
-        $server->addMethods(array('run'), $this);
+        $server->addMissingMethod('run', $this);
 
         if($this->debug) {
             $server->setDebugEnabled(true);
@@ -28,21 +28,18 @@ class RpcController extends \Phalcon\Mvc\Controller {
         $server->start();
     }
 
-    public function getService($serviceName) {
-        $serviceName = 'MyPhalcon\App\Service\\' . ucfirst($serviceName) . 'Service';
-        if (!class_exists($serviceName)) {
-            throw new \Exception(get_lang('CLASS_NOT_FOUND', $serviceName));
-        }
+    public function run($name, $args) {
+        $lastSeparator = strrpos($name, '_');
+        $rpcArgs = array(
+            'service' => substr($name, 0, $lastSeparator),
+            'method'  => substr($name, $lastSeparator + 1),
+            'params'  => $args,
+        );
 
-        return new $serviceName();
-    }
-
-    public function run($rpcArgs) {
         try {
             LoggerUtil::info('RPC CALL: ' . json_encode($rpcArgs, JSON_UNESCAPED_UNICODE));
-
-            $serviceName = $rpcArgs['service'];
-            $service = $this->getService($serviceName);
+            $serviceName = $this->getServiceName($rpcArgs['service'], false);
+            $service = new $serviceName();
 
             $methodName = $rpcArgs['method'];
             if (!method_exists($service, $methodName)) {
@@ -55,7 +52,7 @@ class RpcController extends \Phalcon\Mvc\Controller {
             return $result;
         } catch (\Exception $e) {
             LoggerUtil::error('RPC FAIL: ' . $e->getMessage());
-            throw $e;
+            return data_pack(get_code('REMOTE_RPC_FAIL'), $e->getMessage());
         }
     }
 

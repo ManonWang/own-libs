@@ -2,21 +2,44 @@
 
 namespace Home\Controller;
 
-use Think\Controller\HproseController;
 use Common\Library\LoggerUtil;
 
-class RpcController extends HproseController {
+class RpcController extends BaseController {
 
-    protected $crossDomain = true;
-    protected $P3P         = true;
-    protected $allowMethodList = array('run');
+    protected $debug            =   false;
+    protected $crossDomain      =   true;
+    protected $P3P              =   true;
+    protected $get              =   true;
 
-    public function run($rpcArgs) {
+    public function index() {
+        vendor('Hprose.Hprose');
+
+        $server  = new \Hprose\Http\Server();
+        $server->addMissingMethod('run', $this);
+
+        if($this->debug) {
+            $server->setDebugEnabled(true);
+        }
+
+        $server->setCrossDomainEnabled($this->crossDomain);
+        $server->setP3PEnabled($this->P3P);
+        $server->setGetEnabled($this->get);
+
+        $server->start();
+    }
+
+    public function run($name, $args) {
+        $lastSeparator = strrpos($name, '_');
+        $rpcArgs = array(
+            'service' => substr($name, 0, $lastSeparator),
+            'method'  => substr($name, $lastSeparator + 1),
+            'params'  => $args,
+        );
+
         try {
             LoggerUtil::info('RPC CALL: ' . json_encode($rpcArgs, JSON_UNESCAPED_UNICODE));
-
-            $serviceName = $rpcArgs['service'];
-            $service = $this->getService($serviceName);
+            $serviceName = $this->getServiceName($rpcArgs['service'], false);
+            $service = new $serviceName();
 
             $methodName = $rpcArgs['method'];
             if (!method_exists($service, $methodName)) {
@@ -29,17 +52,8 @@ class RpcController extends HproseController {
             return $result;
         } catch (\Exception $e) {
             LoggerUtil::error('RPC FAIL: ' . $e->getMessage());
-            throw $e;
+            return data_pack(get_code('REMOTE_RPC_FAIL'), $e->getMessage());
         }
-    }
-
-    public function getService($serviceName) {
-        $serviceName = MODULE_NAME . '\\Service\\' . ucfirst($serviceName) . 'Service';
-        if (!class_exists($serviceName)) {
-            throw new \Exception(get_lang('CLASS_NOT_FOUND', $serviceName));
-        }
-
-        return new $serviceName();
     }
 
 }
