@@ -131,7 +131,7 @@ class ValidateUtil {
         }
 
         if (self::$saveDataFlag) {
-            self::$data[$fieldName] = self::getParamValue($fieldName);
+            isset(self::$userParams[$fieldName]) && self::$data[$fieldName] = self::getParamValue($fieldName);
         }
     }
 
@@ -143,7 +143,7 @@ class ValidateUtil {
             }
 
             if (empty($fieldRules)) {
-                self::$data[$fieldName] = self::getParamValue($fieldName);
+                isset(self::$userParams[$fieldName]) && self::$data[$fieldName] = self::getParamValue($fieldName);
                 continue ;
             }
 
@@ -468,7 +468,7 @@ class ValidateUtil {
 
     private static function checkDate($fieldName, $ruleArgs, $userError) {
         $fieldValue = self::getParamValue($fieldName);
-        if (is_string($fieldValue) && StringUtil::strLenth($fieldValue) == 0) {
+        if (StringUtil::strLenth($fieldValue) == 0) {
             return true;
         }
 
@@ -484,7 +484,7 @@ class ValidateUtil {
 
     private static function checkDatetime($fieldName, $ruleArgs, $userError) {
         $fieldValue = self::getParamValue($fieldName);
-        if (is_string($fieldValue) && StringUtil::strLenth($fieldValue) == 0) {
+        if (StringUtil::strLenth($fieldValue) == 0) {
             return true;
         }
 
