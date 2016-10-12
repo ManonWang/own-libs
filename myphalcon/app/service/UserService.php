@@ -1,8 +1,8 @@
 <?php
 
-namespace MyPhalcon\App\Service;
+namespace App\Service;
 
-use MyPhalcon\App\Service\DefaultService;
+use App\Service\DefaultService;
 
 class UserService extends DefaultService {
 

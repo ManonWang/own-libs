@@ -1,9 +1,9 @@
 <?php
 
-namespace MyPhalcon\App\Service;
+namespace App\Service;
 
-use MyPhalcon\App\Library\ClassUtil;
-use MyPhalcon\App\Models\BaseModel;
+use App\Library\ClassUtil;
+use App\Models\BaseModel;
 
 class BaseService extends \Phalcon\Mvc\User\Component  {
 
@@ -51,7 +51,7 @@ class BaseService extends \Phalcon\Mvc\User\Component  {
             $modelName = preg_replace('/Service$/i', '', ClassUtil::getClassName(get_class($this)));
         }
 
-        $modelName = 'MyPhalcon\App\Models\\' . ucfirst($modelName);
+        $modelName = 'App\\Models\\' . ucfirst($modelName);
         if (!class_exists($modelName)) {
             throw new \Exception(get_lang('CLASS_NOT_FOUND', $modelName));
         }

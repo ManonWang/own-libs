@@ -1,12 +1,10 @@
 <?php
 
-namespace MyPhalcon\App\Controllers;
+namespace App\Controllers;
 
 class IndexController extends BaseController {
 
     public function indexAction() {
-        echo "index/index";
-
         p($this->validate(array(
              'date' => array('date:Y-m-d'),
              'datetime' => array('not-empty', 'datetime:Y-m-d H:i:s'),

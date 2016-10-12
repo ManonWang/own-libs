@@ -1,6 +1,6 @@
 <?php
 
-namespace MyPhalcon\App\Tasks;
+namespace App\Tasks;
 
 class BaseTask extends \Phalcon\CLI\Task {
 
@@ -13,7 +13,7 @@ class BaseTask extends \Phalcon\CLI\Task {
             $serviceName = $this->getTaskName();
         }
 
-        $serviceName = 'MyPhalcon\App\Service\\' . ucfirst($serviceName) . 'Service';
+        $serviceName = 'App\\Service\\' . ucfirst($serviceName) . 'Service';
         if (!class_exists($serviceName)) {
             throw new \Exception(get_lang('CLASS_NOT_FOUND', $serviceName));
         }

@@ -1,8 +1,8 @@
 <?php
 
-namespace MyPhalcon\App\Controllers;
+namespace App\Controllers;
 
-use MyPhalcon\App\Controllers\DefaultController;
+use App\Controllers\DefaultController;
 
 class UserController extends DefaultController {
 

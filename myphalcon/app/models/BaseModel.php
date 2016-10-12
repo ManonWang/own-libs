@@ -1,8 +1,8 @@
 <?php
 
-namespace MyPhalcon\App\Models;
+namespace App\Models;
 
-use MyPhalcon\App\Library\LoggerUtil;
+use App\Library\LoggerUtil;
 
 class BaseModel extends \Phalcon\Mvc\Model {
 

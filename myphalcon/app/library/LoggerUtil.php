@@ -1,6 +1,6 @@
 <?php
 
-namespace MyPhalcon\App\Library;
+namespace App\Library;
 
 require VENDOR_PATH . '/log4php/Logger.php';
 \Logger::configure(CONFIG_PATH . '/Log4phpConfig.php');

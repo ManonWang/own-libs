@@ -1,6 +1,6 @@
 <?php
 
-namespace MyPhalcon\App\Library;
+namespace App\Library;
 
 CodesUtil::setData(CONFIG_PATH . '/CodesConfig.php');
 

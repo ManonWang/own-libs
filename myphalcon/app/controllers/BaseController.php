@@ -1,12 +1,12 @@
 <?php
 
-namespace MyPhalcon\App\Controllers;
+namespace App\Controllers;
 
-use MyPhalcon\App\Library\AssetUtil;
-use MyPhalcon\App\Library\ValidateUtil;
-use MyPhalcon\App\Library\StringUtil;
-use MyPhalcon\App\Library\HttpUtil;
-use MyPhalcon\App\Library\LoggerUtil;
+use App\Library\AssetUtil;
+use App\Library\ValidateUtil;
+use App\Library\StringUtil;
+use App\Library\HttpUtil;
+use App\Library\LoggerUtil;
 
 class BaseController extends \Phalcon\Mvc\Controller {
 
@@ -57,7 +57,7 @@ class BaseController extends \Phalcon\Mvc\Controller {
         }
 
         $shortName = $serviceName;
-        $serviceName = 'MyPhalcon\App\Service\\' . ucfirst($serviceName) . 'Service';
+        $serviceName = 'App\\Service\\' . ucfirst($serviceName) . 'Service';
         if (!class_exists($serviceName)) {
             throw new \Exception(get_lang('CLASS_NOT_FOUND', $serviceName));
         }

@@ -1,6 +1,6 @@
 <?php
 
-namespace MyPhalcon\App\Library;
+namespace App\Library;
 
 class ArrayUtil {
 

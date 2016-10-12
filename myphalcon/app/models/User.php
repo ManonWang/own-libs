@@ -1,8 +1,8 @@
 <?php
 
-namespace MyPhalcon\App\Models;
+namespace App\Models;
 
-use MyPhalcon\App\Models\BaseModel;
+use App\Models\BaseModel;
 
 class User extends BaseModel {
 

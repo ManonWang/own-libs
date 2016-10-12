@@ -20,12 +20,12 @@ function init_app_autoload() {
     $loader = new \Phalcon\Loader();
 
     $loader->registerNamespaces(array(
-         'MyPhalcon\App\Controllers' => CONTROLLERS_PATH,
-         'MyPhalcon\App\Models'      => MODELS_PATH,
-         'MyPhalcon\App\Service'     => SERVICE_PATH,
-         'MyPhalcon\App\Library'     => LIBRARY_PATH,
-         'MyPhalcon\App\Config'      => CONFIG_PATH,
-         'MyPhalcon\App\Tasks'       => TASKS_PATH,
+         'App\Controllers' => CONTROLLERS_PATH,
+         'App\Models'      => MODELS_PATH,
+         'App\Service'     => SERVICE_PATH,
+         'App\Library'     => LIBRARY_PATH,
+         'App\Config'      => CONFIG_PATH,
+         'App\Tasks'       => TASKS_PATH,
      ));
 
     $loader->register();
@@ -77,12 +77,12 @@ function is_succ_pack($data) {
 }
 
 function get_code($key) {
-    return MyPhalcon\App\Library\CodesUtil::get($key);
+    return App\Library\CodesUtil::get($key);
 }
 
 function get_lang($key) {
     $params = func_get_args();
-    $params[0] = MyPhalcon\App\Library\LangsUtil::get($key);
+    $params[0] = App\Library\LangsUtil::get($key);
     return call_user_func_array('sprintf', $params);
 }
 

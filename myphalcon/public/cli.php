@@ -1,7 +1,7 @@
 <?php
 
-use MyPhalcon\App\Config\ServiceConfig;
-use MyPhalcon\App\Library\AppInit;
+use App\Config\ServiceConfig;
+use App\Library\AppInit;
 
 //定义项目的根目录
 define('IS_CLI_APP', true);

@@ -1,9 +1,9 @@
 <?php
 
-namespace MyPhalcon\App\Library;
+namespace App\Library;
 
-use MyPhalcon\App\Library\StringUtil;
-use MyPhalcon\App\Library\LoggerUtil;
+use App\Library\StringUtil;
+use App\Library\LoggerUtil;
 
 
 class ValidateUtil {

@@ -1,6 +1,6 @@
 <?php
 
-namespace MyPhalcon\App\Tasks;
+namespace App\Tasks;
 
 class TestTask extends BaseTask {
 

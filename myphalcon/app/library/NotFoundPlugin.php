@@ -1,14 +1,14 @@
 <?php
 
-namespace MyPhalcon\App\Library;
+namespace App\Library;
 
 use \Phalcon\Events\Event;
 use \Phalcon\Mvc\User\Plugin;
 use \Phalcon\Dispatcher;
 use \Phalcon\Mvc\Dispatcher\Exception as DispatcherException;
 use \Phalcon\Mvc\Dispatcher as MvcDispatcher;
-use MyPhalcon\App\Library\LoggerUtil;
-use MyPhalcon\App\Library\HttpUtil;
+use App\Library\LoggerUtil;
+use App\Library\HttpUtil;
 
 class NotFoundPlugin extends Plugin
 {

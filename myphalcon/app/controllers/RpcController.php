@@ -1,8 +1,8 @@
 <?php
 
-namespace MyPhalcon\App\Controllers;
+namespace App\Controllers;
 
-use MyPhalcon\App\Library\LoggerUtil;
+use App\Library\LoggerUtil;
 
 class RpcController extends BaseController {
 

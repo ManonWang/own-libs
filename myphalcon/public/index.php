@@ -1,9 +1,9 @@
 <?php
 
-use MyPhalcon\App\Config\ServiceConfig;
-use MyPhalcon\App\Library\AppInit;
-use MyPhalcon\App\Library\HttpUtil;
-use MyPhalcon\App\Library\LoggerUtil;
+use App\Config\ServiceConfig;
+use App\Library\AppInit;
+use App\Library\HttpUtil;
+use App\Library\LoggerUtil;
 
 //定义项目的根目录
 define('IS_CLI_APP', false);

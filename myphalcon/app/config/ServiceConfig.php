@@ -1,13 +1,13 @@
 <?php
 
-namespace MyPhalcon\App\Config;
+namespace App\Config;
 
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
-use MyPhalcon\App\Library\NotFoundPlugin;
-use MyPhalcon\App\Library\ElementsPlugin;
-use MyPhalcon\App\Library\ClassUtil;
-use MyPhalcon\App\Library\LoggerUtil;
-use MyPhalcon\App\Library\VoltExtension;
+use App\Library\NotFoundPlugin;
+use App\Library\ElementsPlugin;
+use App\Library\ClassUtil;
+use App\Library\LoggerUtil;
+use App\Library\VoltExtension;
 
 class ServiceConfig {
 
@@ -29,7 +29,7 @@ class ServiceConfig {
 
         $di->setShared('dispatcher', function () {
             $dispatcher = new \Phalcon\Cli\Dispatcher();
-            $dispatcher->setDefaultNamespace("MyPhalcon\\App\\Tasks\\");
+            $dispatcher->setDefaultNamespace("App\\Tasks\\");
             return $dispatcher;
         });
     }
@@ -57,7 +57,7 @@ class ServiceConfig {
 
             $dispatcher = new \Phalcon\Mvc\Dispatcher();
             $dispatcher->setEventsManager($eventsManager);
-            $dispatcher->setDefaultNamespace("MyPhalcon\\App\\Controllers\\");
+            $dispatcher->setDefaultNamespace("App\\Controllers\\");
             return $dispatcher;
         });
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace MyPhalcon\App\Library;
+namespace App\Library;
 
 LangsUtil::setLang(LangsUtil::LANG_ZH);
 LangsUtil::setData(CONFIG_PATH . '/LangsConfig.php');

@@ -1,8 +1,8 @@
 <?php
 
-namespace MyPhalcon\App\Library;
+namespace App\Library;
 
-use MyPhalcon\App\Library\LoggerUtil;
+use App\Library\LoggerUtil;
 
 class SignatureUtil {
 

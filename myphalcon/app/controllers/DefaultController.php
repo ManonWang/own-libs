@@ -1,8 +1,8 @@
 <?php
 
-namespace MyPhalcon\App\Controllers;
+namespace App\Controllers;
 
-use MyPhalcon\App\Controllers\BaseController;
+use App\Controllers\BaseController;
 
 class DefaultController extends BaseController {
 

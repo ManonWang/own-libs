@@ -1,8 +1,8 @@
 <?php
 
-namespace MyPhalcon\App\Library;
+namespace App\Library;
 
-use MyPhalcon\App\Library\HttpUtil;
+use App\Library\HttpUtil;
 
 class ElementsPlugin extends \Phalcon\Mvc\User\Component  {
 

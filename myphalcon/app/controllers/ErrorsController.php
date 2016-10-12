@@ -1,6 +1,6 @@
 <?php
 
-namespace MyPhalcon\App\Controllers;
+namespace App\Controllers;
 
 class ErrorsController extends BaseController {
 

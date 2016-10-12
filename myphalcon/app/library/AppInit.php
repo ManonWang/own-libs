@@ -1,9 +1,9 @@
 <?php
 
-namespace MyPhalcon\App\Library;
+namespace App\Library;
 
-use MyPhalcon\App\Library\HttpUtil;
-use MyPhalcon\App\Library\LoggerUtil;
+use App\Library\HttpUtil;
+use App\Library\LoggerUtil;
 
 class AppInit {
 
