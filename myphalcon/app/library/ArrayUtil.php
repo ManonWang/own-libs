@@ -5,10 +5,10 @@ namespace App\Library;
 class ArrayUtil {
 
     //查询结果集二维数组按照某个字段hash
-    public static function hashByField($data, $field = 'id') {
+    public static function hashByField($data, $field = 'id', $uniqueKey = true) {
         $return = array();
         foreach ($data as $item) {
-            $return[$item[$field]] = $item;
+            $uniqueKey ? $return[$item[$field]] = $item : $return[$item[$field]][] = $item;
         }
         return $return;
     }
@@ -20,7 +20,6 @@ class ArrayUtil {
             $return[] = $item[$field];
         }
         return $unique ? array_unique($return) : $return;
-
     }
 
 }
